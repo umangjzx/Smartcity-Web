@@ -104,7 +104,7 @@ export default function Achievements() {
 
                 <h3 className="font-poppins font-bold text-base text-[var(--color-charcoal)] mb-2 leading-snug">{a.title}</h3>
                 <p className="font-inter text-sm text-[var(--color-warm-gray)]">{a.body}</p>
-                <p className="font-montserrat font-black text-3xl mt-3" style={{ color: a.iconColor, opacity: 0.15 }}>{a.year}</p>
+                <p className="font-montserrat font-black text-3xl mt-3" style={{ color: a.iconColor, opacity: 0.55 }}>{a.year}</p>
               </motion.div>
             );
           })}
