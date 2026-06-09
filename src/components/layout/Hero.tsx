@@ -44,7 +44,7 @@ export default function Hero() {
       {/* Top accent line */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--color-rotaract-red)] via-[var(--color-rotary-gold)] to-[var(--color-royal-blue)]" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-28 pb-16 w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-8 sm:pb-16 w-full">
         <motion.div
           variants={container}
           initial="hidden"
@@ -52,9 +52,9 @@ export default function Hero() {
           className="max-w-5xl"
         >
           {/* Eyebrow */}
-          <motion.div variants={item} className="flex items-center gap-3 mb-8">
-            <div className="h-px w-12 bg-[var(--color-rotary-gold)]" />
-            <span className="font-inter text-[var(--color-rotary-gold)] text-sm font-semibold tracking-[0.2em] uppercase">
+          <motion.div variants={item} className="flex items-center gap-3 mb-4 sm:mb-8">
+            <div className="h-px w-8 sm:w-12 bg-[var(--color-rotary-gold)]" />
+            <span className="font-inter text-[var(--color-rotary-gold)] text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase">
               Rotaract District 3206
             </span>
           </motion.div>
@@ -62,19 +62,19 @@ export default function Hero() {
           {/* Headline */}
           <motion.h1
             variants={item}
-            className="font-montserrat font-black leading-[1.05] mb-8"
+            className="font-montserrat font-black leading-[1.05] mb-4 sm:mb-8"
           >
-            <span className="block text-5xl md:text-7xl lg:text-8xl text-white">Ignite.</span>
-            <span className="block text-5xl md:text-7xl lg:text-8xl text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-rotary-gold)] to-[#FFD97D]">
+            <span className="block text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl text-white">Ignite.</span>
+            <span className="block text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-rotary-gold)] to-[#FFD97D]">
               Influence.
             </span>
-            <span className="block text-5xl md:text-7xl lg:text-8xl text-white/80">Impact.</span>
+            <span className="block text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl text-white/80">Impact.</span>
           </motion.h1>
 
           {/* Subline */}
           <motion.p
             variants={item}
-            className="text-white/60 font-inter text-lg md:text-xl max-w-2xl leading-relaxed mb-12"
+            className="text-white/60 font-inter text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl leading-relaxed mb-6 sm:mb-12"
           >
             A community of young leaders transforming Coimbatore through service, professional development, and meaningful connections.
           </motion.p>

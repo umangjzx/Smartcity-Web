@@ -48,31 +48,31 @@ const avenues = [
 
 export default function Avenues() {
   return (
-    <section id="avenues" className="py-28 bg-[var(--color-cream)] relative overflow-hidden">
+    <section id="avenues" className="py-12 md:py-20 lg:py-28 bg-[var(--color-cream)] relative overflow-hidden">
       {/* Decorative background */}
       <div className="absolute bottom-0 right-0 w-1/3 h-full opacity-30">
         <div className="w-full h-full bg-gradient-to-tl from-[var(--color-rotaract-red)]/10 to-transparent" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
         {/* Header */}
-        <div className="grid lg:grid-cols-2 gap-12 items-end mb-16">
+        <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-end mb-10 sm:mb-12 md:mb-16">
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-px w-10 bg-[var(--color-rotaract-red)]" />
+            <div className="flex items-center gap-3 mb-2 sm:mb-4">
+              <div className="h-px w-8 sm:w-10 bg-[var(--color-rotaract-red)]" />
               <span className="font-inter text-[var(--color-rotaract-red)] text-xs font-semibold tracking-[0.2em] uppercase">Core Pillars</span>
             </div>
-            <h2 className="font-montserrat font-black text-4xl md:text-5xl text-[var(--color-charcoal)] leading-tight">
+            <h2 className="font-montserrat font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[var(--color-charcoal)] leading-tight">
               Five Avenues<br />of <span className="text-[var(--color-rotaract-red)]">Service</span>
             </h2>
           </div>
-          <p className="font-inter text-[var(--color-warm-gray)] text-lg leading-relaxed">
+          <p className="font-inter text-[var(--color-warm-gray)] text-sm sm:text-base md:text-lg leading-relaxed">
             Our work is guided by five core service avenues that ensure holistic growth for our members and lasting impact for our community.
           </p>
         </div>
 
         {/* Cards grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
           {avenues.map((av, i) => {
             const Icon = av.icon;
             return (

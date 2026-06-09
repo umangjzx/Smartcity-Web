@@ -32,24 +32,24 @@ const inputCls =
 
 export default function Contact() {
   return (
-    <section id="contact" className="py-28 bg-[var(--color-cream)] relative overflow-hidden">
+    <section id="contact" className="py-12 md:py-20 lg:py-28 bg-[var(--color-cream)] relative overflow-hidden">
       {/* Background blob */}
       <div className="absolute top-0 left-0 w-80 h-80 bg-[var(--color-rotaract-red)]/5 rounded-full blur-3xl" />
 
-      <div className="max-w-7xl mx-auto px-6 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
 
         {/* Header */}
-        <div className="mb-16">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-10 bg-[var(--color-rotaract-red)]" />
+        <div className="mb-8 sm:mb-10 md:mb-16">
+          <div className="flex items-center gap-3 mb-2 sm:mb-4">
+            <div className="h-px w-8 sm:w-10 bg-[var(--color-rotaract-red)]" />
             <span className="font-inter text-[var(--color-rotaract-red)] text-xs font-semibold tracking-[0.2em] uppercase">Get in Touch</span>
           </div>
-          <h2 className="font-montserrat font-black text-4xl md:text-5xl text-[var(--color-charcoal)] leading-tight">
+          <h2 className="font-montserrat font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[var(--color-charcoal)] leading-tight">
             Connect <span className="text-[var(--color-rotaract-red)]">With Us</span>
           </h2>
         </div>
 
-        <div className="grid lg:grid-cols-5 gap-10">
+        <div className="grid lg:grid-cols-5 gap-6 sm:gap-8 md:gap-10">
 
           {/* Left — contacts + quick links */}
           <motion.div

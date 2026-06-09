@@ -23,8 +23,8 @@ export default function Footer() {
       {/* Top accent */}
       <div className="h-1 bg-gradient-to-r from-[var(--color-rotaract-red)] via-[var(--color-rotary-gold)] to-[var(--color-royal-blue)]" />
 
-      <div className="max-w-7xl mx-auto px-6 pt-16 pb-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-14">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-10 sm:pt-12 md:pt-16 pb-6 sm:pb-8 md:pb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-12 mb-8 sm:mb-10 md:mb-14">
 
           {/* Brand */}
           <div className="lg:col-span-1">

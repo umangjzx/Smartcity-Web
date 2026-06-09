@@ -47,16 +47,16 @@ export default function Projects() {
       {/* Top bleed */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--color-rotary-gold)]/5 rounded-full blur-3xl" />
 
-      <div className="max-w-7xl mx-auto px-6 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-14">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-10 md:mb-14">
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-px w-10 bg-[var(--color-rotaract-red)]" />
+            <div className="flex items-center gap-3 mb-2 sm:mb-4">
+              <div className="h-px w-8 sm:w-10 bg-[var(--color-rotaract-red)]" />
               <span className="font-inter text-[var(--color-rotaract-red)] text-xs font-semibold tracking-[0.2em] uppercase">Our Work</span>
             </div>
-            <h2 className="font-montserrat font-black text-4xl md:text-5xl text-[var(--color-charcoal)] leading-tight">
+            <h2 className="font-montserrat font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[var(--color-charcoal)] leading-tight">
               Projects &amp; <span className="text-[var(--color-rotaract-red)]">Impact</span>
             </h2>
           </div>
@@ -67,7 +67,7 @@ export default function Projects() {
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
-                className={`px-4 py-2 rounded-full font-poppins text-xs font-semibold transition-all border ${
+                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-poppins text-[10px] sm:text-xs font-semibold transition-all border ${
                   filter === cat
                     ? "bg-[var(--color-rotaract-red)] text-white border-[var(--color-rotaract-red)] shadow-md"
                     : "bg-white text-[var(--color-warm-gray)] border-[var(--border)] hover:border-[var(--color-rotaract-red)] hover:text-[var(--color-rotaract-red)]"
@@ -80,7 +80,7 @@ export default function Projects() {
         </div>
 
         {/* Grid */}
-        <motion.div layout className="grid sm:grid-cols-2 gap-6">
+        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
           <AnimatePresence mode="popLayout">
             {filtered.map((project) => {
               const colors = CATEGORY_COLORS[project.category] ?? { bg: "#F5F5F7", text: "#6B7280" };

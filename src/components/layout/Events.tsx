@@ -41,17 +41,17 @@ function Countdown({ targetDate }: { targetDate: Date }) {
   ];
 
   return (
-    <div className="grid grid-cols-4 gap-3">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
       {units.map(({ v, l }, i) => (
         <div key={l} className="text-center">
-          <div className={`rounded-2xl py-4 px-2 font-montserrat font-black text-3xl md:text-4xl border ${
+          <div className={`rounded-lg sm:rounded-2xl py-2 sm:py-4 px-1 sm:px-2 font-montserrat font-black text-xl sm:text-3xl md:text-4xl border ${
             i === 0 || i === 3
               ? "bg-[var(--color-rotaract-red)] text-white border-[var(--color-rotaract-red)]"
               : "bg-[var(--color-charcoal)] text-white border-[var(--color-charcoal)]"
           }`}>
             {String(v).padStart(2, "0")}
           </div>
-          <p className="font-inter text-[10px] text-[var(--color-warm-gray)] uppercase tracking-wider mt-2">{l}</p>
+          <p className="font-inter text-[8px] sm:text-[10px] text-[var(--color-warm-gray)] uppercase tracking-wider mt-1 sm:mt-2">{l}</p>
         </div>
       ))}
     </div>
@@ -88,15 +88,15 @@ export default function Events() {
   const eventDate = new Date(display.date);
 
   return (
-    <section id="events" className="py-28 bg-[var(--color-cream)] relative overflow-hidden">
+    <section id="events" className="py-12 md:py-20 lg:py-28 bg-[var(--color-cream)] relative overflow-hidden">
       <div className="absolute top-0 right-0 w-80 h-80 bg-[var(--color-rotaract-red)]/5 rounded-full blur-3xl" />
 
-      <div className="max-w-7xl mx-auto px-6 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
 
         {/* Header */}
-        <div className="mb-14">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-10 bg-[var(--color-rotaract-red)]" />
+        <div className="mb-8 sm:mb-10 md:mb-14">
+          <div className="flex items-center gap-3 mb-2 sm:mb-4">
+            <div className="h-px w-8 sm:w-10 bg-[var(--color-rotaract-red)]" />
             <span className="font-inter text-[var(--color-rotaract-red)] text-xs font-semibold tracking-[0.2em] uppercase">What&apos;s Next</span>
           </div>
           <h2 className="font-montserrat font-black text-4xl md:text-5xl text-[var(--color-charcoal)] leading-tight">

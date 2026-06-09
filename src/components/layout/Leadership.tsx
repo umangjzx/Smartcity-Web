@@ -32,19 +32,19 @@ export default function Leadership() {
   if (members.length === 0) return null;
 
   return (
-    <section id="leadership" className="py-28 bg-[var(--color-cream)] relative overflow-hidden">
+    <section id="leadership" className="py-12 md:py-20 lg:py-28 bg-[var(--color-cream)] relative overflow-hidden">
       {/* Background */}
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-[var(--color-royal-blue)]/5 rounded-full blur-3xl" />
 
-      <div className="max-w-7xl mx-auto px-6 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
 
         {/* Header */}
-        <div className="mb-16">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-10 bg-[var(--color-rotaract-red)]" />
+        <div className="mb-8 sm:mb-10 md:mb-16">
+          <div className="flex items-center gap-3 mb-2 sm:mb-4">
+            <div className="h-px w-8 sm:w-10 bg-[var(--color-rotaract-red)]" />
             <span className="font-inter text-[var(--color-rotaract-red)] text-xs font-semibold tracking-[0.2em] uppercase">Leadership</span>
           </div>
-          <h2 className="font-montserrat font-black text-4xl md:text-5xl text-[var(--color-charcoal)] leading-tight">
+          <h2 className="font-montserrat font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[var(--color-charcoal)] leading-tight">
             Board of <span className="text-[var(--color-rotaract-red)]">Directors</span>
           </h2>
         </div>
@@ -56,29 +56,29 @@ export default function Leadership() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="bg-white rounded-3xl border border-[var(--border)] shadow-md overflow-hidden mb-10"
+            className="bg-white rounded-2xl sm:rounded-3xl border border-[var(--border)] shadow-md overflow-hidden mb-8 sm:mb-10 md:mb-12"
           >
-            <div className="grid md:grid-cols-3">
+            <div className="grid sm:grid-cols-2 md:grid-cols-3">
               {/* Photo side */}
-              <div className="relative bg-gradient-to-br from-[var(--color-charcoal)] to-[#2d1a24] flex items-center justify-center p-10">
+              <div className="relative bg-gradient-to-br from-[var(--color-charcoal)] to-[#2d1a24] flex items-center justify-center p-6 sm:p-8 md:p-10">
                 <div className="relative">
                   <div className="absolute inset-0 rounded-full bg-[var(--color-rotaract-red)]/20 blur-xl scale-150" />
                   <img
                     src={president.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(president.name)}&background=C8102E&color=fff&size=256`}
                     alt={president.name}
-                    className="relative w-36 h-36 rounded-full object-cover border-4 border-[var(--color-rotary-gold)] shadow-xl"
+                    className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full object-cover border-4 border-[var(--color-rotary-gold)] shadow-xl"
                   />
                 </div>
               </div>
 
               {/* Content side */}
-              <div className="md:col-span-2 p-8 md:p-10 flex flex-col justify-center">
-                <div className="inline-flex items-center gap-2 bg-[var(--color-rotaract-red)]/10 text-[var(--color-rotaract-red)] text-xs font-semibold font-inter px-3 py-1.5 rounded-full mb-4 w-fit">
+              <div className="sm:col-span-1 md:col-span-2 p-4 sm:p-6 md:p-8 lg:p-10 flex flex-col justify-center">
+                <div className="inline-flex items-center gap-2 bg-[var(--color-rotaract-red)]/10 text-[var(--color-rotaract-red)] text-xs font-semibold font-inter px-3 py-1.5 rounded-full mb-3 sm:mb-4 w-fit">
                   President, 2026–27
                 </div>
-                <h3 className="font-montserrat font-black text-2xl md:text-3xl text-[var(--color-charcoal)] mb-2">{president.name}</h3>
-                <p className="font-inter text-[var(--color-warm-gray)] text-sm mb-6">{president.role}</p>
-                <blockquote className="font-inter text-[var(--color-charcoal)] text-lg leading-relaxed italic border-l-4 border-[var(--color-rotary-gold)] pl-5 mb-6">
+                <h3 className="font-montserrat font-black text-xl sm:text-2xl md:text-3xl text-[var(--color-charcoal)] mb-1 sm:mb-2">{president.name}</h3>
+                <p className="font-inter text-[var(--color-warm-gray)] text-xs sm:text-sm mb-3 sm:mb-6">{president.role}</p>
+                <blockquote className="font-inter text-[var(--color-charcoal)] text-sm sm:text-base md:text-lg leading-relaxed italic border-l-4 border-[var(--color-rotary-gold)] pl-4 mb-4 sm:mb-6">
                   &ldquo;Together, we aim to ignite leadership, influence positive change, and create lasting impact in our community.&rdquo;
                 </blockquote>
                 <div className="flex gap-3">

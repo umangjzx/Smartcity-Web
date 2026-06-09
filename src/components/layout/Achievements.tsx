@@ -65,22 +65,22 @@ const testimonials = [
 
 export default function Achievements() {
   return (
-    <section id="achievements" className="py-28 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="achievements" className="py-12 md:py-20 lg:py-28 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
         {/* Header */}
-        <div className="mb-16">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-10 bg-[var(--color-rotaract-red)]" />
+        <div className="mb-8 sm:mb-12 md:mb-16">
+          <div className="flex items-center gap-3 mb-3 sm:mb-4">
+            <div className="h-px w-8 sm:w-10 bg-[var(--color-rotaract-red)]" />
             <span className="font-inter text-[var(--color-rotaract-red)] text-xs font-semibold tracking-[0.2em] uppercase">Recognition</span>
           </div>
-          <h2 className="font-montserrat font-black text-4xl md:text-5xl text-[var(--color-charcoal)] leading-tight">
+          <h2 className="font-montserrat font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[var(--color-charcoal)] leading-tight">
             Awards & <span className="text-[var(--color-rotary-gold)]">Achievements</span>
           </h2>
         </div>
 
         {/* Award cards */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-24">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 mb-12 sm:mb-16 md:mb-24">
           {achievements.map((a, i) => {
             const Icon = a.icon;
             return (
@@ -90,39 +90,39 @@ export default function Achievements() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="group relative bg-white border border-[var(--border)] rounded-3xl p-7 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+                className="group relative bg-white border border-[var(--border)] rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-7 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
               >
                 {/* Top gradient strip */}
                 <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${a.gradient} rounded-t-3xl`} />
 
                 <div
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform"
+                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-5 group-hover:scale-110 transition-transform"
                   style={{ background: a.bg }}
                 >
-                  <Icon size={26} style={{ color: a.iconColor }} />
+                  <Icon size={20} className="sm:w-6 sm:h-6" style={{ color: a.iconColor }} />
                 </div>
 
-                <h3 className="font-poppins font-bold text-base text-[var(--color-charcoal)] mb-2 leading-snug">{a.title}</h3>
-                <p className="font-inter text-sm text-[var(--color-warm-gray)]">{a.body}</p>
-                <p className="font-montserrat font-black text-3xl mt-3" style={{ color: a.iconColor, opacity: 0.55 }}>{a.year}</p>
+                <h3 className="font-poppins font-bold text-sm sm:text-base text-[var(--color-charcoal)] mb-1 sm:mb-2 leading-snug">{a.title}</h3>
+                <p className="font-inter text-xs sm:text-sm text-[var(--color-warm-gray)]">{a.body}</p>
+                <p className="font-montserrat font-black text-2xl sm:text-3xl mt-2 sm:mt-3" style={{ color: a.iconColor, opacity: 0.55 }}>{a.year}</p>
               </motion.div>
             );
           })}
         </div>
 
         {/* Testimonials */}
-        <div className="bg-[var(--color-cream)] rounded-3xl p-8 md:p-12">
-          <div className="mb-10">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-px w-10 bg-[var(--color-rotaract-red)]" />
+        <div className="bg-[var(--color-cream)] rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-12">
+          <div className="mb-6 sm:mb-8 md:mb-10">
+            <div className="flex items-center gap-3 mb-2 sm:mb-4">
+              <div className="h-px w-8 sm:w-10 bg-[var(--color-rotaract-red)]" />
               <span className="font-inter text-[var(--color-rotaract-red)] text-xs font-semibold tracking-[0.2em] uppercase">Member Stories</span>
             </div>
-            <h3 className="font-montserrat font-black text-3xl md:text-4xl text-[var(--color-charcoal)]">
+            <h3 className="font-montserrat font-black text-2xl sm:text-3xl md:text-4xl text-[var(--color-charcoal)]">
               What Our Members Say
             </h3>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
             {testimonials.map((t, i) => (
               <motion.div
                 key={t.name}
@@ -130,24 +130,24 @@ export default function Achievements() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="bg-white rounded-2xl p-7 border border-[var(--border)] shadow-sm hover:shadow-md transition-shadow"
+                className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-7 border border-[var(--border)] shadow-sm hover:shadow-md transition-shadow"
               >
                 {/* Stars */}
-                <div className="flex gap-1 mb-5">
+                <div className="flex gap-0.5 sm:gap-1 mb-3 sm:mb-5">
                   {[...Array(5)].map((_, si) => (
-                    <Star key={si} size={13} className="text-[var(--color-rotary-gold)] fill-[var(--color-rotary-gold)]" />
+                    <Star key={si} size={12} className="sm:w-[13px] sm:h-[13px] text-[var(--color-rotary-gold)] fill-[var(--color-rotary-gold)]" />
                   ))}
                 </div>
 
-                <p className="font-inter text-[var(--color-charcoal)] text-sm leading-relaxed mb-6 italic">
+                <p className="font-inter text-[var(--color-charcoal)] text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 italic">
                   &ldquo;{t.quote}&rdquo;
                 </p>
 
-                <div className="flex items-center gap-3 pt-5 border-t border-[var(--border)]">
-                  <img src={t.avatar} alt={t.name} className="w-10 h-10 rounded-full object-cover" />
-                  <div>
-                    <p className="font-poppins font-semibold text-sm text-[var(--color-charcoal)]">{t.name}</p>
-                    <p className="font-inter text-xs text-[var(--color-warm-gray)]">{t.role}</p>
+                <div className="flex items-center gap-2 sm:gap-3 pt-3 sm:pt-5 border-t border-[var(--border)]">
+                  <img src={t.avatar} alt={t.name} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover" />
+                  <div className="min-w-0">
+                    <p className="font-poppins font-semibold text-xs sm:text-sm text-[var(--color-charcoal)] truncate">{t.name}</p>
+                    <p className="font-inter text-xs text-[var(--color-warm-gray)] truncate">{t.role}</p>
                   </div>
                 </div>
               </motion.div>

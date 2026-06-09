@@ -32,18 +32,18 @@ export default function Navbar() {
           : "bg-transparent py-5"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative w-10 h-10 rounded-full bg-[var(--color-rotaract-red)] flex items-center justify-center shadow-md">
-            <span className="font-montserrat font-black text-white text-lg">R</span>
+        <Link href="/" className="flex items-center gap-2 sm:gap-3 group shrink-0">
+          <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[var(--color-rotaract-red)] flex items-center justify-center shadow-md">
+            <span className="font-montserrat font-black text-white text-sm sm:text-lg">R</span>
             <div className="absolute inset-0 rounded-full border-2 border-[var(--color-rotary-gold)] scale-110 opacity-60" />
           </div>
-          <div className="flex flex-col leading-none">
-            <span className={`font-poppins font-bold text-sm transition-colors ${isScrolled ? "text-[var(--color-charcoal)]" : "text-white"}`}>
+          <div className="hidden sm:flex flex-col leading-none">
+            <span className={`font-poppins font-bold text-xs sm:text-sm transition-colors ${isScrolled ? "text-[var(--color-charcoal)]" : "text-white"}`}>
               Rotaract Club of
             </span>
-            <span className="font-inter text-[10px] text-[var(--color-rotary-gold)] uppercase tracking-widest font-semibold">
+            <span className="font-inter text-[8px] sm:text-[10px] text-[var(--color-rotary-gold)] uppercase tracking-widest font-semibold">
               Coimbatore Smartcity
             </span>
           </div>

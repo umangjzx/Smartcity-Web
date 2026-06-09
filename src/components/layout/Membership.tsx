@@ -14,7 +14,7 @@ const benefits = [
 
 export default function Membership() {
   return (
-    <section id="join" className="py-28 bg-[var(--color-charcoal)] relative overflow-hidden">
+    <section id="join" className="py-12 md:py-20 lg:py-28 bg-[var(--color-charcoal)] relative overflow-hidden">
       {/* Background accents */}
       <div className="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-[var(--color-rotaract-red)] opacity-[0.12] blur-[100px]" />
       <div className="absolute bottom-[-20%] left-[-10%] w-[400px] h-[400px] rounded-full bg-[var(--color-royal-blue)] opacity-[0.12] blur-[80px]" />
@@ -22,8 +22,8 @@ export default function Membership() {
       {/* Top border accent */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--color-rotary-gold)]/40 to-transparent" />
 
-      <div className="max-w-7xl mx-auto px-6 relative">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-center">
 
           {/* Left — copy */}
           <motion.div
@@ -32,21 +32,21 @@ export default function Membership() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="h-px w-10 bg-[var(--color-rotary-gold)]" />
+            <div className="flex items-center gap-3 mb-4 sm:mb-6">
+              <div className="h-px w-8 sm:w-10 bg-[var(--color-rotary-gold)]" />
               <span className="font-inter text-[var(--color-rotary-gold)] text-xs font-semibold tracking-[0.2em] uppercase">Membership</span>
             </div>
 
-            <h2 className="font-montserrat font-black text-4xl md:text-5xl text-white leading-tight mb-6">
+            <h2 className="font-montserrat font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white leading-tight mb-4 sm:mb-6">
               Become a<br />
               <span className="text-[var(--color-rotary-gold)]">Rotaractor</span>
             </h2>
 
-            <p className="font-inter text-white/60 text-lg leading-relaxed mb-10">
+            <p className="font-inter text-white/60 text-sm sm:text-base md:text-lg leading-relaxed mb-6 sm:mb-10">
               Join a global network of young leaders aged 18–30, dedicated to creating positive change while building professional skills that last a lifetime.
             </p>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-3 sm:gap-4">
               <button className="group inline-flex items-center gap-2 px-8 py-4 bg-[var(--color-rotaract-red)] hover:bg-[#a50d26] text-white rounded-full font-poppins font-semibold text-sm transition-all shadow-[0_8px_30px_rgba(200,16,46,0.3)] hover:shadow-[0_12px_40px_rgba(200,16,46,0.4)] hover:-translate-y-0.5">
                 Apply Now
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />

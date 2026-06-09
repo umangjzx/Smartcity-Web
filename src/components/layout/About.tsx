@@ -21,27 +21,27 @@ const values = [
 
 export default function About() {
   return (
-    <section id="about" className="py-28 bg-white relative overflow-hidden">
+    <section id="about" className="py-12 md:py-20 lg:py-28 bg-white relative overflow-hidden">
       {/* Subtle background */}
       <div className="absolute top-0 right-0 w-1/2 h-full opacity-50">
         <div className="absolute top-20 right-0 w-96 h-96 bg-[var(--color-rotaract-red)]/5 rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-20 w-64 h-64 bg-[var(--color-rotary-gold)]/5 rounded-full blur-3xl" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
 
         {/* Section header */}
-        <div className="mb-20">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-10 bg-[var(--color-rotaract-red)]" />
+        <div className="mb-10 sm:mb-14 md:mb-20">
+          <div className="flex items-center gap-3 mb-2 sm:mb-4">
+            <div className="h-px w-8 sm:w-10 bg-[var(--color-rotaract-red)]" />
             <span className="font-inter text-[var(--color-rotaract-red)] text-xs font-semibold tracking-[0.2em] uppercase">Our Story</span>
           </div>
-          <h2 className="font-montserrat font-black text-4xl md:text-5xl text-[var(--color-charcoal)] max-w-xl leading-tight">
+          <h2 className="font-montserrat font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[var(--color-charcoal)] max-w-xl leading-tight">
             A Legacy of <span className="text-[var(--color-rotaract-red)]">Excellence</span> Since 2021
           </h2>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-20 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 lg:gap-20 items-start">
 
           {/* Left — club info */}
           <motion.div
