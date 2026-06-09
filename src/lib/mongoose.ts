@@ -2,9 +2,6 @@ import mongoose from "mongoose";
 
 function getMongoURI() {
   const uri = process.env.MONGODB_URI;
-  if (!uri) {
-    throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
-  }
   return uri;
 }
 
@@ -20,11 +17,17 @@ async function dbConnect() {
   }
 
   if (!cached.promise) {
+    const mongoURI = getMongoURI();
+    
+    if (!mongoURI) {
+      throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
+    }
+
     const opts = {
       bufferCommands: false,
     };
 
-    cached.promise = mongoose.connect(getMongoURI(), opts).then((mongoose) => {
+    cached.promise = mongoose.connect(mongoURI, opts).then((mongoose) => {
       return mongoose;
     });
   }
