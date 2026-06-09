@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@theme {
+  --color-rotaract-red: #C8102E;
+  --color-rotary-gold: #F0A500;
+  --color-royal-blue: #003DA5;
+  --color-cream: #FAF8F5;
+  --color-charcoal: #1A1A2E;
+  --color-warm-gray: #6B7280;
+  --font-inter: var(--font-inter);
+  --font-poppins: var(--font-poppins);
+  --font-montserrat: var(--font-montserrat);
+}
+
+:root {
+  --background: #FFFFFF;
+  --foreground: #1A1A2E;
+  --muted: #F5F5F7;
+  --muted-foreground: #6B7280;
+  --border: #E5E7EB;
+  color-scheme: light only;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), Arial, sans-serif;
+  @apply antialiased;
+}
+
+/* Remove any dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #FFFFFF;
+    --foreground: #1A1A2E;
+    --muted: #F5F5F7;
+    --muted-foreground: #6B7280;
+    --border: #E5E7EB;
+  }
+}
+
+/* Smooth section transitions */
+section {
+  position: relative;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #C8102E;
+  border-radius: 3px;
+}
