@@ -81,7 +81,7 @@ export default function Avenues() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
+                transition={{ duration: 0.45, delay: i * 0.07, ease: [0.25, 0.46, 0.45, 0.94] }}
                 className={`group bg-white rounded-3xl p-8 border border-[var(--border)] shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-default relative overflow-hidden ${
                   i === 4 ? "md:col-start-1 lg:col-start-auto" : ""
                 }`}

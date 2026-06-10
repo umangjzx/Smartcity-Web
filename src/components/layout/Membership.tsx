@@ -29,8 +29,8 @@ export default function Membership() {
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             <div className="flex items-center gap-3 mb-4 sm:mb-6">
               <div className="h-px w-8 sm:w-10 bg-[var(--color-rotary-gold)]" />
@@ -61,8 +61,8 @@ export default function Membership() {
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="grid grid-cols-2 gap-4"
           >
             {benefits.map((b, i) => {

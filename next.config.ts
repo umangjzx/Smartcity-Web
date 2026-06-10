@@ -8,7 +8,11 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "**.cloudinary.com" },
       { protocol: "https", hostname: "**.vercel.app" },
     ],
+    formats: ["image/avif", "image/webp"],
   },
+  compress: true,
+  poweredByHeader: false,
+  reactStrictMode: true,
 };
 
 export default nextConfig;

@@ -47,8 +47,8 @@ export default function About() {
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             <p className="font-inter text-[var(--color-warm-gray)] text-lg leading-relaxed mb-10">
               We are a vibrant community of young professionals and students dedicated to making a positive impact in Coimbatore and beyond. Through leadership, service, and innovation, we strive to transform our community while building lifelong skills.

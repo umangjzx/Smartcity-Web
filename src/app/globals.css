@@ -28,16 +28,19 @@
 html {
   color-scheme: light;
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter), Arial, sans-serif;
+  overflow-x: hidden;
   @apply antialiased;
 }
 
-/* Remove any dark mode overrides */
+/* Force light mode even on dark-mode systems */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #FFFFFF;
@@ -48,19 +51,65 @@ body {
   }
 }
 
-/* Smooth section transitions */
-section {
-  position: relative;
+/* Performance: Use GPU layers for animated elements */
+[data-animate] {
+  will-change: transform, opacity;
 }
 
-/* Custom scrollbar */
+/* Smooth image loading */
+img {
+  content-visibility: auto;
+}
+
+/* Optimized scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #C8102E;
-  border-radius: 3px;
+  background: var(--color-rotaract-red);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a50d26;
+}
+
+/* Smooth section reveal keyframe for non-framer elements */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Selection styling */
+::selection {
+  background: var(--color-rotaract-red);
+  color: white;
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-rotaract-red);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Smooth transitions globally */
+a, button {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Line clamp utility */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
