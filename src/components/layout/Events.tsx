@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, CalendarClock, ChevronDown } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -65,6 +65,23 @@ export default function Events() {
   const [upcoming, setUpcoming] = useState<Event[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Desktop mouse wheels only send vertical delta by default, so a purely
+  // horizontal strip never scrolls under the cursor without this — convert
+  // vertical wheel input to horizontal scroll while hovering the strip.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && el.scrollWidth > el.clientWidth) {
+        el.scrollLeft += e.deltaY;
+        e.preventDefault();
+      }
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [upcoming.length]);
 
   useEffect(() => {
     fetch("/api/events")
@@ -233,7 +250,7 @@ export default function Events() {
               className="w-full max-w-sm mx-auto mb-10 opacity-50"
             />
 
-            <div className="flex overflow-x-auto snap-x snap-mandatory gap-5 pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+            <div ref={scrollRef} className="flex overflow-x-auto snap-x snap-mandatory gap-5 pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
               {upcoming.map((ev, i) => {
                 const date = new Date(ev.date);
                 const eventNum = String(i + 2).padStart(2, "0");
