@@ -110,13 +110,13 @@ img {
 
 /* Selection styling */
 ::selection {
-  background: var(--color-rotaract-red);
-  color: white;
+  background: var(--color-dhruvam-gold);
+  color: #020B1C;
 }
 
 /* Focus styles for accessibility */
 :focus-visible {
-  outline: 2px solid var(--color-rotaract-red);
+  outline: 2px solid var(--color-dhruvam-gold-light);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -203,7 +203,52 @@ a, button {
   .dhruvam-aurora-c,
   .dhruvam-star,
   .dhruvam-guiding-star,
-  .dhruvam-lighthouse-beam {
+  .dhruvam-lighthouse-beam,
+  .section-float,
+  .dhruvam-glow-ring,
+  .animate-marquee {
     animation: none !important;
   }
+}
+
+/* ══ Float ══ */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+.section-float {
+  animation: float-slow 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ══ Glow Ring Pulse ══ */
+@keyframes glow-ring-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.4; }
+  50% { transform: scale(1.15); opacity: 0.7; }
+}
+.dhruvam-glow-ring {
+  animation: glow-ring-pulse 3s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* ══ Horizontal Marquee ══ */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee-scroll 28s linear infinite;
+  will-change: transform;
+}
+
+/* ══ Accent border slide-in ══ */
+@keyframes border-slide-in {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+/* ══ Counter value placeholder ══ (actual counting via JS, this styles the element) */
+.dhruvam-counter {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
 }

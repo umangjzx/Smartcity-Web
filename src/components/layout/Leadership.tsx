@@ -52,6 +52,8 @@ export default function Leadership() {
         {boardMembers.map((m, i) => {
           const isHovered = hoveredMember === m._id;
           const isDimmed = hoveredMember !== null && hoveredMember !== m._id;
+          const isFirst = i === 0;
+          const isLast = i === boardMembers.length - 1;
           
           return (
             <motion.div
@@ -87,11 +89,13 @@ export default function Leadership() {
               <AnimatePresence>
                 {isHovered && (
                   <motion.div
-                    initial={{ opacity: 0, x: -20, y: 20 }}
-                    animate={{ opacity: 1, x: 20, y: -40 }}
-                    exit={{ opacity: 0, x: -20, y: 20 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: -40 }}
+                    exit={{ opacity: 0, y: 20 }}
                     transition={{ duration: 0.3 }}
-                    className="absolute bottom-0 left-1/2 -translate-x-1/2 md:left-auto md:right-0 md:translate-x-1/2 z-50 w-64 bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl"
+                    className={`absolute bottom-0 z-50 w-72 bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl ${
+                      isLast ? "right-0" : isFirst ? "left-0" : "left-1/2 -translate-x-1/2"
+                    }`}
                   >
                     <h3 className="font-poppins font-bold text-xl text-white mb-1 leading-tight">{m.name}</h3>
                     <p className="font-inter text-xs text-[var(--color-dhruvam-gold-light)] uppercase tracking-wider mb-4 font-semibold">{m.role}</p>

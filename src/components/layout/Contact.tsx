@@ -5,159 +5,219 @@ import { MessageSquare, Send } from "lucide-react";
 
 const contacts = [
   {
-    name: "Rtr. Tamizhselvi",
+    name: "Rtr. Nirmal Kumar K",
     role: "President",
     phone: "+91 9080161324",
     accent: "var(--color-dhruvam-gold-light)",
+    borderColor: "rgba(255,214,90,0.4)",
+    bgColor: "rgba(255,214,90,0.07)",
   },
   {
     name: "Rtr. Akshara K",
     role: "Secretary Administration",
     phone: "+91 6383194464",
     accent: "var(--color-aurora-teal)",
+    borderColor: "rgba(47,191,166,0.4)",
+    bgColor: "rgba(47,191,166,0.07)",
   },
   {
     name: "Rtr. Umang Jaiswal N",
     role: "Secretary Communication",
     phone: "+91 8098468572",
     accent: "var(--color-aurora-blue)",
+    borderColor: "rgba(74,127,217,0.4)",
+    bgColor: "rgba(74,127,217,0.07)",
   },
 ];
 
 const inputCls =
-  "w-full bg-transparent border-0 border-b border-white/20 rounded-none px-1 py-3 text-sm font-inter text-white placeholder:text-white/20 focus:outline-none focus:border-[var(--color-aurora-cyan)] focus:ring-0 transition-colors shadow-none focus:shadow-[0_1px_0_var(--color-aurora-cyan)]";
+  "w-full bg-transparent border-0 border-b border-white/20 px-1 py-3 text-sm font-inter text-white placeholder:text-white/20 focus:outline-none focus:border-[var(--color-aurora-cyan)] transition-colors";
 
 export default function Contact() {
   return (
-    <section id="contact" className="py-12 md:py-20 lg:py-28 relative overflow-hidden">
-      <img
-        src="/assets/dhruvam/decorations/shooting-star.svg"
-        alt=""
-        aria-hidden="true"
-        className="absolute top-10 right-10 w-16 h-16 opacity-40 pointer-events-none hidden md:block"
+    <section id="contact" className="py-20 md:py-28 relative overflow-hidden">
+      {/* Lighthouse atmospheric layer — right-side bleed behind the form */}
+      <div
+        className="absolute top-0 right-0 bottom-0 w-1/2 pointer-events-none opacity-[0.12] mix-blend-screen"
+        style={{
+          backgroundImage: "url('/assets/dhruvam/backgrounds/lighthouse-night.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center right",
+          maskImage: "linear-gradient(to right, transparent 0%, black 50%)",
+          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 50%)",
+        }}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+      {/* Enlarged shooting-star decoration */}
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        className="absolute top-10 right-8 w-32 h-16 opacity-50 pointer-events-none hidden md:block"
+        style={{ rotate: "-12deg" }}
+      >
+        <img src="/assets/dhruvam/decorations/shooting-star.svg" alt="" aria-hidden="true" className="w-full h-full" />
+      </motion.div>
 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Header */}
-        <div className="mb-8 sm:mb-10 md:mb-16">
-          <div className="flex items-center gap-3 mb-2 sm:mb-4">
-            <div className="h-px w-8 sm:w-10 bg-[var(--color-dhruvam-gold-light)]/60" />
-            <span className="font-inter text-[var(--color-dhruvam-gold-light)] text-xs font-semibold tracking-[0.2em] uppercase">Get in Touch</span>
+        <div className="mb-12 md:mb-16">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="h-px w-10 bg-[var(--color-dhruvam-gold-light)]/60" />
+            <span className="font-inter text-[var(--color-dhruvam-gold-light)] text-xs font-semibold tracking-[0.2em] uppercase">
+              Get in Touch
+            </span>
           </div>
-          <h2 className="font-montserrat font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white leading-tight">
-            Connect <span className="text-[var(--color-dhruvam-gold-light)]">With Us</span>
-          </h2>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="font-montserrat font-black text-3xl sm:text-4xl md:text-5xl text-white leading-tight"
+          >
+            Connect{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-dhruvam-gold-light)] to-[var(--color-dhruvam-gold-deep)]">
+              With Us
+            </span>
+          </motion.h2>
         </div>
 
-        <div className="grid lg:grid-cols-5 gap-6 sm:gap-8 md:gap-10">
-
-          {/* Left — contacts + quick links */}
+        <div className="grid lg:grid-cols-5 gap-8 md:gap-10">
+          {/* Left — contacts + quick actions */}
           <motion.div
-            className="lg:col-span-2 space-y-5"
-            initial={{ opacity: 0, x: -20 }}
+            className="lg:col-span-2 space-y-4"
+            initial={{ opacity: 0, x: -24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.7 }}
           >
-            {contacts.map((c) => (
-              <div
+            {contacts.map((c, i) => (
+              <motion.div
                 key={c.name}
-                className="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-[var(--color-dhruvam-gold-light)]/30 transition-colors flex items-center gap-4"
+                initial={{ opacity: 0, x: -16 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="group relative flex items-center gap-4 rounded-2xl p-5 border border-white/10 hover:border-white/20 transition-all duration-300 overflow-hidden cursor-default"
+                style={{ background: c.bgColor }}
               >
+                {/* Sliding left accent border */}
+                <div
+                  className="absolute left-0 top-0 bottom-0 w-0.5 origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-400 rounded-l-2xl"
+                  style={{ background: c.accent }}
+                />
+
                 <div
                   className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ background: `color-mix(in srgb, ${c.accent} 15%, transparent)` }}
+                  style={{ background: "rgba(255,255,255,0.06)", border: `1px solid ${c.borderColor}` }}
                 >
                   <img src="/assets/dhruvam/icons/outline/phone.svg" alt="" aria-hidden="true" className="w-5 h-5" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-poppins font-semibold text-sm text-white truncate">{c.name}</p>
-                  <p className="font-inter text-xs mb-0.5" style={{ color: c.accent }}>{c.role}</p>
+                  <p className="font-inter text-xs mb-0.5 font-medium" style={{ color: c.accent }}>
+                    {c.role}
+                  </p>
                   <a
                     href={`tel:${c.phone.replace(/\s/g, "")}`}
-                    className="font-inter text-sm text-white/50 hover:text-white transition-colors"
+                    className="font-inter text-sm text-white/45 hover:text-white transition-colors"
                   >
                     {c.phone}
                   </a>
                 </div>
-              </div>
+              </motion.div>
             ))}
 
             {/* Quick actions */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3">
               <a
                 href="mailto:rotaractsmartcity@gmail.com"
-                className="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-[var(--color-dhruvam-gold-light)]/30 hover:-translate-y-0.5 transition-all flex flex-col items-center gap-3"
+                className="group flex flex-col items-center gap-3 bg-white/5 border border-white/10 hover:border-[var(--color-dhruvam-gold-light)]/30 rounded-2xl p-5 transition-all hover:-translate-y-1"
               >
                 <img src="/assets/dhruvam/icons/outline/contact.svg" alt="" aria-hidden="true" className="w-6 h-6" />
-                <span className="font-inter font-medium text-sm text-white">Email Us</span>
+                <span className="font-inter font-medium text-sm text-white/80">Email Us</span>
               </a>
               <a
                 href="#"
-                className="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-[var(--color-aurora-emerald)]/40 hover:-translate-y-0.5 transition-all flex flex-col items-center gap-3"
+                className="group flex flex-col items-center gap-3 bg-white/5 border border-white/10 hover:border-[var(--color-aurora-emerald)]/40 rounded-2xl p-5 transition-all hover:-translate-y-1"
               >
                 <MessageSquare size={24} className="text-[var(--color-aurora-emerald)]" />
-                <span className="font-inter font-medium text-sm text-white">WhatsApp</span>
+                <span className="font-inter font-medium text-sm text-white/80">WhatsApp</span>
               </a>
             </div>
 
             {/* Location chip */}
-            <div className="flex items-center gap-3 bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10">
+            <div className="flex items-center gap-3 bg-white/5 rounded-2xl p-4 border border-white/10">
               <img src="/assets/dhruvam/icons/outline/location.svg" alt="" aria-hidden="true" className="w-5 h-5 shrink-0" />
-              <span className="font-inter text-sm text-white/50">Coimbatore, Tamil Nadu, India — District 3206</span>
+              <span className="font-inter text-sm text-white/45">
+                Coimbatore, Tamil Nadu, India — District 3206
+              </span>
             </div>
           </motion.div>
 
-          {/* Right — contact form */}
+          {/* Right — contact form with premium inner glow */}
           <motion.div
             className="lg:col-span-3"
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.7 }}
           >
-            <div className="bg-white/5 backdrop-blur-sm rounded-3xl p-8 md:p-10 border border-white/10">
-              <h3 className="font-montserrat font-bold text-2xl text-white mb-2">Send a Message</h3>
-              <p className="font-inter text-sm text-white/50 mb-8">We&apos;ll get back to you within 24 hours.</p>
+            <div
+              className="relative bg-white/[0.04] backdrop-blur-xl rounded-3xl p-8 md:p-10 border border-white/10"
+              style={{ boxShadow: "inset 0 0 60px rgba(246,181,27,0.02), 0 0 40px rgba(0,0,0,0.2)" }}
+            >
+              <h3 className="font-montserrat font-bold text-2xl text-white mb-1">Send a Message</h3>
+              <p className="font-inter text-sm text-white/40 mb-8">We&apos;ll get back to you within 24 hours.</p>
 
-              <form className="space-y-5">
-                <div className="grid sm:grid-cols-2 gap-5">
-                  <div className="space-y-1.5">
-                    <label htmlFor="contact-first-name" className="font-inter text-xs font-semibold text-white/70 uppercase tracking-wider">First Name</label>
+              <form className="space-y-7">
+                <div className="grid sm:grid-cols-2 gap-7">
+                  <div className="space-y-1">
+                    <label htmlFor="contact-first-name" className="font-inter text-[10px] font-semibold text-white/40 uppercase tracking-widest">
+                      First Name
+                    </label>
                     <input id="contact-first-name" type="text" className={inputCls} placeholder="John" />
                   </div>
-                  <div className="space-y-1.5">
-                    <label htmlFor="contact-last-name" className="font-inter text-xs font-semibold text-white/70 uppercase tracking-wider">Last Name</label>
+                  <div className="space-y-1">
+                    <label htmlFor="contact-last-name" className="font-inter text-[10px] font-semibold text-white/40 uppercase tracking-widest">
+                      Last Name
+                    </label>
                     <input id="contact-last-name" type="text" className={inputCls} placeholder="Doe" />
                   </div>
                 </div>
 
-                <div className="space-y-1.5">
-                  <label htmlFor="contact-email" className="font-inter text-xs font-semibold text-white/70 uppercase tracking-wider">Email Address</label>
+                <div className="space-y-1">
+                  <label htmlFor="contact-email" className="font-inter text-[10px] font-semibold text-white/40 uppercase tracking-widest">
+                    Email Address
+                  </label>
                   <input id="contact-email" type="email" className={inputCls} placeholder="john@example.com" />
                 </div>
 
-                <div className="space-y-1.5">
-                  <label htmlFor="contact-subject" className="font-inter text-xs font-semibold text-white/70 uppercase tracking-wider">Subject</label>
+                <div className="space-y-1">
+                  <label htmlFor="contact-subject" className="font-inter text-[10px] font-semibold text-white/40 uppercase tracking-widest">
+                    Subject
+                  </label>
                   <input id="contact-subject" type="text" className={inputCls} placeholder="How can we help?" />
                 </div>
 
-                <div className="space-y-1.5">
-                  <label htmlFor="contact-message" className="font-inter text-xs font-semibold text-white/70 uppercase tracking-wider">Message</label>
+                <div className="space-y-1">
+                  <label htmlFor="contact-message" className="font-inter text-[10px] font-semibold text-white/40 uppercase tracking-widest">
+                    Message
+                  </label>
                   <textarea id="contact-message" rows={4} className={inputCls + " resize-none"} placeholder="Tell us more..." />
                 </div>
 
-                <button
+                <motion.button
                   type="submit"
-                  className="w-full bg-[var(--color-dhruvam-gold)] hover:bg-[var(--color-dhruvam-gold-light)] text-[var(--color-dhruvam-950)] py-4 rounded-xl font-poppins font-semibold text-sm flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-[0_0_24px_rgba(246,181,27,0.35)] hover:-translate-y-0.5"
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full bg-[var(--color-dhruvam-gold)] hover:bg-[var(--color-dhruvam-gold-light)] text-[var(--color-dhruvam-950)] py-4 rounded-2xl font-poppins font-bold text-sm flex items-center justify-center gap-2 transition-colors shadow-[0_4px_20px_rgba(246,181,27,0.25)] hover:shadow-[0_8px_32px_rgba(246,181,27,0.4)]"
                 >
-                  Send Message <Send size={16} />
-                </button>
+                  Send Message <Send size={15} />
+                </motion.button>
               </form>
             </div>
           </motion.div>
-
         </div>
       </div>
     </section>

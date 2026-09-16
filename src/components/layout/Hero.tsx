@@ -1,17 +1,67 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useReducedMotion, Variants } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Users, Star, Award, Globe } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import GuidingStar from "@/components/dhruvam/GuidingStar";
 
+// ── Animated counter hook ──────────────────────────────────────────────────
+function useCounter(target: number, duration = 1800, startCounting: boolean = false) {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    if (!startCounting) return;
+    let startTime: number | null = null;
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // cubic ease-out
+      setValue(Math.round(eased * target));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [target, duration, startCounting]);
+  return value;
+}
+
 const stats = [
-  { icon: Users,  value: "100+",  label: "Active Members",      color: "text-[var(--color-dhruvam-gold-light)]" },
-  { icon: Star,   value: "5+",    label: "Years of Excellence",  color: "text-white/70" },
-  { icon: Award,  value: "50+",   label: "Service Projects",     color: "text-[var(--color-dhruvam-gold-light)]" },
-  { icon: Globe,  value: "1M+",   label: "Community Reach",      color: "text-white/70" },
+  { raw: 100, suffix: "+", label: "Active Members",     primary: true  },
+  { raw: 5,   suffix: "+", label: "Years of Excellence", primary: false },
+  { raw: 50,  suffix: "+", label: "Service Projects",    primary: true  },
+  { raw: 1,   suffix: "M+",label: "Community Reach",     primary: false },
 ];
+
+// Individual counter component — starts when in view
+function StatCounter({ stat, delay }: { stat: typeof stats[0]; delay: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [started, setStarted] = useState(false);
+  const count = useCounter(stat.raw, 1600, started);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setStarted(true); },
+      { threshold: 0.5 }
+    );
+    obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay }}
+      className="flex flex-col gap-1.5"
+    >
+      <span className={`dhruvam-counter font-montserrat font-black text-3xl md:text-4xl leading-none ${stat.primary ? "text-[var(--color-dhruvam-gold-light)]" : "text-white"}`}>
+        {count}{stat.suffix}
+      </span>
+      <span className="font-inter text-[11px] text-white/45 uppercase tracking-widest leading-snug">{stat.label}</span>
+    </motion.div>
+  );
+}
 
 const container: Variants = {
   hidden: {},
@@ -19,8 +69,8 @@ const container: Variants = {
 };
 
 const item: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] } },
 };
 
 export default function Hero() {
@@ -28,40 +78,51 @@ export default function Hero() {
   const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
 
-  // Subtle depth parallax: the night sky drifts slower than the content fades/rises.
   const skyY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : 60]);
   const contentY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : 120]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  const penguinY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : 180]);
 
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden"
+      className="relative min-h-screen flex flex-col justify-center overflow-visible"
     >
-      {/* Hero-specific aurora background overlay */}
+      {/* LAYER A: Hero aurora background */}
       <motion.div style={{ y: skyY }} className="absolute inset-0 z-0 opacity-60 mix-blend-screen">
-        <div 
+        <div
           className="absolute inset-0"
           style={{
             backgroundImage: "url('/assets/dhruvam/backgrounds/hero-aurora.jpg')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center top',
-            maskImage: 'linear-gradient(to bottom, black 20%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, black 20%, transparent 100%)'
+            backgroundSize: "cover",
+            backgroundPosition: "center top",
+            maskImage: "linear-gradient(to bottom, black 20%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 20%, transparent 100%)",
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-dhruvam-950)] via-[var(--color-dhruvam-950)]/40 to-transparent" />
       </motion.div>
 
-      {/* Top accent bar */}
+      {/* LAYER B: Guiding light cone — lighthouse/star direction metaphor */}
+      <div
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse 60% 80% at 72% 15%, rgba(246,181,27,0.06) 0%, transparent 65%)",
+        }}
+      />
+
+      {/* Top gold accent bar */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--color-dhruvam-gold-light)]/60 to-transparent" />
 
-      <motion.div style={{ y: contentY, opacity: contentOpacity }} className="relative z-10 max-w-7xl mx-auto px-6 pt-28 pb-16 w-full">
+      {/* Main content */}
+      <motion.div
+        style={{ y: contentY, opacity: contentOpacity }}
+        className="relative z-10 max-w-7xl mx-auto px-6 pt-28 pb-16 w-full"
+      >
         <motion.div
           variants={container}
           initial="hidden"
           animate="visible"
-          className="max-w-5xl"
+          className="max-w-3xl"
         >
           {/* Eyebrow */}
           <motion.div variants={item} className="flex items-center gap-3 mb-8">
@@ -72,78 +133,94 @@ export default function Hero() {
           </motion.div>
 
           {/* Headline */}
-          <motion.h1
-            variants={item}
-            className="font-montserrat font-black leading-[1.02] mb-4"
-          >
+          <motion.h1 variants={item} className="font-montserrat font-black leading-[1.0] mb-3">
             <span
-              className="block text-6xl md:text-8xl lg:text-9xl text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-dhruvam-gold-light)] via-[#FBFAFF] to-[var(--color-dhruvam-gold-light)] animate-text-shimmer"
-              style={{ filter: "drop-shadow(0 0 28px rgba(246, 181, 27, 0.35))" }}
+              className="block text-[14vw] sm:text-[10vw] md:text-8xl lg:text-[7rem] xl:text-[8rem] text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-dhruvam-gold-light)] via-[#FBFAFF] to-[var(--color-dhruvam-gold-light)] animate-text-shimmer"
+              style={{ filter: "drop-shadow(0 0 40px rgba(246,181,27,0.25))" }}
             >
               DHRUVAM
             </span>
           </motion.h1>
-          <motion.p variants={item} className="font-montserrat text-2xl md:text-3xl text-white/85 font-semibold mb-8">
-            The Star That Guides
-          </motion.p>
 
-          {/* Subline */}
+          {/* Sub-headline — styled distinctly from the hero title */}
+          <motion.div variants={item} className="relative mb-8 flex items-center gap-4">
+            <img
+              src="/assets/dhruvam/effects/soft-glow.svg"
+              alt=""
+              aria-hidden="true"
+              className="absolute -left-4 -top-3 w-24 h-12 opacity-50 pointer-events-none select-none"
+            />
+            <p className="font-montserrat text-xl md:text-2xl text-white/70 font-light italic tracking-wide">
+              The Star That Guides
+            </p>
+          </motion.div>
+
+          {/* Body */}
           <motion.p
             variants={item}
-            className="text-white/55 font-inter text-lg md:text-xl max-w-2xl leading-relaxed mb-12"
+            className="text-white/55 font-inter text-base md:text-lg max-w-xl leading-relaxed mb-12"
           >
             A community of young leaders transforming Coimbatore through service, professional development, and meaningful connections.
           </motion.p>
 
           {/* CTAs */}
-          <motion.div variants={item} className="flex flex-wrap gap-4 mb-20">
+          <motion.div variants={item} className="flex flex-wrap gap-4 mb-24">
             <Link
               href="#dhruvam"
-              className="group inline-flex items-center gap-2 px-8 py-4 bg-[var(--color-dhruvam-gold)] hover:bg-[var(--color-dhruvam-gold-light)] text-[var(--color-dhruvam-950)] rounded-full font-poppins font-semibold text-sm shadow-[0_8px_32px_rgba(246,181,27,0.25)] hover:shadow-[0_12px_40px_rgba(246,181,27,0.4)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300"
+              className="group inline-flex items-center gap-2 px-8 py-4 bg-[var(--color-dhruvam-gold)] hover:bg-[var(--color-dhruvam-gold-light)] text-[var(--color-dhruvam-950)] rounded-full font-poppins font-bold text-sm shadow-[0_8px_32px_rgba(246,181,27,0.30)] hover:shadow-[0_12px_48px_rgba(246,181,27,0.50)] hover:-translate-y-1 active:translate-y-0 transition-all duration-300"
             >
               Explore Our Journey
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-200" />
             </Link>
             <Link
               href="#leadership"
-              className="inline-flex items-center gap-2 px-8 py-4 border border-white/20 hover:border-white/40 text-white/80 hover:text-white rounded-full font-poppins font-semibold text-sm hover:bg-white/5 transition-all duration-300 backdrop-blur-sm"
+              className="inline-flex items-center gap-2 px-8 py-4 border border-white/20 hover:border-[var(--color-dhruvam-gold-light)]/50 text-white/80 hover:text-white rounded-full font-poppins font-semibold text-sm hover:bg-white/5 transition-all duration-300 backdrop-blur-sm"
             >
               Meet Our Team
             </Link>
           </motion.div>
 
-          {/* Stats row */}
-          <motion.div
-            variants={item}
-            className="grid grid-cols-2 md:grid-cols-4 gap-0 border-t border-white/10 pt-10"
-          >
-            {stats.map((s, i) => {
-              const Icon = s.icon;
-              return (
+          {/* Impact Stats — animated counters on a constellation baseline */}
+          <motion.div variants={item}>
+            {/* Label */}
+            <p className="font-inter text-[10px] text-white/30 uppercase tracking-[0.25em] mb-5">Our Impact in Numbers</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-y-8 gap-x-0">
+              {stats.map((s, i) => (
                 <div
                   key={s.label}
-                  className={`flex flex-col gap-2 px-6 py-4 ${i > 0 ? "border-l border-white/10" : ""}`}
+                  className={`relative ${i > 0 ? "pl-6 border-l border-white/10" : ""}`}
                 >
-                  <Icon size={20} className={s.color} />
-                  <span className="font-montserrat font-black text-3xl text-white">{s.value}</span>
-                  <span className="font-inter text-xs text-white/45 uppercase tracking-wider leading-tight">{s.label}</span>
+                  <StatCounter stat={s} delay={0.6 + i * 0.1} />
                 </div>
-              );
-            })}
+              ))}
+            </div>
+            {/* Constellation baseline */}
+            <div className="relative mt-8 h-px">
+              <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-dhruvam-gold-light)]/30 via-white/10 to-transparent" />
+              <img
+                src="/assets/dhruvam/decorations/shooting-star.svg"
+                alt=""
+                aria-hidden="true"
+                className="absolute right-4 -top-3 w-12 h-6 opacity-50"
+              />
+            </div>
           </motion.div>
         </motion.div>
       </motion.div>
 
-      {/* Decorative Penguin Graphic */}
-      <motion.div 
-        style={{ y: useTransform(scrollYProgress, [0, 1], [0, 150]) }}
-        className="absolute bottom-0 right-4 lg:right-20 z-10 w-48 lg:w-72 opacity-90 pointer-events-none mix-blend-screen hidden md:block"
+      {/* Decorative Penguin — visible on all screen sizes */}
+      <motion.div
+        style={{ y: penguinY }}
+        className="absolute bottom-0 right-0 md:right-12 lg:right-20 z-10 w-36 md:w-56 lg:w-72 pointer-events-none mix-blend-screen"
       >
-        <img 
-          src="/assets/dhruvam/characters/penguin-main.jpg" 
-          alt="Dhruvam Penguin Guide" 
+        <img
+          src="/assets/dhruvam/characters/penguin-main.jpg"
+          alt="Dhruvam Penguin Guide"
           className="w-full h-auto drop-shadow-2xl rounded-3xl"
-          style={{ maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 70%)', WebkitMaskImage: 'radial-gradient(ellipse at center, black 40%, transparent 70%)' }}
+          style={{
+            maskImage: "radial-gradient(ellipse 80% 90% at center 60%, black 30%, transparent 75%)",
+            WebkitMaskImage: "radial-gradient(ellipse 80% 90% at center 60%, black 30%, transparent 75%)",
+          }}
         />
       </motion.div>
     </section>

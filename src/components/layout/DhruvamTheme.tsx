@@ -3,51 +3,115 @@
 import { motion } from "framer-motion";
 import { Compass, Users, BookOpen, ShieldCheck, HeartHandshake } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
-import DhruvamCard from "@/components/ui/DhruvamCard";
 
 const principles = [
-  { icon: Compass, title: "Direction", description: "A constant source of direction, purpose, and hope." },
-  { icon: Users, title: "Unity", description: "Unity and collective strength through interlinked hands." },
-  { icon: BookOpen, title: "Wisdom", description: "Thinking, acting, and leading with integrity and wisdom." },
-  { icon: ShieldCheck, title: "Courage", description: "Standing firm and guiding with unwavering courage." },
-  { icon: HeartHandshake, title: "Gratitude", description: "Staying grounded and helping others move toward light." },
+  {
+    icon: Compass,
+    title: "Direction",
+    description: "A constant source of direction, purpose, and hope.",
+    accent: "var(--color-dhruvam-gold-light)",
+    glow: "rgba(255,214,90,0.2)",
+    border: "rgba(255,214,90,0.25)",
+  },
+  {
+    icon: Users,
+    title: "Unity",
+    description: "Unity and collective strength through interlinked hands.",
+    accent: "var(--color-aurora-teal)",
+    glow: "rgba(47,191,166,0.2)",
+    border: "rgba(47,191,166,0.25)",
+  },
+  {
+    icon: BookOpen,
+    title: "Wisdom",
+    description: "Thinking, acting, and leading with integrity and wisdom.",
+    accent: "var(--color-aurora-blue)",
+    glow: "rgba(74,127,217,0.2)",
+    border: "rgba(74,127,217,0.25)",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Courage",
+    description: "Standing firm and guiding with unwavering courage.",
+    accent: "var(--color-aurora-violet)",
+    glow: "rgba(140,127,224,0.2)",
+    border: "rgba(140,127,224,0.25)",
+  },
+  {
+    icon: HeartHandshake,
+    title: "Gratitude",
+    description: "Staying grounded and helping others move toward light.",
+    accent: "var(--color-aurora-emerald)",
+    glow: "rgba(62,203,146,0.2)",
+    border: "rgba(62,203,146,0.25)",
+  },
 ];
 
 export default function DhruvamTheme() {
   return (
     <section id="dhruvam" className="relative py-20 md:py-28 lg:py-32 overflow-hidden">
+      {/* Subtle aurora-sky background layer for depth differentiation from Hero */}
+      <div
+        className="absolute inset-0 z-0 opacity-[0.07] mix-blend-screen pointer-events-none"
+        style={{
+          backgroundImage: "url('/assets/dhruvam/backgrounds/aurora-sky.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          maskImage: "linear-gradient(to bottom, transparent 0%, black 20%)",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 20%)",
+        }}
+      />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-        
-        <SectionHeader 
-          title="The DHRUVAM Philosophy" 
+        <SectionHeader
+          title="The DHRUVAM Philosophy"
+          eyebrow="Our Guiding Star"
           subtitle="Like Dhruva Tara, the fixed star that has guided travellers for millennia, DHRUVAM is our constant point of direction — five principles that steady every step our club takes this year."
         />
 
-        {/* Central Compass Area */}
-        <div className="relative mt-20 mb-32 flex justify-center items-center h-[400px]">
-          {/* Subtle slow rotating compass background */}
-          <motion.div 
-            animate={{ rotate: 360 }}
-            transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
-            className="absolute w-[300px] h-[300px] border border-[#F6B51B]/20 rounded-full border-dashed opacity-40 flex items-center justify-center pointer-events-none"
-          >
-            <div className="w-[200px] h-[200px] border border-[#4DD9E3]/20 rounded-full opacity-60" />
-          </motion.div>
-
+        {/* ── Desktop: Orbital Layout ────────────────────────────────── */}
+        <div className="hidden md:flex relative justify-center items-center h-[480px] mt-8 mb-24">
+          {/* Outermost orbit ring — slow rotation */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 160, repeat: Infinity, ease: "linear" }}
+            className="absolute w-[380px] h-[380px] border border-[#F6B51B]/10 rounded-full border-dashed pointer-events-none"
+          />
+          {/* Inner orbit ring */}
+          <motion.div
+            animate={{ rotate: -360 }}
+            transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
+            className="absolute w-[240px] h-[240px] border border-white/8 rounded-full pointer-events-none"
+          />
+
+          {/* Central guiding star — pulsing glow ring */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.6 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="relative z-10 flex flex-col items-center justify-center bg-[#06152B]/80 rounded-full w-40 h-40 border border-[#F6B51B]/40 shadow-[0_0_40px_rgba(246,181,27,0.3)] backdrop-blur-md"
+            transition={{ duration: 0.8, type: "spring" }}
+            className="relative z-20 flex flex-col items-center justify-center"
           >
-            <img src="/assets/dhruvam/decorations/guiding-star-large.svg" alt="Guiding Star Compass" className="w-28 h-28" />
+            {/* Outer glow ring */}
+            <div
+              className="dhruvam-glow-ring absolute w-52 h-52 rounded-full border border-[#F6B51B]/30"
+              style={{ boxShadow: "0 0 40px rgba(246,181,27,0.15), inset 0 0 40px rgba(246,181,27,0.05)" }}
+            />
+            <div
+              className="flex flex-col items-center justify-center bg-[#06152B]/90 rounded-full w-36 h-36 border border-[#F6B51B]/50 shadow-[0_0_60px_rgba(246,181,27,0.4)] backdrop-blur-md cursor-default"
+            >
+              <img
+                src="/assets/dhruvam/decorations/guiding-star-large.svg"
+                alt="Guiding Star"
+                className="w-20 h-20 dhruvam-guiding-star"
+              />
+            </div>
           </motion.div>
 
-          {/* Connected Principles */}
+          {/* ── Orbital Principles ── */}
           {principles.map((p, i) => {
             const angle = (i * (360 / principles.length) - 90) * (Math.PI / 180);
-            const radius = 220; // Distance from center
+            const radius = 210;
             const x = Math.cos(angle) * radius;
             const y = Math.sin(angle) * radius;
             const Icon = p.icon;
@@ -55,49 +119,133 @@ export default function DhruvamTheme() {
             return (
               <motion.div
                 key={p.title}
-                initial={{ opacity: 0, x: 0, y: 0 }}
+                // FIX: start from a position near the center, not from 0,0
+                initial={{ opacity: 0, x: x * 0.15, y: y * 0.15 }}
                 whileInView={{ opacity: 1, x, y }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.2 + i * 0.1, type: "spring" }}
-                className="absolute flex flex-col items-center justify-center w-48 text-center"
+                transition={{ duration: 1, delay: 0.3 + i * 0.12, type: "spring", damping: 18 }}
+                className="absolute flex flex-col items-center justify-center w-44 text-center"
               >
-                {/* Constellation line connecting to center */}
-                <svg className="absolute w-[300px] h-[300px] -z-10 pointer-events-none" style={{ top: -150 + 24, left: -150 + 96 }}>
-                  <motion.line 
+                {/* Dashed line from center */}
+                <svg
+                  className="absolute pointer-events-none"
+                  style={{
+                    width: "420px",
+                    height: "420px",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    overflow: "visible",
+                  }}
+                >
+                  <motion.line
                     initial={{ pathLength: 0, opacity: 0 }}
                     whileInView={{ pathLength: 1, opacity: 1 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 1.5, delay: 0.5 + i * 0.1, ease: "easeInOut" }}
-                    x1="150" y1="150" 
-                    x2={150 - x} y2={150 - y} 
-                    stroke="rgba(255,255,255,0.25)" strokeWidth="1.5" strokeDasharray="4 4" 
+                    transition={{ duration: 1.4, delay: 0.6 + i * 0.12, ease: "easeInOut" }}
+                    x1="210" y1="210"
+                    x2={210 + x} y2={210 + y}
+                    stroke={p.accent}
+                    strokeOpacity="0.2"
+                    strokeWidth="1"
+                    strokeDasharray="4 4"
                   />
                 </svg>
 
-                <DhruvamCard className="!p-4 flex flex-col items-center" hoverEffect={true}>
-                  <div className="w-10 h-10 rounded-full bg-[var(--color-dhruvam-gold)]/10 flex items-center justify-center mb-2">
-                    <Icon size={20} className="text-[var(--color-dhruvam-gold-light)]" />
+                {/* Principle card */}
+                <motion.div
+                  whileHover={{ scale: 1.06, y: -4 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className="relative group rounded-2xl p-4 border backdrop-blur-md cursor-default overflow-hidden"
+                  style={{
+                    background: `linear-gradient(135deg, rgba(6,21,43,0.9), rgba(2,11,28,0.95))`,
+                    borderColor: p.border,
+                    boxShadow: `0 0 20px ${p.glow}`,
+                  }}
+                >
+                  {/* Accent bottom glow on hover */}
+                  <div
+                    className="absolute bottom-0 left-0 right-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{ background: p.accent }}
+                  />
+                  <div
+                    className="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2"
+                    style={{ background: p.glow }}
+                  >
+                    <Icon size={20} style={{ color: p.accent }} />
                   </div>
-                  <h3 className="font-poppins font-bold text-sm text-white mb-1 uppercase tracking-wider">{p.title}</h3>
-                  <p className="font-inter text-[10px] text-white/60 leading-snug">{p.description}</p>
-                </DhruvamCard>
+                  <h3 className="font-poppins font-bold text-sm text-white mb-1 uppercase tracking-wider">
+                    {p.title}
+                  </h3>
+                  <p className="font-inter text-[10px] text-white/55 leading-snug">
+                    {p.description}
+                  </p>
+                </motion.div>
               </motion.div>
             );
           })}
         </div>
 
-        {/* Decorative Penguin Graphic */}
-        <motion.div 
+        {/* ── Mobile: Stacked Layout ──────────────────────────────────── */}
+        <div className="md:hidden flex flex-col gap-4 mt-8 mb-16">
+          {/* Central star */}
+          <div className="flex justify-center mb-4">
+            <div className="relative">
+              <div className="dhruvam-glow-ring absolute inset-0 rounded-full border border-[#F6B51B]/30" />
+              <div className="flex flex-col items-center justify-center bg-[#06152B]/90 rounded-full w-20 h-20 border border-[#F6B51B]/50 shadow-[0_0_40px_rgba(246,181,27,0.35)]">
+                <img src="/assets/dhruvam/decorations/guiding-star-large.svg" alt="" className="w-12 h-12 dhruvam-guiding-star" />
+              </div>
+            </div>
+          </div>
+
+          {principles.map((p, i) => {
+            const Icon = p.icon;
+            return (
+              <motion.div
+                key={p.title}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="flex items-center gap-4 rounded-2xl p-4 border backdrop-blur-md"
+                style={{
+                  background: "linear-gradient(135deg, rgba(6,21,43,0.85), rgba(2,11,28,0.9))",
+                  borderColor: p.border,
+                }}
+              >
+                <div
+                  className="w-12 h-12 rounded-full flex items-center justify-center shrink-0"
+                  style={{ background: p.glow }}
+                >
+                  <Icon size={22} style={{ color: p.accent }} />
+                </div>
+                <div>
+                  <h3 className="font-poppins font-bold text-sm text-white uppercase tracking-wider mb-0.5">
+                    {p.title}
+                  </h3>
+                  <p className="font-inter text-xs text-white/55 leading-snug">{p.description}</p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Decorative Penguin */}
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="absolute bottom-0 right-4 lg:right-32 z-0 w-32 lg:w-48 opacity-50 pointer-events-none mix-blend-screen hidden md:block"
+          className="absolute bottom-0 right-4 lg:right-32 z-0 w-32 lg:w-48 opacity-45 pointer-events-none mix-blend-screen hidden md:block section-float"
         >
-          <img 
-            src="/assets/dhruvam/characters/penguin-back.jpg" 
-            alt="Penguin Looking at Star" 
+          <img
+            src="/assets/dhruvam/characters/penguin-back.jpg"
+            alt=""
+            aria-hidden="true"
             className="w-full h-auto drop-shadow-2xl rounded-3xl"
-            style={{ maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 70%)', WebkitMaskImage: 'radial-gradient(ellipse at center, black 40%, transparent 70%)' }}
+            style={{
+              maskImage: "radial-gradient(ellipse at center, black 40%, transparent 70%)",
+              WebkitMaskImage: "radial-gradient(ellipse at center, black 40%, transparent 70%)",
+            }}
           />
         </motion.div>
       </div>
