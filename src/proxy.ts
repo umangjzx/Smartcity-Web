@@ -11,12 +11,27 @@ function isAuthApiRoute(pathname: string) {
   return pathname === "/api/admin/login" || pathname === "/api/admin/logout";
 }
 
+// The contact form must be submittable by any visitor, so its POST is the one
+// write endpoint exempt from the "all writes need admin auth" rule below. Its
+// GET is the opposite case: it lists visitor names/emails/messages, so unlike
+// every other GET route it must NOT be publicly readable — protect it explicitly.
+function isPublicContactSubmit(pathname: string, method: string) {
+  return pathname === "/api/contact" && method === "POST";
+}
+
+function isProtectedContactRead(pathname: string, method: string) {
+  return pathname === "/api/contact" && method === "GET";
+}
+
 export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   if (isAuthApiRoute(pathname)) return;
 
-  const needsAuth = isAdminRoute(pathname) || (pathname.startsWith("/api") && !SAFE_METHODS.has(req.method));
+  const needsAuth =
+    isAdminRoute(pathname) ||
+    isProtectedContactRead(pathname, req.method) ||
+    (pathname.startsWith("/api") && !SAFE_METHODS.has(req.method) && !isPublicContactSubmit(pathname, req.method));
   if (!needsAuth) return;
 
   const token = req.cookies.get(ADMIN_COOKIE_NAME)?.value;

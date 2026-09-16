@@ -3,19 +3,23 @@
 import { useState, useEffect, useCallback } from "react";
 import {
   PlusCircle, FileText, Calendar as CalendarIcon, Trash2, Loader2,
-  CheckCircle, Users, LayoutDashboard, Pencil, X, Star,
+  CheckCircle, Users, LayoutDashboard, Pencil, X, Star, Mail,
 } from "lucide-react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type Project = { _id: string; title: string; category: string; image: string; impact: string; description?: string };
 type Event   = { _id: string; title: string; description: string; date: string; location: string; time: string; isFeatured: boolean };
 type Member  = { _id: string; name: string; role: string; phone: string; email: string; image: string; linkedin: string; isBoard: boolean; order: number };
+type ContactMessage = { _id: string; firstName: string; lastName: string; email: string; subject: string; message: string; createdAt: string };
 
-type Tab = "overview" | "projects" | "events" | "members";
+type Tab = "overview" | "projects" | "events" | "members" | "messages";
 
-const PROJECT_CATEGORIES = ["Education", "Environment", "Community", "Professional"];
+// Must match the live site's taxonomy in Projects.tsx / Avenues.tsx — these
+// used to be an unrelated ad-hoc list, so projects saved with the old values
+// never matched any filter pill on the public site except "All".
+const PROJECT_CATEGORIES = ["Club Service", "Community Service", "Professional Development", "International Service", "Public Relations"];
 
-const emptyProject = { title: "", category: "Education", image: "", impact: "", description: "" };
+const emptyProject = { title: "", category: PROJECT_CATEGORIES[0], image: "", impact: "", description: "" };
 const emptyEvent   = { title: "", description: "", date: "", location: "", time: "", isFeatured: false };
 const emptyMember  = { name: "", role: "", phone: "", email: "", image: "", linkedin: "", isBoard: false, order: 0 };
 
@@ -50,6 +54,7 @@ export default function AdminDashboard() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [events, setEvents]   = useState<Event[]>([]);
   const [members, setMembers] = useState<Member[]>([]);
+  const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving]   = useState(false);
   const [toast, setToast]     = useState<{ msg: string; type: "success" | "error" } | null>(null);
@@ -72,13 +77,14 @@ export default function AdminDashboard() {
   const fetchAll = useCallback(async () => {
     setLoading(true);
     try {
-      const [pRes, eRes, mRes] = await Promise.all([
-        fetch("/api/projects"), fetch("/api/events"), fetch("/api/members"),
+      const [pRes, eRes, mRes, cRes] = await Promise.all([
+        fetch("/api/projects"), fetch("/api/events"), fetch("/api/members"), fetch("/api/contact"),
       ]);
-      const [p, e, m] = await Promise.all([pRes.json(), eRes.json(), mRes.json()]);
+      const [p, e, m, c] = await Promise.all([pRes.json(), eRes.json(), mRes.json(), cRes.json()]);
       if (p.success) setProjects(p.data);
       if (e.success) setEvents(e.data);
       if (m.success) setMembers(m.data);
+      if (c.success) setMessages(c.data);
     } catch { /* ignore */ }
     setLoading(false);
   }, []);
@@ -169,12 +175,20 @@ export default function AdminDashboard() {
     setMemberForm({ name: m.name, role: m.role, phone: m.phone, email: m.email, image: m.image, linkedin: m.linkedin, isBoard: m.isBoard, order: m.order });
   };
 
+  // ── Messages ────────────────────────────────────────────────────────────────
+  const deleteMessage = async (id: string) => {
+    await fetch(`/api/contact/${id}`, { method: "DELETE" });
+    setMessages((m) => m.filter((x) => x._id !== id));
+    showToast("Deleted");
+  };
+
   // ── Nav items ────────────────────────────────────────────────────────────────
   const navItems: { id: Tab; label: string; icon: React.ReactNode; accent: string }[] = [
     { id: "overview", label: "Overview",  icon: <LayoutDashboard size={16} />, accent: "bg-[var(--color-rotaract-red)] text-white" },
     { id: "projects", label: "Projects",  icon: <FileText size={16} />,         accent: "bg-[var(--color-rotaract-red)] text-white" },
     { id: "events",   label: "Events",    icon: <CalendarIcon size={16} />,     accent: "bg-[var(--color-rotary-gold)] text-black" },
     { id: "members",  label: "Members",   icon: <Users size={16} />,            accent: "bg-blue-600 text-white" },
+    { id: "messages", label: "Messages",  icon: <Mail size={16} />,             accent: "bg-emerald-600 text-white" },
   ];
 
   return (
@@ -212,10 +226,11 @@ export default function AdminDashboard() {
       {/* ── Overview ──────────────────────────────────────────────────────── */}
       {tab === "overview" && (
         <div className="space-y-8">
-          <div className="grid sm:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <StatCard label="Total Projects" value={projects.length} icon={<FileText size={22} className="text-[var(--color-rotaract-red)]" />} color="bg-[var(--color-rotaract-red)]/10" />
             <StatCard label="Total Events"   value={events.length}   icon={<CalendarIcon size={22} className="text-[var(--color-rotary-gold)]" />} color="bg-[var(--color-rotary-gold)]/10" />
             <StatCard label="Total Members"  value={members.length}  icon={<Users size={22} className="text-blue-600" />} color="bg-blue-600/10" />
+            <StatCard label="New Messages"   value={messages.length} icon={<Mail size={22} className="text-emerald-600" />} color="bg-emerald-600/10" />
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
@@ -490,6 +505,39 @@ export default function AdminDashboard() {
               )}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* ── Messages ──────────────────────────────────────────────────────── */}
+      {tab === "messages" && (
+        <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-zinc-800 min-h-[400px]">
+          <h2 className="text-lg font-bold mb-5 font-poppins">Contact Messages ({messages.length})</h2>
+          {loading ? (
+            <div className="flex items-center justify-center h-40"><Loader2 className="animate-spin text-emerald-600" size={32} /></div>
+          ) : messages.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-40 text-muted-foreground font-inter text-sm"><Mail size={32} className="mb-3 opacity-30" />No messages yet.</div>
+          ) : (
+            <div className="space-y-3">
+              {messages.map((msg) => (
+                <div key={msg._id} className="p-4 bg-gray-50 dark:bg-black rounded-xl border border-gray-100 dark:border-zinc-800">
+                  <div className="flex items-start justify-between gap-4 mb-2">
+                    <div className="min-w-0">
+                      <h4 className="font-poppins font-semibold text-foreground truncate">{msg.firstName} {msg.lastName}</h4>
+                      <a href={`mailto:${msg.email}`} className="text-xs text-blue-500 hover:underline font-inter">{msg.email}</a>
+                    </div>
+                    <div className="flex items-center gap-3 shrink-0">
+                      <span className="text-xs text-muted-foreground font-inter whitespace-nowrap">
+                        {new Date(msg.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                      </span>
+                      <button onClick={() => deleteMessage(msg._id)} className="text-gray-400 hover:text-red-500 transition-colors"><Trash2 size={15} /></button>
+                    </div>
+                  </div>
+                  <p className="font-inter text-sm font-semibold text-foreground mb-1">{msg.subject}</p>
+                  <p className="font-inter text-sm text-muted-foreground whitespace-pre-wrap">{msg.message}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>

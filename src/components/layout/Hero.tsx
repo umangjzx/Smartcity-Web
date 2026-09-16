@@ -24,15 +24,13 @@ function useCounter(target: number, duration = 1800, startCounting: boolean = fa
   return value;
 }
 
-const stats = [
-  { raw: 100, suffix: "+", label: "Active Members",     primary: true  },
-  { raw: 5,   suffix: "+", label: "Years of Excellence", primary: false },
-  { raw: 50,  suffix: "+", label: "Service Projects",    primary: true  },
-  { raw: 1,   suffix: "M+",label: "Community Reach",     primary: false },
-];
+type Stat = { raw: number; suffix: string; label: string; primary: boolean };
+
+const CLUB_FOUNDED_YEAR = 2021;
+const AVENUES_OF_SERVICE = 5;
 
 // Individual counter component — starts when in view
-function StatCounter({ stat, delay }: { stat: typeof stats[0]; delay: number }) {
+function StatCounter({ stat, delay }: { stat: Stat; delay: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const [started, setStarted] = useState(false);
   const count = useCounter(stat.raw, 1600, started);
@@ -77,6 +75,29 @@ export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
+
+  // Impact numbers are real counts from the DB, not marketing copy — pulled
+  // fresh so they never drift out of sync with what's actually on the site.
+  const [counts, setCounts] = useState({ members: 0, projects: 0 });
+  useEffect(() => {
+    Promise.all([
+      fetch("/api/members").then((r) => r.json()).catch(() => null),
+      fetch("/api/projects").then((r) => r.json()).catch(() => null),
+    ]).then(([m, p]) => {
+      setCounts({
+        members: m?.success ? m.data.length : 0,
+        projects: p?.success ? p.data.length : 0,
+      });
+    });
+  }, []);
+
+  const yearsActive = new Date().getFullYear() - CLUB_FOUNDED_YEAR;
+  const stats: Stat[] = [
+    { raw: counts.members,  suffix: "+", label: "Active Members",     primary: true  },
+    { raw: yearsActive,     suffix: "+", label: "Years of Excellence", primary: false },
+    { raw: counts.projects, suffix: "+", label: "Service Projects",    primary: true  },
+    { raw: AVENUES_OF_SERVICE, suffix: "", label: "Avenues of Service", primary: false },
+  ];
 
   const skyY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : 60]);
   const contentY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : 120]);

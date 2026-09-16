@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { MessageSquare, Send } from "lucide-react";
+import { MessageSquare, Send, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 
 const contacts = [
   {
@@ -33,7 +34,42 @@ const contacts = [
 const inputCls =
   "w-full bg-transparent border-0 border-b border-white/20 px-1 py-3 text-sm font-inter text-white placeholder:text-white/20 focus:outline-none focus:border-[var(--color-aurora-cyan)] transition-colors";
 
+type Status = "idle" | "sending" | "success" | "error";
+
 export default function Contact() {
+  const [status, setStatus] = useState<Status>("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const payload = {
+      firstName: data.get("firstName"),
+      lastName: data.get("lastName"),
+      email: data.get("email"),
+      subject: data.get("subject"),
+      message: data.get("message"),
+    };
+
+    setStatus("sending");
+    setErrorMsg("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const json = await res.json();
+      if (!res.ok || !json.success) throw new Error(json.error || "Something went wrong");
+      setStatus("success");
+      form.reset();
+    } catch (err) {
+      setStatus("error");
+      setErrorMsg(err instanceof Error ? err.message : "Something went wrong");
+    }
+  }
+
   return (
     <section id="contact" className="py-20 md:py-28 relative overflow-hidden">
       {/* Lighthouse atmospheric layer — right-side bleed behind the form */}
@@ -138,7 +174,9 @@ export default function Contact() {
                 <span className="font-inter font-medium text-sm text-white/80">Email Us</span>
               </a>
               <a
-                href="#"
+                href="https://wa.me/919080161324"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group flex flex-col items-center gap-3 bg-white/5 border border-white/10 hover:border-[var(--color-aurora-emerald)]/40 rounded-2xl p-5 transition-all hover:-translate-y-1"
               >
                 <MessageSquare size={24} className="text-[var(--color-aurora-emerald)]" />
@@ -170,19 +208,19 @@ export default function Contact() {
               <h3 className="font-montserrat font-bold text-2xl text-white mb-1">Send a Message</h3>
               <p className="font-inter text-sm text-white/40 mb-8">We&apos;ll get back to you within 24 hours.</p>
 
-              <form className="space-y-7">
+              <form onSubmit={handleSubmit} className="space-y-7">
                 <div className="grid sm:grid-cols-2 gap-7">
                   <div className="space-y-1">
                     <label htmlFor="contact-first-name" className="font-inter text-[10px] font-semibold text-white/40 uppercase tracking-widest">
                       First Name
                     </label>
-                    <input id="contact-first-name" type="text" className={inputCls} placeholder="John" />
+                    <input id="contact-first-name" name="firstName" required type="text" className={inputCls} placeholder="John" />
                   </div>
                   <div className="space-y-1">
                     <label htmlFor="contact-last-name" className="font-inter text-[10px] font-semibold text-white/40 uppercase tracking-widest">
                       Last Name
                     </label>
-                    <input id="contact-last-name" type="text" className={inputCls} placeholder="Doe" />
+                    <input id="contact-last-name" name="lastName" required type="text" className={inputCls} placeholder="Doe" />
                   </div>
                 </div>
 
@@ -190,30 +228,48 @@ export default function Contact() {
                   <label htmlFor="contact-email" className="font-inter text-[10px] font-semibold text-white/40 uppercase tracking-widest">
                     Email Address
                   </label>
-                  <input id="contact-email" type="email" className={inputCls} placeholder="john@example.com" />
+                  <input id="contact-email" name="email" required type="email" className={inputCls} placeholder="john@example.com" />
                 </div>
 
                 <div className="space-y-1">
                   <label htmlFor="contact-subject" className="font-inter text-[10px] font-semibold text-white/40 uppercase tracking-widest">
                     Subject
                   </label>
-                  <input id="contact-subject" type="text" className={inputCls} placeholder="How can we help?" />
+                  <input id="contact-subject" name="subject" required type="text" className={inputCls} placeholder="How can we help?" />
                 </div>
 
                 <div className="space-y-1">
                   <label htmlFor="contact-message" className="font-inter text-[10px] font-semibold text-white/40 uppercase tracking-widest">
                     Message
                   </label>
-                  <textarea id="contact-message" rows={4} className={inputCls + " resize-none"} placeholder="Tell us more..." />
+                  <textarea id="contact-message" name="message" required rows={4} className={inputCls + " resize-none"} placeholder="Tell us more..." />
                 </div>
+
+                {status === "success" && (
+                  <div className="flex items-center gap-2 text-sm font-inter text-[var(--color-aurora-emerald)] bg-[var(--color-aurora-emerald)]/10 border border-[var(--color-aurora-emerald)]/25 rounded-xl px-4 py-3">
+                    <CheckCircle2 size={16} className="shrink-0" />
+                    Thanks — your message has been sent. We&apos;ll get back to you within 24 hours.
+                  </div>
+                )}
+                {status === "error" && (
+                  <div className="flex items-center gap-2 text-sm font-inter text-red-400 bg-red-400/10 border border-red-400/25 rounded-xl px-4 py-3">
+                    <AlertCircle size={16} className="shrink-0" />
+                    {errorMsg}
+                  </div>
+                )}
 
                 <motion.button
                   type="submit"
+                  disabled={status === "sending"}
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-[var(--color-dhruvam-gold)] hover:bg-[var(--color-dhruvam-gold-light)] text-[var(--color-dhruvam-950)] py-4 rounded-2xl font-poppins font-bold text-sm flex items-center justify-center gap-2 transition-colors shadow-[0_4px_20px_rgba(246,181,27,0.25)] hover:shadow-[0_8px_32px_rgba(246,181,27,0.4)]"
+                  className="w-full bg-[var(--color-dhruvam-gold)] hover:bg-[var(--color-dhruvam-gold-light)] disabled:opacity-60 disabled:pointer-events-none text-[var(--color-dhruvam-950)] py-4 rounded-2xl font-poppins font-bold text-sm flex items-center justify-center gap-2 transition-colors shadow-[0_4px_20px_rgba(246,181,27,0.25)] hover:shadow-[0_8px_32px_rgba(246,181,27,0.4)]"
                 >
-                  Send Message <Send size={15} />
+                  {status === "sending" ? (
+                    <>Sending... <Loader2 size={15} className="animate-spin" /></>
+                  ) : (
+                    <>Send Message <Send size={15} /></>
+                  )}
                 </motion.button>
               </form>
             </div>
