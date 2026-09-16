@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <radialGradient id="glassGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00E5FF" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#082747" stop-opacity="0.8"/>
+    </radialGradient>
+  </defs>
+  <!-- Glass container -->
+  <circle cx="64" cy="64" r="56" fill="url(#glassGlow)" stroke="#FBFAFF" stroke-width="1.5" stroke-opacity="0.1"/>
+  <!-- Filled icon -->
+  <path d="M64 24c-16 0-24 12-24 28s12 28 24 28 24-12 24-28-8-28-24-28z" fill="#E74C3C" opacity="0.9"/>
+  <rect x="60" y="44" width="8" height="16" fill="#FBFAFF" opacity="0.9"/>
+  <rect x="56" y="48" width="16" height="8" fill="#FBFAFF" opacity="0.9"/>
+  <path d="M64 72v24" stroke="#F6B51B" stroke-width="8" stroke-linecap="round"/>
+  <path d="M48 88l16-16 16 16" stroke="#F6B51B" stroke-width="8" stroke-linecap="round"/>
+</svg>

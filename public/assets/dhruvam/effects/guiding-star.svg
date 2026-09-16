@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <defs>
+    <radialGradient id="starCore">
+      <stop offset="0%" stop-color="#FBFAFF" stop-opacity="1"/>
+      <stop offset="30%" stop-color="#FFD05A" stop-opacity="0.8"/>
+      <stop offset="60%" stop-color="#F6B51B" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#F6B51B" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Glow -->
+  <circle cx="100" cy="100" r="90" fill="url(#starCore)"/>
+  <!-- 8-point star rays -->
+  <polygon points="100,10 106,80 140,20 112,84 190,60 116,96 190,100 116,104 190,140 112,116 140,180 106,120 100,190 94,120 60,180 88,116 10,140 84,104 10,100 84,96 10,60 88,84 60,20 94,80" fill="#FBFAFF" opacity="0.85"/>
+  <!-- Inner bright core -->
+  <circle cx="100" cy="100" r="12" fill="#FBFAFF"/>
+</svg>

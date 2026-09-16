@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 40" fill="none">
+  <defs>
+    <linearGradient id="ceLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F6B51B" stop-opacity="0"/>
+      <stop offset="30%" stop-color="#F6B51B" stop-opacity="0.4"/>
+      <stop offset="50%" stop-color="#FBFAFF" stop-opacity="0.6"/>
+      <stop offset="70%" stop-color="#00E5FF" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#00E5FF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <line x1="0" y1="20" x2="1200" y2="20" stroke="url(#ceLine)" stroke-width="1"/>
+  <!-- Small stars along the line -->
+  <polygon points="300,14 302,18 306,18 303,21 304,25 300,22 296,25 297,21 294,18 298,18" fill="#F6B51B" opacity="0.6"/>
+  <circle cx="500" cy="20" r="2" fill="#FBFAFF" opacity="0.5"/>
+  <polygon points="700,14 702,18 706,18 703,21 704,25 700,22 696,25 697,21 694,18 698,18" fill="#00E5FF" opacity="0.5"/>
+  <circle cx="900" cy="20" r="1.5" fill="#FFD05A" opacity="0.4"/>
+</svg>

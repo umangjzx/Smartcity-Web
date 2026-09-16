@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Phone, ExternalLink } from "lucide-react";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 type Member = {
   _id: string;
@@ -17,6 +18,7 @@ type Member = {
 
 export default function Leadership() {
   const [members, setMembers] = useState<Member[]>([]);
+  const [hoveredMember, setHoveredMember] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/members")
@@ -26,129 +28,106 @@ export default function Leadership() {
   }, []);
 
   const boardMembers = members.filter((m) => m.isBoard);
-  const president = boardMembers.find((m) => m.role.toLowerCase().includes("president"));
-  const others = boardMembers.filter((m) => m._id !== president?._id);
 
   if (members.length === 0) return null;
 
   return (
-    <section id="leadership" className="py-12 md:py-20 lg:py-28 bg-[var(--color-cream)] relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-[var(--color-royal-blue)]/5 rounded-full blur-3xl" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
-
-        {/* Header */}
-        <div className="mb-8 sm:mb-10 md:mb-16">
-          <div className="flex items-center gap-3 mb-2 sm:mb-4">
-            <div className="h-px w-8 sm:w-10 bg-[var(--color-rotaract-red)]" />
-            <span className="font-inter text-[var(--color-rotaract-red)] text-xs font-semibold tracking-[0.2em] uppercase">Leadership</span>
-          </div>
-          <h2 className="font-montserrat font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[var(--color-charcoal)] leading-tight">
-            Board of <span className="text-[var(--color-rotaract-red)]">Directors</span>
-          </h2>
-        </div>
-
-        {/* President spotlight */}
-        {president && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="bg-white rounded-2xl sm:rounded-3xl border border-[var(--border)] shadow-md overflow-hidden mb-8 sm:mb-10 md:mb-12"
-          >
-            <div className="grid sm:grid-cols-2 md:grid-cols-3">
-              {/* Photo side */}
-              <div className="relative bg-gradient-to-br from-[var(--color-charcoal)] to-[#2d1a24] flex items-center justify-center p-6 sm:p-8 md:p-10">
-                <div className="relative">
-                  <div className="absolute inset-0 rounded-full bg-[var(--color-rotaract-red)]/20 blur-xl scale-150" />
-                  <img
-                    src={president.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(president.name)}&background=C8102E&color=fff&size=256`}
-                    alt={president.name}
-                    className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full object-cover border-4 border-[var(--color-rotary-gold)] shadow-xl"
-                  />
-                </div>
-              </div>
-
-              {/* Content side */}
-              <div className="sm:col-span-1 md:col-span-2 p-4 sm:p-6 md:p-8 lg:p-10 flex flex-col justify-center">
-                <div className="inline-flex items-center gap-2 bg-[var(--color-rotaract-red)]/10 text-[var(--color-rotaract-red)] text-xs font-semibold font-inter px-3 py-1.5 rounded-full mb-3 sm:mb-4 w-fit">
-                  President, 2026–27
-                </div>
-                <h3 className="font-montserrat font-black text-xl sm:text-2xl md:text-3xl text-[var(--color-charcoal)] mb-1 sm:mb-2">{president.name}</h3>
-                <p className="font-inter text-[var(--color-warm-gray)] text-xs sm:text-sm mb-3 sm:mb-6">{president.role}</p>
-                <blockquote className="font-inter text-[var(--color-charcoal)] text-sm sm:text-base md:text-lg leading-relaxed italic border-l-4 border-[var(--color-rotary-gold)] pl-4 mb-4 sm:mb-6">
-                  &ldquo;Together, we aim to ignite leadership, influence positive change, and create lasting impact in our community.&rdquo;
-                </blockquote>
-                <div className="flex gap-3">
-                  {president.phone && (
-                    <a href={`tel:${president.phone}`} className="w-9 h-9 rounded-full bg-[var(--color-cream)] border border-[var(--border)] flex items-center justify-center text-[var(--color-warm-gray)] hover:text-[var(--color-rotaract-red)] hover:border-[var(--color-rotaract-red)] transition-all">
-                      <Phone size={14} />
-                    </a>
-                  )}
-                  {president.email && (
-                    <a href={`mailto:${president.email}`} className="w-9 h-9 rounded-full bg-[var(--color-cream)] border border-[var(--border)] flex items-center justify-center text-[var(--color-warm-gray)] hover:text-[var(--color-rotary-gold)] hover:border-[var(--color-rotary-gold)] transition-all">
-                      <Mail size={14} />
-                    </a>
-                  )}
-                  {president.linkedin && (
-                    <a href={president.linkedin} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-[var(--color-cream)] border border-[var(--border)] flex items-center justify-center text-[var(--color-warm-gray)] hover:text-[var(--color-royal-blue)] hover:border-[var(--color-royal-blue)] transition-all">
-                      <ExternalLink size={14} />
-                    </a>
-                  )}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Other board members */}
-        {others.length > 0 && (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {others.map((m, i) => (
-              <motion.div
-                key={m._id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.07 }}
-                className="bg-white rounded-2xl border border-[var(--border)] p-6 text-center shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all group"
-              >
-                <div className="relative mx-auto w-20 h-20 mb-4">
-                  <img
-                    src={m.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name)}&background=C8102E&color=fff&size=128`}
-                    alt={m.name}
-                    className="w-20 h-20 rounded-full object-cover border-3 border-[var(--border)] group-hover:border-[var(--color-rotaract-red)] transition-colors"
-                  />
-                  <div className="absolute bottom-0 right-0 w-5 h-5 rounded-full bg-[var(--color-rotary-gold)] border-2 border-white" />
-                </div>
-
-                <h4 className="font-poppins font-bold text-sm text-[var(--color-charcoal)] mb-1 leading-snug">{m.name}</h4>
-                <p className="font-inter text-xs text-[var(--color-rotaract-red)] font-medium mb-4">{m.role}</p>
-
-                <div className="flex items-center justify-center gap-2">
-                  {m.phone && (
-                    <a href={`tel:${m.phone}`} className="w-8 h-8 rounded-full bg-[var(--color-cream)] flex items-center justify-center text-[var(--color-warm-gray)] hover:text-[var(--color-rotaract-red)] transition-colors">
-                      <Phone size={13} />
-                    </a>
-                  )}
-                  {m.email && (
-                    <a href={`mailto:${m.email}`} className="w-8 h-8 rounded-full bg-[var(--color-cream)] flex items-center justify-center text-[var(--color-warm-gray)] hover:text-[var(--color-rotary-gold)] transition-colors">
-                      <Mail size={13} />
-                    </a>
-                  )}
-                  {m.linkedin && (
-                    <a href={m.linkedin} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-[var(--color-cream)] flex items-center justify-center text-[var(--color-warm-gray)] hover:text-[var(--color-royal-blue)] transition-colors">
-                      <ExternalLink size={13} />
-                    </a>
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        )}
+    <section id="leadership" className="py-20 md:py-32 relative overflow-hidden bg-[var(--color-dhruvam-950)] flex flex-col justify-center">
+      {/* Massive Background Typography */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden opacity-5 z-0">
+        <h2 className="text-[22vw] font-montserrat font-black leading-none whitespace-nowrap text-white select-none">
+          OUR GUIDES
+        </h2>
       </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 w-full mb-16">
+        <SectionHeader
+          title="Board of Directors"
+          align="center"
+        />
+      </div>
+
+      {/* Cinematic Roster Container */}
+      <div className="relative z-20 w-full max-w-[1400px] mx-auto px-4 md:px-12 flex flex-col md:flex-row md:items-end md:justify-center gap-12 md:gap-0 mt-8 pb-12">
+        {boardMembers.map((m, i) => {
+          const isHovered = hoveredMember === m._id;
+          const isDimmed = hoveredMember !== null && hoveredMember !== m._id;
+          
+          return (
+            <motion.div
+              key={m._id}
+              className="relative flex justify-center items-end group md:-ml-12 lg:-ml-16 first:ml-0 cursor-pointer"
+              onMouseEnter={() => setHoveredMember(m._id)}
+              onMouseLeave={() => setHoveredMember(null)}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: i * 0.1, type: "spring" }}
+              style={{ zIndex: isHovered ? 50 : 10 + i }}
+            >
+              <motion.div
+                animate={{
+                  opacity: isDimmed ? 0.3 : 1,
+                  scale: isHovered ? 1.05 : 1,
+                  filter: isDimmed ? 'blur(4px)' : 'blur(0px)'
+                }}
+                transition={{ duration: 0.4 }}
+                className="relative flex flex-col items-center"
+              >
+                {/* Portrait */}
+                <img
+                  src={m.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name)}&background=transparent&color=fff&size=512`}
+                  alt={m.name}
+                  className="relative z-10 w-56 h-72 md:w-64 md:h-96 object-cover object-bottom drop-shadow-2xl transition-all"
+                  style={{ maskImage: "linear-gradient(to top, transparent 0%, black 15%)", WebkitMaskImage: "linear-gradient(to top, transparent 0%, black 15%)" }}
+                />
+              </motion.div>
+
+              {/* Glassmorphism Info Panel */}
+              <AnimatePresence>
+                {isHovered && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -20, y: 20 }}
+                    animate={{ opacity: 1, x: 20, y: -40 }}
+                    exit={{ opacity: 0, x: -20, y: 20 }}
+                    transition={{ duration: 0.3 }}
+                    className="absolute bottom-0 left-1/2 -translate-x-1/2 md:left-auto md:right-0 md:translate-x-1/2 z-50 w-64 bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl"
+                  >
+                    <h3 className="font-poppins font-bold text-xl text-white mb-1 leading-tight">{m.name}</h3>
+                    <p className="font-inter text-xs text-[var(--color-dhruvam-gold-light)] uppercase tracking-wider mb-4 font-semibold">{m.role}</p>
+                    
+                    <div className="flex items-center gap-3">
+                      {m.phone && (
+                        <a href={`tel:${m.phone}`} className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[var(--color-dhruvam-gold)] hover:text-black transition-colors text-white/70">
+                          <Phone size={16} />
+                        </a>
+                      )}
+                      {m.email && (
+                        <a href={`mailto:${m.email}`} className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[var(--color-dhruvam-gold)] hover:text-black transition-colors text-white/70">
+                          <Mail size={16} />
+                        </a>
+                      )}
+                      {m.linkedin && (
+                        <a href={m.linkedin} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#00E5FF] hover:text-black transition-colors text-white/70">
+                          <ExternalLink size={16} />
+                        </a>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          );
+        })}
+      </div>
+      
+      {/* Decorative divider at the bottom */}
+      <img
+        src="/assets/dhruvam/ui/dividers/constellation.svg"
+        alt=""
+        aria-hidden="true"
+        className="absolute bottom-0 left-0 w-full h-auto opacity-40 pointer-events-none"
+      />
     </section>
   );
 }

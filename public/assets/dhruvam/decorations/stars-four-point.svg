@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <!-- Four-point star cluster -->
+  <!-- Star 1 - large -->
+  <polygon points="80,30 84,70 100,50 84,70 120,74 84,70 80,110 84,70 40,74 84,70" fill="#F6B51B" opacity="0.9"/>
+  <!-- Star 2 - medium -->
+  <polygon points="150,60 152,76 162,68 152,76 166,78 152,76 150,92 152,76 138,78 152,76" fill="#FBFAFF" opacity="0.8"/>
+  <!-- Star 3 - small -->
+  <polygon points="60,150 61,158 66,154 61,158 68,159 61,158 60,166 61,158 54,159 61,158" fill="#FFD05A" opacity="0.7"/>
+  <!-- Star 4 - tiny -->
+  <polygon points="160,140 161,146 165,143 161,146 167,147 161,146 160,152 161,146 155,147 161,146" fill="#FBFAFF" opacity="0.6"/>
+  <!-- Star 5 -->
+  <polygon points="120,170 121,177 126,174 121,177 128,178 121,177 120,184 121,177 114,178 121,177" fill="#F6B51B" opacity="0.5"/>
+</svg>

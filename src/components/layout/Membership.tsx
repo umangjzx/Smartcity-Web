@@ -1,28 +1,32 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Users, Briefcase, Globe2, Mic2, HeartHandshake, Star } from "lucide-react";
+import { ArrowRight, Mic2, Star } from "lucide-react";
 
 const benefits = [
-  { icon: Users,          label: "Leadership Opportunities",  desc: "Lead projects and teams from day one" },
-  { icon: Briefcase,      label: "Professional Development",  desc: "Workshops, mentorship, and career growth" },
-  { icon: Globe2,         label: "International Exposure",    desc: "Collaborate with Rotaractors worldwide" },
-  { icon: Mic2,           label: "Public Speaking",           desc: "Build confidence in front of an audience" },
-  { icon: HeartHandshake, label: "Community Service",         desc: "Create real impact in people's lives" },
-  { icon: Star,           label: "Networking",                desc: "Connect with professionals and leaders" },
+  { icon: "/assets/dhruvam/icons/filled/team.svg",      label: "Leadership Opportunities",  desc: "Lead projects and teams from day one" },
+  { icon: "/assets/dhruvam/icons/filled/learning.svg",  label: "Professional Development",  desc: "Workshops, mentorship, and career growth" },
+  { icon: "/assets/dhruvam/icons/outline/global.svg",   label: "International Exposure",    desc: "Collaborate with Rotaractors worldwide" },
+  { icon: null, fallbackIcon: Mic2,                     label: "Public Speaking",           desc: "Build confidence in front of an audience" },
+  { icon: "/assets/dhruvam/icons/filled/community.svg", label: "Community Service",         desc: "Create real impact in people's lives" },
+  { icon: null, fallbackIcon: Star,                     label: "Networking",                desc: "Connect with professionals and leaders" },
 ];
 
 export default function Membership() {
   return (
-    <section id="join" className="py-12 md:py-20 lg:py-28 bg-[var(--color-charcoal)] relative overflow-hidden">
-      {/* Background accents */}
-      <div className="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-[var(--color-rotaract-red)] opacity-[0.12] blur-[100px]" />
-      <div className="absolute bottom-[-20%] left-[-10%] w-[400px] h-[400px] rounded-full bg-[var(--color-royal-blue)] opacity-[0.12] blur-[80px]" />
+    <section id="join" className="py-24 md:py-32 relative overflow-hidden">
+      {/* Starry Sky Background */}
+      <div 
+        className="absolute inset-0 z-0 opacity-40 mix-blend-screen"
+        style={{
+          backgroundImage: "url('/assets/dhruvam/backgrounds/starry-sky.jpg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-dhruvam-950)] via-[var(--color-dhruvam-950)]/40 to-[var(--color-dhruvam-950)]" />
 
-      {/* Top border accent */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--color-rotary-gold)]/40 to-transparent" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-center">
 
           {/* Left — copy */}
@@ -31,28 +35,26 @@ export default function Membership() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="bg-white/5 backdrop-blur-md border border-white/10 p-10 md:p-14 rounded-3xl"
           >
             <div className="flex items-center gap-3 mb-4 sm:mb-6">
-              <div className="h-px w-8 sm:w-10 bg-[var(--color-rotary-gold)]" />
-              <span className="font-inter text-[var(--color-rotary-gold)] text-xs font-semibold tracking-[0.2em] uppercase">Membership</span>
+              <div className="h-px w-8 sm:w-10 bg-[var(--color-dhruvam-gold-light)]" />
+              <span className="font-inter text-[var(--color-dhruvam-gold-light)] text-xs font-semibold tracking-[0.2em] uppercase">Join the Constellation</span>
             </div>
 
-            <h2 className="font-montserrat font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white leading-tight mb-4 sm:mb-6">
+            <h2 className="font-montserrat font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-4 sm:mb-6">
               Become a<br />
-              <span className="text-[var(--color-rotary-gold)]">Rotaractor</span>
+              <span className="text-[var(--color-dhruvam-gold-light)] drop-shadow-[0_0_20px_rgba(246,181,27,0.3)]">Rotaractor</span>
             </h2>
 
-            <p className="font-inter text-white/60 text-sm sm:text-base md:text-lg leading-relaxed mb-6 sm:mb-10">
+            <p className="font-inter text-white/70 text-sm sm:text-base md:text-lg leading-relaxed mb-8 sm:mb-10 max-w-md">
               Join a global network of young leaders aged 18–30, dedicated to creating positive change while building professional skills that last a lifetime.
             </p>
 
-            <div className="flex flex-wrap gap-3 sm:gap-4">
-              <button className="group inline-flex items-center gap-2 px-8 py-4 bg-[var(--color-rotaract-red)] hover:bg-[#a50d26] text-white rounded-full font-poppins font-semibold text-sm transition-all shadow-[0_8px_30px_rgba(200,16,46,0.3)] hover:shadow-[0_12px_40px_rgba(200,16,46,0.4)] hover:-translate-y-0.5">
+            <div className="flex flex-wrap gap-4 sm:gap-6">
+              <button className="group inline-flex items-center gap-2 px-10 py-5 bg-[var(--color-dhruvam-gold)] hover:bg-[var(--color-dhruvam-gold-light)] text-[var(--color-dhruvam-950)] rounded-full font-poppins font-bold text-sm transition-all shadow-[0_8px_30px_rgba(246,181,27,0.25)] hover:shadow-[0_12px_40px_rgba(246,181,27,0.4)] hover:-translate-y-1">
                 Apply Now
-                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button className="inline-flex items-center gap-2 px-8 py-4 border border-white/20 hover:border-white/40 text-white/80 hover:text-white rounded-full font-poppins font-semibold text-sm transition-all">
-                Learn More
+                <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
               </button>
             </div>
           </motion.div>
@@ -66,7 +68,7 @@ export default function Membership() {
             className="grid grid-cols-2 gap-4"
           >
             {benefits.map((b, i) => {
-              const Icon = b.icon;
+              const FallbackIcon = b.fallbackIcon;
               return (
                 <motion.div
                   key={b.label}
@@ -76,8 +78,12 @@ export default function Membership() {
                   transition={{ delay: i * 0.06 }}
                   className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-5 transition-all group"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-[var(--color-rotary-gold)]/10 flex items-center justify-center mb-3 group-hover:bg-[var(--color-rotary-gold)]/20 transition-colors">
-                    <Icon size={18} className="text-[var(--color-rotary-gold)]" />
+                  <div className="w-10 h-10 rounded-xl bg-[var(--color-dhruvam-gold)]/10 flex items-center justify-center mb-3 group-hover:bg-[var(--color-dhruvam-gold)]/20 transition-colors">
+                    {b.icon ? (
+                      <img src={b.icon} alt="" aria-hidden="true" className="w-5 h-5" />
+                    ) : (
+                      FallbackIcon && <FallbackIcon size={18} className="text-[var(--color-dhruvam-gold-light)]" />
+                    )}
                   </div>
                   <h4 className="font-poppins font-semibold text-white text-sm mb-1">{b.label}</h4>
                   <p className="font-inter text-white/40 text-xs leading-relaxed">{b.desc}</p>

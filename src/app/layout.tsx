@@ -25,21 +25,23 @@ const montserrat = Montserrat({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#C8102E",
+  themeColor: "#020B1C",
 };
 
 export const metadata: Metadata = {
-  title: "Rotaract Club of Coimbatore Smartcity | Ignite · Influence · Impact",
+  title: "DHRUVAM 2026–27 | Rotaract Club of Coimbatore Smartcity",
   description:
-    "A community of young leaders transforming Coimbatore through service, professional development, and meaningful connections. Rotary District 3206.",
-  keywords: ["Rotaract", "Coimbatore", "Smartcity", "District 3206", "Youth Leadership", "Community Service"],
+    "DHRUVAM — The Star That Guides. A community of young leaders transforming Coimbatore through service, professional development, and meaningful connections. Rotary District 3206.",
+  keywords: ["Rotaract", "Coimbatore", "Smartcity", "District 3206", "Youth Leadership", "Community Service", "DHRUVAM"],
   openGraph: {
-    title: "Rotaract Club of Coimbatore Smartcity",
-    description: "Ignite · Influence · Impact — Building the future through youth empowerment and community service.",
+    title: "DHRUVAM 2026–27 | Rotaract Club of Coimbatore Smartcity",
+    description: "The Star That Guides — direction, unity, wisdom, courage and gratitude guiding our 2026–27 year of service.",
     type: "website",
     locale: "en_IN",
   },
 };
+
+import CinematicBackground from "@/components/layout/CinematicBackground";
 
 export default function RootLayout({
   children,
@@ -51,7 +53,8 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${poppins.variable} ${montserrat.variable}`}
     >
-      <body className="min-h-screen flex flex-col bg-white text-[var(--color-charcoal)]">
+      <body className="min-h-screen flex flex-col bg-[var(--color-dhruvam-950)] text-white relative">
+        <CinematicBackground />
         {children}
       </body>
     </html>

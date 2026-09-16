@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" fill="none">
+  <!-- Shooting star trail -->
+  <defs>
+    <linearGradient id="trail" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FBFAFF" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#FFD05A" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#FBFAFF" stop-opacity="1"/>
+    </linearGradient>
+  </defs>
+  <line x1="20" y1="160" x2="360" y2="40" stroke="url(#trail)" stroke-width="2"/>
+  <!-- Star head -->
+  <circle cx="360" cy="40" r="4" fill="#FBFAFF"/>
+  <!-- Sparkle at head -->
+  <polygon points="360,28 362,36 370,40 362,44 360,52 358,44 350,40 358,36" fill="#FFD05A" opacity="0.8"/>
+  <!-- Tiny trail particles -->
+  <circle cx="300" cy="60" r="1.5" fill="#FFD05A" opacity="0.5"/>
+  <circle cx="260" cy="74" r="1" fill="#FBFAFF" opacity="0.4"/>
+  <circle cx="220" cy="88" r="1.2" fill="#FFD05A" opacity="0.3"/>
+  <circle cx="180" cy="102" r="0.8" fill="#FBFAFF" opacity="0.2"/>
+</svg>

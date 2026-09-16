@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <!-- Crescent moon -->
+  <defs>
+    <radialGradient id="moonGlow">
+      <stop offset="0%" stop-color="#E3E9F3" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#E3E9F3" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="100" cy="100" r="80" fill="url(#moonGlow)"/>
+  <path d="M120 30a70 70 0 100 140 56 56 0 010-140z" fill="#93A6C6" opacity="0.9"/>
+  <path d="M120 30a70 70 0 100 140 56 56 0 010-140z" fill="url(#moonSurface)" opacity="0.3"/>
+  <!-- Subtle surface texture -->
+  <circle cx="95" cy="80" r="8" fill="#82919F" opacity="0.2"/>
+  <circle cx="110" cy="120" r="6" fill="#82919F" opacity="0.15"/>
+  <circle cx="85" cy="140" r="4" fill="#82919F" opacity="0.1"/>
+</svg>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <!-- Outer compass ring -->
+  <circle cx="200" cy="200" r="180" stroke="#F6B51B" stroke-width="1" opacity="0.3"/>
+  <circle cx="200" cy="200" r="160" stroke="#F6B51B" stroke-width="0.5" opacity="0.2"/>
+  <!-- Main 8-point star -->
+  <polygon points="200,20 216,160 340,120 230,200 340,280 216,240 200,380 184,240 60,280 170,200 60,120 184,160" fill="#F6B51B" opacity="0.9"/>
+  <!-- Inner 4-point star -->
+  <polygon points="200,80 212,188 280,200 212,212 200,320 188,212 120,200 188,188" fill="#FFD05A" opacity="0.8"/>
+  <!-- Center circle -->
+  <circle cx="200" cy="200" r="16" fill="#FBFAFF" opacity="0.9"/>
+  <circle cx="200" cy="200" r="8" fill="#F6B51B"/>
+  <!-- Compass cardinal points -->
+  <line x1="200" y1="10" x2="200" y2="40" stroke="#F6B51B" stroke-width="1.5" opacity="0.5"/>
+  <line x1="200" y1="360" x2="200" y2="390" stroke="#F6B51B" stroke-width="1.5" opacity="0.5"/>
+  <line x1="10" y1="200" x2="40" y2="200" stroke="#F6B51B" stroke-width="1.5" opacity="0.5"/>
+  <line x1="360" y1="200" x2="390" y2="200" stroke="#F6B51B" stroke-width="1.5" opacity="0.5"/>
+  <!-- Glow effect -->
+  <radialGradient id="glow">
+    <stop offset="0%" stop-color="#F6B51B" stop-opacity="0.4"/>
+    <stop offset="60%" stop-color="#F6B51B" stop-opacity="0.1"/>
+    <stop offset="100%" stop-color="#F6B51B" stop-opacity="0"/>
+  </radialGradient>
+  <circle cx="200" cy="200" r="120" fill="url(#glow)"/>
+</svg>

@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Folder, FolderOpen } from "lucide-react";
+import { FolderOpen } from "lucide-react";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 type Project = {
   _id: string;
@@ -15,11 +16,18 @@ type Project = {
 
 const CATEGORIES = ["All", "Education", "Environment", "Community", "Professional"];
 
-const CATEGORY_COLORS: Record<string, { bg: string; text: string }> = {
-  Education:    { bg: "#FFF9EB", text: "#F0A500" },
-  Environment:  { bg: "#ECFDF5", text: "#059669" },
-  Community:    { bg: "#FFF0F3", text: "#C8102E" },
-  Professional: { bg: "#EEF3FF", text: "#003DA5" },
+const CATEGORY_COLORS: Record<string, string> = {
+  Education: "var(--color-dhruvam-gold-light)",
+  Environment: "var(--color-aurora-emerald)",
+  Community: "var(--color-aurora-teal)",
+  Professional: "var(--color-aurora-blue)",
+};
+
+const CATEGORY_ICONS: Record<string, string> = {
+  Education: "/assets/dhruvam/icons/filled/learning.svg",
+  Environment: "/assets/dhruvam/icons/outline/environment.svg",
+  Community: "/assets/dhruvam/icons/filled/community.svg",
+  Professional: "/assets/dhruvam/icons/filled/team.svg",
 };
 
 export default function Projects() {
@@ -38,113 +46,147 @@ export default function Projects() {
   const filtered = projects.filter((p) => filter === "All" || p.category === filter);
 
   return (
-    <section id="projects" className="py-28 bg-white relative">
-      {/* Top bleed */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--color-rotary-gold)]/5 rounded-full blur-3xl" />
+    <section id="projects" className="py-28 relative overflow-hidden">
+      {/* Subtle starry backdrop, distinct from the global aurora */}
+      <div
+        className="absolute inset-0 opacity-15 mix-blend-screen pointer-events-none"
+        style={{ backgroundImage: "url('/assets/dhruvam/backgrounds/starry-sky.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}
+      />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
+      {/* Decorative telescope penguin — scouting the milestones ahead */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="absolute top-16 -right-6 lg:right-6 z-0 w-28 lg:w-36 opacity-55 pointer-events-none mix-blend-screen hidden sm:block"
+      >
+        <img
+          src="/assets/dhruvam/characters/penguin-telescope.jpg"
+          alt=""
+          aria-hidden="true"
+          className="w-full h-auto drop-shadow-2xl rounded-3xl"
+          style={{ maskImage: "radial-gradient(ellipse at center, black 40%, transparent 70%)", WebkitMaskImage: "radial-gradient(ellipse at center, black 40%, transparent 70%)" }}
+        />
+      </motion.div>
 
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-10 md:mb-14">
-          <div>
-            <div className="flex items-center gap-3 mb-2 sm:mb-4">
-              <div className="h-px w-8 sm:w-10 bg-[var(--color-rotaract-red)]" />
-              <span className="font-inter text-[var(--color-rotaract-red)] text-xs font-semibold tracking-[0.2em] uppercase">Our Work</span>
-            </div>
-            <h2 className="font-montserrat font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[var(--color-charcoal)] leading-tight">
-              Projects &amp; <span className="text-[var(--color-rotaract-red)]">Impact</span>
-            </h2>
-          </div>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
 
-          {/* Filter pills */}
-          {projects.length > 0 && (
-          <div className="flex flex-wrap gap-2">
+        <SectionHeader 
+          title="Projects & Impact"
+          subtitle="Milestones Along the Way"
+          align="center"
+        />
+
+        {/* Filter pills */}
+        {projects.length > 0 && (
+          <div className="flex flex-wrap justify-center gap-3 mb-16">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
-                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-poppins text-[10px] sm:text-xs font-semibold transition-all border ${
+                className={`px-4 sm:px-6 py-2 rounded-full font-poppins text-xs sm:text-sm font-semibold transition-all border ${
                   filter === cat
-                    ? "bg-[var(--color-rotaract-red)] text-white border-[var(--color-rotaract-red)] shadow-md"
-                    : "bg-white text-[var(--color-warm-gray)] border-[var(--border)] hover:border-[var(--color-rotaract-red)] hover:text-[var(--color-rotaract-red)]"
+                    ? "bg-[#F6B51B] text-[#020B1C] border-[#F6B51B] shadow-[0_4px_12px_rgba(246,181,27,0.3)]"
+                    : "bg-[#FBFAFF]/5 text-[#E3E9F3] border-[#FBFAFF]/10 hover:border-[#F6B51B]/50 hover:text-[#F6B51B]"
                 }`}
               >
                 {cat}
               </button>
             ))}
           </div>
-          )}
-        </div>
+        )}
 
         {/* Empty state */}
         {loaded && projects.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <FolderOpen size={40} className="text-[var(--color-warm-gray)]/40 mb-4" />
-            <p className="font-poppins font-semibold text-[var(--color-charcoal)] mb-1">Projects coming soon</p>
-            <p className="font-inter text-sm text-[var(--color-warm-gray)]">We&apos;re getting our project showcase ready. Check back shortly.</p>
+            <FolderOpen size={40} className="text-[#93A6C6]/50 mb-4" />
+            <p className="font-poppins font-semibold text-[#E3E9F3] mb-1">Projects coming soon</p>
+            <p className="font-inter text-sm text-[#93A6C6]">We&apos;re getting our journey milestones ready. Check back shortly.</p>
           </div>
         )}
 
-        {/* Grid */}
+        {/* Journey Timeline */}
         {projects.length > 0 && (
-        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
-          <AnimatePresence mode="popLayout">
-            {filtered.map((project) => {
-              const colors = CATEGORY_COLORS[project.category] ?? { bg: "#F5F5F7", text: "#6B7280" };
-              return (
-                <motion.article
-                  layout
-                  key={project._id}
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.96 }}
-                  transition={{ duration: 0.3 }}
-                  className="group relative rounded-3xl overflow-hidden bg-[var(--color-cream)] border border-[var(--border)] hover:shadow-2xl transition-all duration-500 cursor-pointer"
-                >
-                  {/* Image */}
-                  <div className="relative aspect-[16/9] overflow-hidden">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    {/* Subtle overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                    {/* Arrow */}
-                    <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-[var(--color-charcoal)] opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                      <ArrowUpRight size={18} />
+          <div className="relative mt-8">
+            {/* The Guiding Path (Vertical Line) */}
+            <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-[#F6B51B]/30 to-transparent transform md:-translate-x-1/2" />
+            
+            <AnimatePresence mode="popLayout">
+              {filtered.map((project, index) => {
+                const accent = CATEGORY_COLORS[project.category] ?? "var(--color-dhruvam-gold-light)";
+                const isEven = index % 2 === 0;
+                
+                return (
+                  <motion.div
+                    layout
+                    key={project._id}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.5 }}
+                    className={`relative flex items-center mb-16 md:mb-24 ${isEven ? 'md:flex-row-reverse' : 'md:flex-row'}`}
+                  >
+                    {/* Timeline Node (Star) */}
+                    <div className="absolute left-8 md:left-1/2 w-8 h-8 rounded-full bg-[#020B1C] border border-[#F6B51B] flex items-center justify-center transform -translate-x-1/2 z-20 shadow-[0_0_12px_rgba(246,181,27,0.4)]">
+                      <img src="/assets/dhruvam/effects/guiding-star.svg" alt="" aria-hidden="true" className="w-4 h-4" />
                     </div>
-                  </div>
 
-                  {/* Content */}
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-3">
-                      <span
-                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold font-inter"
-                        style={{ background: colors.bg, color: colors.text }}
-                      >
-                        <Folder size={11} />
-                        {project.category}
-                      </span>
-                      <span className="font-inter text-xs text-[var(--color-warm-gray)] bg-white border border-[var(--border)] px-3 py-1 rounded-full">
-                        {project.impact}
-                      </span>
+                    {/* Content Box */}
+                    <div className="w-full pl-20 md:pl-0 md:w-1/2 flex">
+                      <div className={`w-full ${isEven ? 'md:pl-12' : 'md:pr-12'}`}>
+                        <div className="relative group rounded-3xl overflow-hidden bg-[#082747]/60 backdrop-blur-md border border-[#FBFAFF]/10 hover:border-[#F6B51B]/40 hover:shadow-[0_16px_40px_rgba(246,181,27,0.15)] transition-all duration-500 flex flex-col md:flex-row">
+                          
+                          {/* Image Thumbnail */}
+                          <div className="relative w-full md:w-2/5 aspect-video md:aspect-auto overflow-hidden">
+                            <img
+                              src={project.image}
+                              alt={project.title}
+                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#06152B]/90 via-[#06152B]/30 to-transparent" />
+                            
+                            {/* SVG Badge */}
+                            <img 
+                              src="/assets/dhruvam/ui/badges/completed.svg" 
+                              alt="Completed" 
+                              className="absolute -right-2 -bottom-2 md:-right-4 md:top-1/2 md:-translate-y-1/2 w-16 h-16 md:w-20 md:h-20 z-30 drop-shadow-[0_4px_12px_rgba(246,181,27,0.25)]" 
+                            />
+                          </div>
+
+                          {/* Content */}
+                          <div className="p-6 md:w-3/5 flex flex-col justify-center">
+                            <div className="flex items-center gap-3 mb-3">
+                              <span
+                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold font-inter tracking-wider uppercase"
+                                style={{ background: "rgba(255,255,255,0.1)", color: accent }}
+                              >
+                                {CATEGORY_ICONS[project.category] && (
+                                  <img src={CATEGORY_ICONS[project.category]} alt="" aria-hidden="true" className="w-3.5 h-3.5" />
+                                )}
+                                {project.category}
+                              </span>
+                              <span className="font-inter text-[10px] font-semibold tracking-wider text-[#93A6C6] bg-[#FBFAFF]/5 border border-[#FBFAFF]/10 px-3 py-1 rounded-full uppercase">
+                                {project.impact}
+                              </span>
+                            </div>
+                            <h3 className="font-montserrat font-bold text-lg md:text-xl text-[#FBFAFF] group-hover:text-[#F6B51B] transition-colors leading-tight">
+                              {project.title}
+                            </h3>
+                            {project.description && (
+                              <p className="font-inter text-xs md:text-sm text-[#E3E9F3]/70 mt-3 leading-relaxed line-clamp-2 md:line-clamp-3">
+                                {project.description}
+                              </p>
+                            )}
+                          </div>
+
+                        </div>
+                      </div>
                     </div>
-                    <h3 className="font-montserrat font-bold text-xl text-[var(--color-charcoal)] group-hover:text-[var(--color-rotaract-red)] transition-colors">
-                      {project.title}
-                    </h3>
-                    {project.description && (
-                      <p className="font-inter text-sm text-[var(--color-warm-gray)] mt-2 leading-relaxed line-clamp-2">
-                        {project.description}
-                      </p>
-                    )}
-                  </div>
-                </motion.article>
-              );
-            })}
-          </AnimatePresence>
-        </motion.div>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </div>
         )}
       </div>
     </section>

@@ -1,5 +1,6 @@
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/layout/Hero";
+import DhruvamTheme from "@/components/layout/DhruvamTheme";
 import About from "@/components/layout/About";
 import Leadership from "@/components/layout/Leadership";
 import Avenues from "@/components/layout/Avenues";
@@ -11,9 +12,10 @@ import Footer from "@/components/layout/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white overflow-x-hidden">
+    <main className="min-h-screen bg-[var(--color-dhruvam-950)] overflow-x-hidden">
       <Navbar />
       <Hero />
+      <DhruvamTheme />
       <About />
       <Leadership />
       <Avenues />

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 100" fill="none">
+  <defs>
+    <linearGradient id="mtGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#082747"/>
+      <stop offset="100%" stop-color="#020B1C"/>
+    </linearGradient>
+    <linearGradient id="goldStar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F6B51B" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#F6B51B" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#F6B51B" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- Mountain silhouette -->
+  <polygon points="0,100 100,40 200,70 350,25 500,60 600,30 700,55 850,20 950,50 1050,35 1200,70 1200,100" fill="url(#mtGrad)" opacity="0.8"/>
+  <!-- Gold line on top -->
+  <line x1="0" y1="18" x2="1200" y2="18" stroke="url(#goldStar)" stroke-width="0.5"/>
+  <!-- Star at center -->
+  <polygon points="600,6 604,14 612,14 606,20 608,28 600,24 592,28 594,20 588,14 596,14" fill="#F6B51B" opacity="0.9"/>
+</svg>
