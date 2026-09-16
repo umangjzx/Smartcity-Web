@@ -5,7 +5,6 @@ const quickLinks = [
   ["Board of Directors", "#leadership"],
   ["Our Projects", "#projects"],
   ["Upcoming Events", "#events"],
-  ["Achievements", "#achievements"],
   ["Become a Member", "#join"],
 ];
 

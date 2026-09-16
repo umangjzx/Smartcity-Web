@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Calendar, MapPin, Clock, ArrowRight } from "lucide-react";
+import { Calendar, MapPin, Clock, ArrowRight, CalendarClock } from "lucide-react";
 
 type Event = {
   _id: string;
@@ -61,6 +61,7 @@ function Countdown({ targetDate }: { targetDate: Date }) {
 export default function Events() {
   const [featured, setFeatured] = useState<Event | null>(null);
   const [upcoming, setUpcoming] = useState<Event[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     fetch("/api/events")
@@ -72,20 +73,11 @@ export default function Events() {
         setFeatured(feat);
         setUpcoming(evs.filter((e) => e._id !== feat?._id).slice(0, 3));
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoaded(true));
   }, []);
 
-  const fallbackDate = new Date(2026, 7, 15);
-  const display = featured ?? {
-    _id: "fb",
-    title: "Global Leadership Summit 2026",
-    description: "A transformative two-day summit featuring international speakers, networking sessions, and leadership workshops for young professionals.",
-    date: fallbackDate.toISOString(),
-    location: "Taj Vivanta, Coimbatore",
-    time: "09:00 AM – 06:00 PM",
-    isFeatured: true,
-  };
-  const eventDate = new Date(display.date);
+  const eventDate = featured ? new Date(featured.date) : null;
 
   return (
     <section id="events" className="py-12 md:py-20 lg:py-28 bg-[var(--color-cream)] relative overflow-hidden">
@@ -105,6 +97,7 @@ export default function Events() {
         </div>
 
         {/* Featured event card */}
+        {featured && eventDate ? (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -120,17 +113,17 @@ export default function Events() {
               </div>
 
               <h3 className="font-montserrat font-black text-2xl md:text-3xl text-[var(--color-charcoal)] mb-4 leading-snug">
-                {display.title}
+                {featured.title}
               </h3>
               <p className="font-inter text-[var(--color-warm-gray)] text-base leading-relaxed mb-8">
-                {display.description}
+                {featured.description}
               </p>
 
               <div className="space-y-3 mb-8">
                 {[
                   { icon: Calendar, label: eventDate.toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" }), color: "text-[var(--color-rotary-gold)]", bg: "#FFF9EB" },
-                  { icon: MapPin,   label: display.location, color: "text-[var(--color-rotaract-red)]", bg: "#FFF0F3" },
-                  { icon: Clock,    label: display.time,     color: "text-[var(--color-royal-blue)]",   bg: "#EEF3FF" },
+                  { icon: MapPin,   label: featured.location, color: "text-[var(--color-rotaract-red)]", bg: "#FFF0F3" },
+                  { icon: Clock,    label: featured.time,     color: "text-[var(--color-royal-blue)]",   bg: "#EEF3FF" },
                 ].map(({ icon: Icon, label, color, bg }) => (
                   <div key={label} className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: bg }}>
@@ -160,12 +153,19 @@ export default function Events() {
                 </div>
                 <div>
                   <p className="font-poppins font-semibold text-sm text-[var(--color-charcoal)]">{eventDate.getFullYear()}</p>
-                  <p className="font-inter text-xs text-[var(--color-warm-gray)]">{display.location}</p>
+                  <p className="font-inter text-xs text-[var(--color-warm-gray)]">{featured.location}</p>
                 </div>
               </div>
             </div>
           </div>
         </motion.div>
+        ) : loaded ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center bg-white rounded-3xl border border-[var(--border)]">
+            <CalendarClock size={40} className="text-[var(--color-warm-gray)]/40 mb-4" />
+            <p className="font-poppins font-semibold text-[var(--color-charcoal)] mb-1">No upcoming events yet</p>
+            <p className="font-inter text-sm text-[var(--color-warm-gray)]">Check back soon — new events will appear here as they&apos;re scheduled.</p>
+          </div>
+        ) : null}
 
         {/* Other upcoming events */}
         {upcoming.length > 0 && (

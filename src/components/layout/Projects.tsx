@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Folder } from "lucide-react";
+import { ArrowUpRight, Folder, FolderOpen } from "lucide-react";
 
 type Project = {
   _id: string;
@@ -22,22 +22,17 @@ const CATEGORY_COLORS: Record<string, { bg: string; text: string }> = {
   Professional: { bg: "#EEF3FF", text: "#003DA5" },
 };
 
-const FALLBACK: Project[] = [
-  { _id: "1", title: "Project Vidya", category: "Education",    image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop", impact: "500+ Students" },
-  { _id: "2", title: "Green Earth",   category: "Environment",  image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800&auto=format&fit=crop", impact: "10,000+ Trees Planted" },
-  { _id: "3", title: "Health Camp",   category: "Community",    image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=800&auto=format&fit=crop", impact: "2000+ Beneficiaries" },
-  { _id: "4", title: "Youth Leadership Summit", category: "Professional", image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=80&w=800&auto=format&fit=crop", impact: "300+ Delegates" },
-];
-
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [loaded, setLoaded] = useState(false);
   const [filter, setFilter] = useState("All");
 
   useEffect(() => {
     fetch("/api/projects")
       .then((r) => r.json())
-      .then((d) => { setProjects(d.success && d.data.length > 0 ? d.data : FALLBACK); })
-      .catch(() => setProjects(FALLBACK));
+      .then((d) => { setProjects(d.success ? d.data : []); })
+      .catch(() => setProjects([]))
+      .finally(() => setLoaded(true));
   }, []);
 
   const filtered = projects.filter((p) => filter === "All" || p.category === filter);
@@ -62,6 +57,7 @@ export default function Projects() {
           </div>
 
           {/* Filter pills */}
+          {projects.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {CATEGORIES.map((cat) => (
               <button
@@ -77,9 +73,20 @@ export default function Projects() {
               </button>
             ))}
           </div>
+          )}
         </div>
 
+        {/* Empty state */}
+        {loaded && projects.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <FolderOpen size={40} className="text-[var(--color-warm-gray)]/40 mb-4" />
+            <p className="font-poppins font-semibold text-[var(--color-charcoal)] mb-1">Projects coming soon</p>
+            <p className="font-inter text-sm text-[var(--color-warm-gray)]">We&apos;re getting our project showcase ready. Check back shortly.</p>
+          </div>
+        )}
+
         {/* Grid */}
+        {projects.length > 0 && (
         <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
           <AnimatePresence mode="popLayout">
             {filtered.map((project) => {
@@ -138,6 +145,7 @@ export default function Projects() {
             })}
           </AnimatePresence>
         </motion.div>
+        )}
       </div>
     </section>
   );
