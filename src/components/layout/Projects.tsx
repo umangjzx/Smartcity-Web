@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FolderOpen, ChevronLeft, ChevronRight } from "lucide-react";
+import { FolderOpen, ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
 
 type Project = {
@@ -31,6 +31,7 @@ export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [filter, setFilter] = useState("All");
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -177,6 +178,7 @@ export default function Projects() {
                   const accent = meta?.color ?? "var(--color-dhruvam-gold-light)";
                   const accentBg = meta?.bg ?? "rgba(246,181,27,0.1)";
                   const projectNumber = String(index + 1).padStart(2, "0");
+                  const isOpen = expandedId === project._id;
 
                   return (
                     <motion.div
@@ -188,7 +190,19 @@ export default function Projects() {
                       exit={{ opacity: 0, scale: 0.95 }}
                       transition={{ duration: 0.5, delay: index * 0.05 }}
                       whileHover={{ y: -4 }}
-                      className="group relative flex-shrink-0 w-[85vw] sm:w-96 snap-start rounded-3xl overflow-hidden bg-white/[0.04] backdrop-blur-md border border-white/10 hover:border-white/20 hover:shadow-[0_16px_48px_rgba(0,0,0,0.3)] transition-all duration-500"
+                      onClick={() => setExpandedId(isOpen ? null : project._id)}
+                      role="button"
+                      tabIndex={0}
+                      aria-expanded={isOpen}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          setExpandedId(isOpen ? null : project._id);
+                        }
+                      }}
+                      className={`group relative flex-shrink-0 w-[85vw] sm:w-96 snap-start cursor-pointer rounded-3xl overflow-hidden bg-white/[0.04] backdrop-blur-md border transition-all duration-500 ${
+                        isOpen ? "border-[var(--color-dhruvam-gold-light)]/50 hover:shadow-[0_16px_48px_rgba(0,0,0,0.3)]" : "border-white/10 hover:border-white/20 hover:shadow-[0_16px_48px_rgba(0,0,0,0.3)]"
+                      }`}
                     >
                       {/* Image */}
                       <div className="relative w-full aspect-video overflow-hidden">
@@ -236,11 +250,19 @@ export default function Projects() {
                           </span>
                         </div>
 
-                        <h3 className="font-montserrat font-bold text-lg md:text-xl text-white group-hover:text-[var(--color-dhruvam-gold-light)] transition-colors leading-tight mb-2">
-                          {project.title}
-                        </h3>
+                        <div className="flex items-start justify-between gap-2 mb-2">
+                          <h3 className="font-montserrat font-bold text-lg md:text-xl text-white group-hover:text-[var(--color-dhruvam-gold-light)] transition-colors leading-tight">
+                            {project.title}
+                          </h3>
+                          {project.description && (
+                            <ChevronDown
+                              size={18}
+                              className={`shrink-0 mt-1 text-white/40 transition-transform duration-300 ${isOpen ? "rotate-180 text-[var(--color-dhruvam-gold-light)]" : ""}`}
+                            />
+                          )}
+                        </div>
                         {project.description && (
-                          <p className="font-inter text-sm text-white/50 leading-relaxed line-clamp-3">
+                          <p className={`font-inter text-sm text-white/50 leading-relaxed ${isOpen ? "" : "line-clamp-3"}`}>
                             {project.description}
                           </p>
                         )}
