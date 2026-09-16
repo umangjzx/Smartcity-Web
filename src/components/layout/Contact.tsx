@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { MessageSquare, Send, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { backgrounds } from "@/lib/dhruvamAssets";
 
 const contacts = [
   {
@@ -76,13 +78,12 @@ export default function Contact() {
       <div
         className="absolute top-0 right-0 bottom-0 w-1/2 pointer-events-none opacity-[0.12] mix-blend-screen"
         style={{
-          backgroundImage: "url('/assets/dhruvam/backgrounds/lighthouse-night.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center right",
           maskImage: "linear-gradient(to right, transparent 0%, black 50%)",
           WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 50%)",
         }}
-      />
+      >
+        <Image src={backgrounds.lighthouseNight} alt="" fill sizes="50vw" className="object-cover object-right" />
+      </div>
 
       {/* Enlarged shooting-star decoration */}
       <motion.div

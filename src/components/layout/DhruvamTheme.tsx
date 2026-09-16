@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { Compass, Users, BookOpen, ShieldCheck, HeartHandshake } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { backgrounds, characters } from "@/lib/dhruvamAssets";
 
 const principles = [
   {
@@ -62,13 +64,12 @@ export default function DhruvamTheme() {
       <div
         className="absolute inset-0 z-0 opacity-[0.07] mix-blend-screen pointer-events-none"
         style={{
-          backgroundImage: "url('/assets/dhruvam/backgrounds/aurora-sky.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
           maskImage: "linear-gradient(to bottom, transparent 0%, black 20%)",
           WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 20%)",
         }}
-      />
+      >
+        <Image src={backgrounds.auroraSky} alt="" fill sizes="100vw" className="object-cover" />
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <SectionHeader
@@ -296,10 +297,11 @@ export default function DhruvamTheme() {
           viewport={{ once: true }}
           className="absolute bottom-0 right-4 lg:right-32 z-0 w-32 lg:w-48 opacity-45 pointer-events-none mix-blend-screen hidden md:block section-float"
         >
-          <img
-            src="/assets/dhruvam/characters/penguin-back.jpg"
+          <Image
+            src={characters.penguinBack}
             alt=""
             aria-hidden="true"
+            sizes="(min-width: 1024px) 12rem, 8rem"
             className="w-full h-auto drop-shadow-2xl rounded-3xl"
             style={{
               maskImage: "radial-gradient(ellipse at center, black 40%, transparent 70%)",

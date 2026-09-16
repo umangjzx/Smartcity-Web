@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import Image from "next/image";
 import { Globe2, Target } from "lucide-react";
+import { backgrounds, characters } from "@/lib/dhruvamAssets";
 
 const avenues = [
   {
@@ -70,13 +72,12 @@ export default function Avenues() {
       <div
         className="absolute bottom-0 left-0 right-0 h-64 pointer-events-none"
         style={{
-          backgroundImage: "url('/assets/dhruvam/backgrounds/starry-sky.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center bottom",
           maskImage: "linear-gradient(to top, rgba(0,0,0,0.08) 0%, transparent 100%)",
           WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,0.08) 0%, transparent 100%)",
         }}
-      />
+      >
+        <Image src={backgrounds.starrySky} alt="" fill sizes="100vw" className="object-cover object-bottom" />
+      </div>
 
       {/* Decorative hiking penguin */}
       <motion.div
@@ -85,10 +86,11 @@ export default function Avenues() {
         viewport={{ once: true }}
         className="absolute bottom-8 -right-4 lg:right-8 z-0 w-28 lg:w-40 opacity-55 pointer-events-none mix-blend-screen hidden sm:block section-float"
       >
-        <img
-          src="/assets/dhruvam/characters/penguin-hiking.jpg"
+        <Image
+          src={characters.penguinHiking}
           alt=""
           aria-hidden="true"
+          sizes="(min-width: 1024px) 10rem, 7rem"
           className="w-full h-auto drop-shadow-2xl rounded-3xl"
           style={{
             maskImage: "radial-gradient(ellipse at center, black 40%, transparent 70%)",

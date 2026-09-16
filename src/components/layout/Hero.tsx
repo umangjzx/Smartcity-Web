@@ -3,8 +3,10 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useReducedMotion, useMotionValue, useSpring, Variants } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import GuidingStar from "@/components/dhruvam/GuidingStar";
+import { backgrounds, characters } from "@/lib/dhruvamAssets";
 
 // A CTA that drifts toward the cursor within a small radius, snapping back
 // on leave — a small tactile flourish rather than a static button.
@@ -143,13 +145,19 @@ export default function Hero() {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: "url('/assets/dhruvam/backgrounds/hero-aurora.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center top",
             maskImage: "linear-gradient(to bottom, black 20%, transparent 100%)",
             WebkitMaskImage: "linear-gradient(to bottom, black 20%, transparent 100%)",
           }}
-        />
+        >
+          <Image
+            src={backgrounds.heroAurora}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-top"
+          />
+        </div>
       </motion.div>
 
       {/* LAYER B: Guiding light cone — lighthouse/star direction metaphor */}
@@ -263,9 +271,10 @@ export default function Hero() {
         style={{ y: penguinY }}
         className="absolute bottom-0 right-0 md:right-12 lg:right-20 z-10 w-36 md:w-56 lg:w-72 pointer-events-none mix-blend-screen"
       >
-        <img
-          src="/assets/dhruvam/characters/penguin-main.jpg"
+        <Image
+          src={characters.penguinMain}
           alt="Dhruvam Penguin Guide"
+          sizes="(min-width: 1024px) 18rem, (min-width: 768px) 14rem, 9rem"
           className="w-full h-auto drop-shadow-2xl rounded-3xl"
           style={{
             maskImage: "radial-gradient(ellipse 80% 90% at center 60%, black 30%, transparent 75%)",

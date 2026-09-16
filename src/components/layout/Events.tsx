@@ -2,8 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { ArrowRight, CalendarClock, ChevronDown } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { backgrounds, characters } from "@/lib/dhruvamAssets";
 
 type Event = {
   _id: string;
@@ -123,14 +125,9 @@ export default function Events() {
   return (
     <section id="events" className="py-20 md:py-28 relative overflow-hidden">
       {/* Lighthouse glow backdrop */}
-      <div
-        className="absolute inset-0 opacity-[0.15] mix-blend-screen pointer-events-none"
-        style={{
-          backgroundImage: "url('/assets/dhruvam/backgrounds/lighthouse-night.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
+      <div className="absolute inset-0 opacity-[0.15] mix-blend-screen pointer-events-none">
+        <Image src={backgrounds.lighthouseNight} alt="" fill sizes="100vw" className="object-cover" />
+      </div>
 
       {/* Telescope penguin */}
       <motion.div
@@ -139,10 +136,11 @@ export default function Events() {
         viewport={{ once: true }}
         className="absolute bottom-4 -left-6 lg:left-2 z-0 w-24 lg:w-32 opacity-45 pointer-events-none mix-blend-screen hidden sm:block section-float"
       >
-        <img
-          src="/assets/dhruvam/characters/penguin-telescope.jpg"
+        <Image
+          src={characters.penguinTelescope}
           alt=""
           aria-hidden="true"
+          sizes="(min-width: 1024px) 8rem, 6rem"
           className="w-full h-auto drop-shadow-2xl rounded-3xl"
           style={{
             maskImage: "radial-gradient(ellipse at center, black 40%, transparent 70%)",

@@ -1,4 +1,8 @@
 import Link from "next/link";
+import Image from "next/image";
+import umangPhoto from "../../../public/photos/umang-jaiswal.jpg";
+import rotaractGearMark from "../../../public/assets/dhruvam/logos/rotaract-gear-mark.png";
+import { backgrounds } from "@/lib/dhruvamAssets";
 
 // Only social links the Club has actually provided are wired up — a "#"
 // placeholder would look real to a visitor but go nowhere, so unset ones are
@@ -27,14 +31,9 @@ export default function Footer() {
   return (
     <footer className="relative overflow-hidden bg-[var(--color-dhruvam-950)] text-white border-t border-[var(--color-dhruvam-gold-light)]/15">
       {/* Lighthouse glow layer */}
-      <div
-        className="absolute inset-0 opacity-20 mix-blend-screen pointer-events-none"
-        style={{
-          backgroundImage: "url('/assets/dhruvam/backgrounds/lighthouse-night.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
+      <div className="absolute inset-0 opacity-20 mix-blend-screen pointer-events-none">
+        <Image src={backgrounds.lighthouseNight} alt="" fill sizes="100vw" className="object-cover" />
+      </div>
 
       {/* Mountain-star divider at very top */}
       <img
@@ -71,9 +70,11 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-5">
-              <div className="relative w-11 h-11 rounded-full bg-[var(--color-rotaract-red)] flex items-center justify-center shadow-md shrink-0">
-                <span className="font-montserrat font-black text-white text-lg">R</span>
-                <div className="absolute inset-0 rounded-full border-2 border-[var(--color-dhruvam-gold-light)] scale-110 opacity-50" />
+              <div className="relative w-11 h-11 rounded-full bg-white shadow-md shrink-0 flex items-center justify-center overflow-hidden">
+                <div className="relative w-8 h-8">
+                  <Image src={rotaractGearMark} alt="Rotaract Club of Coimbatore Smartcity" fill className="object-contain" />
+                </div>
+                <div className="absolute inset-0 rounded-full border-2 border-[var(--color-dhruvam-gold-light)] scale-110 opacity-50 pointer-events-none" />
               </div>
               <div className="flex flex-col leading-none">
                 <span className="font-poppins font-bold text-sm text-white">Rotaract Club of</span>
@@ -167,9 +168,16 @@ export default function Footer() {
               Terms of Service
             </Link>
             {/* Designer credit — inline, not a separate card */}
-            <span className="font-inter text-xs text-white/25">
+            <span className="font-inter text-xs text-white/25 inline-flex items-center gap-1.5">
               Designed &amp; Developed by{" "}
-              <span className="text-[var(--color-dhruvam-gold-light)]/60 hover:text-[var(--color-dhruvam-gold-light)] transition-colors cursor-default">
+              <span className="inline-flex items-center gap-1.5 text-[var(--color-dhruvam-gold-light)]/60 hover:text-[var(--color-dhruvam-gold-light)] transition-colors cursor-default">
+                <Image
+                  src={umangPhoto}
+                  alt=""
+                  width={20}
+                  height={20}
+                  className="rounded-full object-cover border border-[var(--color-dhruvam-gold-light)]/30"
+                />
                 Rtr. Umang Jaiswal
               </span>
             </span>

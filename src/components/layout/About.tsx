@@ -2,7 +2,9 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 import { Building2, Calendar, Fingerprint } from "lucide-react";
+import { characters } from "@/lib/dhruvamAssets";
 
 const timeline = [
   {
@@ -242,10 +244,11 @@ export default function About() {
               viewport={{ once: true }}
               className="absolute -top-16 -right-4 lg:-right-12 z-0 w-32 lg:w-40 opacity-65 pointer-events-none mix-blend-screen hidden sm:block section-float"
             >
-              <img
-                src="/assets/dhruvam/characters/penguin-lantern.jpg"
+              <Image
+                src={characters.penguinLantern}
                 alt=""
                 aria-hidden="true"
+                sizes="(min-width: 1024px) 10rem, 8rem"
                 className="w-full h-auto drop-shadow-2xl rounded-3xl"
                 style={{
                   maskImage: "radial-gradient(ellipse at center, black 40%, transparent 70%)",

@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { backgrounds } from '@/lib/dhruvamAssets';
 
 type Star = { id: number; left: string; top: string; size: number; delay: number; duration: number };
 
@@ -29,14 +30,16 @@ export default function CinematicBackground() {
   return (
     <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
       {/* LAYER 1: BASE CELESTIAL TEXTURE */}
-      <div 
-        className="absolute inset-0 z-0 opacity-100"
-        style={{
-          backgroundImage: "url('/assets/dhruvam/backgrounds/celestial-texture.jpg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      />
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={backgrounds.celestialTexture}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+      </div>
       <div className="absolute inset-0 bg-gradient-to-b from-[#020B1C]/60 via-[#06152B]/40 to-[#020B1C]/80 mix-blend-overlay" />
 
       {/* LAYER 2: AURORA */}
@@ -73,16 +76,21 @@ export default function CinematicBackground() {
       </div>
 
       {/* LAYER 4: DISTANT MOUNTAINS */}
-      <div 
-        className="absolute bottom-0 w-full h-[45vh] z-10 opacity-70" 
+      <div
+        className="absolute bottom-0 w-full h-[45vh] z-10 opacity-70"
         style={{
-          backgroundImage: "url('/assets/dhruvam/backgrounds/mountains.jpg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center bottom',
           maskImage: 'linear-gradient(to top, black 40%, transparent 100%)',
           WebkitMaskImage: 'linear-gradient(to top, black 40%, transparent 100%)'
         }}
-      />
+      >
+        <Image
+          src={backgrounds.mountains}
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover object-bottom"
+        />
+      </div>
 
       {/* LAYER 5: READABILITY OVERLAY VIGNETTE */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_#020B1C_100%)] opacity-40 z-20" />

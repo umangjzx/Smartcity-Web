@@ -2,8 +2,10 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
+import rotaractGearMark from "../../../public/assets/dhruvam/logos/rotaract-gear-mark.png";
 
 const navLinks = [
   { name: "Our Journey", href: "#dhruvam" },
@@ -66,9 +68,11 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative w-10 h-10 rounded-full bg-[var(--color-rotaract-red)] flex items-center justify-center shadow-md shrink-0">
-            <span className="font-montserrat font-black text-white text-lg">R</span>
-            <div className="absolute inset-0 rounded-full border-2 border-[var(--color-dhruvam-gold-light)] scale-110 opacity-60" />
+          <div className="relative w-10 h-10 rounded-full bg-white shadow-md shrink-0 flex items-center justify-center overflow-hidden">
+            <div className="relative w-7 h-7">
+              <Image src={rotaractGearMark} alt="Rotaract Club of Coimbatore Smartcity" fill className="object-contain" />
+            </div>
+            <div className="absolute inset-0 rounded-full border-2 border-[var(--color-dhruvam-gold-light)] scale-110 opacity-60 pointer-events-none" />
           </div>
           <div className="flex flex-col leading-none">
             <span className="font-montserrat font-black text-base tracking-wide text-[var(--color-dhruvam-gold-light)]">

@@ -2,7 +2,9 @@
 
 import { useState, useRef } from "react";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { backgrounds } from "@/lib/dhruvamAssets";
 
 const benefits = [
   {
@@ -59,14 +61,9 @@ export default function Membership() {
   return (
     <section id="join" className="pt-24 md:pt-32 relative overflow-hidden">
       {/* Starry Sky Background */}
-      <div
-        className="absolute inset-0 z-0 opacity-35 mix-blend-screen"
-        style={{
-          backgroundImage: "url('/assets/dhruvam/backgrounds/starry-sky.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
+      <div className="absolute inset-0 z-0 opacity-35 mix-blend-screen">
+        <Image src={backgrounds.starrySky} alt="" fill sizes="100vw" className="object-cover" />
+      </div>
       <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-dhruvam-950)] via-transparent to-[var(--color-dhruvam-950)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 pb-0">
