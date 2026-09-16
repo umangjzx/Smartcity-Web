@@ -65,6 +65,7 @@ export default function Events() {
   const [upcoming, setUpcoming] = useState<Event[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Desktop mouse wheels only send vertical delta by default, so a purely
@@ -82,6 +83,26 @@ export default function Events() {
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => el.removeEventListener("wheel", onWheel);
   }, [upcoming.length]);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const card = el.querySelector<HTMLElement>("[data-event-card]");
+      const amount = (card?.offsetWidth ?? 288) + 20;
+      setActiveIndex(Math.round(el.scrollLeft / amount));
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [upcoming.length]);
+
+  const scrollToIndex = (idx: number) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>("[data-event-card]");
+    const amount = (card?.offsetWidth ?? 288) + 20;
+    el.scrollTo({ left: idx * amount, behavior: "smooth" });
+  };
 
   useEffect(() => {
     fetch("/api/events")
@@ -187,10 +208,13 @@ export default function Events() {
                     ))}
                   </div>
 
-                  <button className="group inline-flex items-center gap-2 px-7 py-3.5 bg-[#F6B51B] hover:bg-[var(--color-dhruvam-gold-light)] text-[#020B1C] rounded-full font-poppins font-bold text-sm transition-all w-fit shadow-[0_4px_20px_rgba(246,181,27,0.3)] hover:shadow-[0_8px_32px_rgba(246,181,27,0.5)] hover:-translate-y-0.5">
+                  <a
+                    href={`mailto:rotaractsmartcity@gmail.com?subject=${encodeURIComponent(`Registration: ${featured.title}`)}`}
+                    className="group inline-flex items-center gap-2 px-7 py-3.5 bg-[#F6B51B] hover:bg-[var(--color-dhruvam-gold-light)] text-[#020B1C] rounded-full font-poppins font-bold text-sm transition-all w-fit shadow-[0_4px_20px_rgba(246,181,27,0.3)] hover:shadow-[0_8px_32px_rgba(246,181,27,0.5)] hover:-translate-y-0.5"
+                  >
                     Register Now
                     <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
-                  </button>
+                  </a>
                 </div>
 
                 {/* Right: Countdown */}
@@ -258,6 +282,7 @@ export default function Events() {
                 return (
                   <motion.div
                     key={ev._id}
+                    data-event-card
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -335,6 +360,23 @@ export default function Events() {
                 );
               })}
             </div>
+
+            {/* Scroll progress dots */}
+            {upcoming.length > 1 && (
+              <div className="flex items-center justify-center gap-1.5 mt-6">
+                {upcoming.map((ev, i) => (
+                  <button
+                    key={ev._id}
+                    type="button"
+                    onClick={() => scrollToIndex(i)}
+                    aria-label={`Go to event ${i + 1}`}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      i === activeIndex ? "w-6 bg-[var(--color-dhruvam-gold-light)]" : "w-1.5 bg-white/20 hover:bg-white/40"
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

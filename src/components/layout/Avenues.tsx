@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Globe2, Megaphone } from "lucide-react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
+import { Globe2, Target } from "lucide-react";
 
 const avenues = [
   {
@@ -43,10 +43,10 @@ const avenues = [
     span: "md:col-span-2",
   },
   {
-    title: "Public Relations",
-    description: "Amplifying our mission through strategic brand building and outreach. We tell our story with clarity, pride, and purpose — reaching every corner of our community.",
+    title: "District Priority Projects",
+    description: "Rallying behind the initiatives Rotary District 3206 has identified as top priorities each year — aligning our local effort with the wider district's mission.",
     icon: null,
-    fallbackIcon: Megaphone,
+    fallbackIcon: Target,
     accent: "var(--color-aurora-emerald)",
     accentRaw: "rgba(62,203,146,0.12)",
     number: "05",
@@ -208,10 +208,23 @@ function BentoCard({
   wide?: boolean;
 }) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const rotateX = useMotionValue(0);
+  const rotateY = useMotionValue(0);
+  const springRotateX = useSpring(rotateX, { stiffness: 200, damping: 20 });
+  const springRotateY = useSpring(rotateY, { stiffness: 200, damping: 20 });
 
   function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
-    const { left, top } = currentTarget.getBoundingClientRect();
-    setMousePosition({ x: clientX - left, y: clientY - top });
+    const rect = currentTarget.getBoundingClientRect();
+    setMousePosition({ x: clientX - rect.left, y: clientY - rect.top });
+    // Subtle glass-tilt toward the cursor — most pronounced near the edges.
+    const px = (clientX - rect.left) / rect.width - 0.5;
+    const py = (clientY - rect.top) / rect.height - 0.5;
+    rotateY.set(px * 6);
+    rotateX.set(py * -6);
+  }
+  function handleMouseLeave() {
+    rotateX.set(0);
+    rotateY.set(0);
   }
 
   return (
@@ -221,6 +234,8 @@ function BentoCard({
       viewport={{ once: true }}
       transition={{ duration: 0.65, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
       onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ rotateX: springRotateX, rotateY: springRotateY, transformPerspective: 800 }}
       className={`group relative overflow-hidden bg-white/[0.04] backdrop-blur-xl border border-white/10 hover:border-white/20 transition-all duration-500 rounded-3xl min-h-[220px] ${className}`}
     >
       {/* Mouse-tracking radial gradient — uses per-card accent color */}

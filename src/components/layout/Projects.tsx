@@ -17,14 +17,14 @@ type Project = {
 // Matches the club's actual five Avenues of Service (see Avenues.tsx) rather
 // than an ad-hoc category set, so a project's tag means the same thing here
 // as it does there.
-const CATEGORIES = ["All", "Club Service", "Community Service", "Professional Development", "International Service", "Public Relations"];
+const CATEGORIES = ["All", "Club Service", "Community Service", "Professional Development", "International Service", "District Priority Projects"];
 
 const CATEGORY_META: Record<string, { color: string; icon: string; bg: string }> = {
-  "Club Service":              { color: "var(--color-dhruvam-gold-light)", icon: "/assets/dhruvam/icons/filled/team.svg",      bg: "rgba(255,214,90,0.12)" },
-  "Community Service":         { color: "var(--color-aurora-teal)",        icon: "/assets/dhruvam/icons/filled/community.svg", bg: "rgba(47,191,166,0.12)" },
-  "Professional Development":  { color: "var(--color-aurora-blue)",        icon: "/assets/dhruvam/icons/filled/learning.svg",  bg: "rgba(74,127,217,0.12)" },
-  "International Service":     { color: "var(--color-aurora-violet)",      icon: "/assets/dhruvam/icons/outline/global.svg",   bg: "rgba(140,127,224,0.12)" },
-  "Public Relations":          { color: "var(--color-aurora-emerald)",     icon: "/assets/dhruvam/icons/outline/share.svg",    bg: "rgba(62,203,146,0.12)" },
+  "Club Service":               { color: "var(--color-dhruvam-gold-light)", icon: "/assets/dhruvam/icons/filled/team.svg",      bg: "rgba(255,214,90,0.12)" },
+  "Community Service":          { color: "var(--color-aurora-teal)",        icon: "/assets/dhruvam/icons/filled/community.svg", bg: "rgba(47,191,166,0.12)" },
+  "Professional Development":   { color: "var(--color-aurora-blue)",        icon: "/assets/dhruvam/icons/filled/learning.svg",  bg: "rgba(74,127,217,0.12)" },
+  "International Service":      { color: "var(--color-aurora-violet)",      icon: "/assets/dhruvam/icons/outline/global.svg",   bg: "rgba(140,127,224,0.12)" },
+  "District Priority Projects": { color: "var(--color-aurora-emerald)",     icon: "/assets/dhruvam/icons/filled/awards.svg",    bg: "rgba(62,203,146,0.12)" },
 };
 
 export default function Projects() {
@@ -32,6 +32,7 @@ export default function Projects() {
   const [loaded, setLoaded] = useState(false);
   const [filter, setFilter] = useState("All");
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -66,6 +67,34 @@ export default function Projects() {
     const amount = (card?.offsetWidth ?? 320) + 24;
     el.scrollBy({ left: dir * amount, behavior: "smooth" });
   };
+
+  const scrollToIndex = (idx: number) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>("[data-project-card]");
+    const amount = (card?.offsetWidth ?? 320) + 24;
+    el.scrollTo({ left: idx * amount, behavior: "smooth" });
+  };
+
+  // Track which card is in view so the progress dots below the carousel
+  // reflect scroll position, and reset to the start whenever the filter changes.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const card = el.querySelector<HTMLElement>("[data-project-card]");
+      const amount = (card?.offsetWidth ?? 320) + 24;
+      setActiveIndex(Math.round(el.scrollLeft / amount));
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [filtered.length]);
+
+  useEffect(() => {
+    // Scrolling back to the start fires the 'scroll' listener above, which
+    // derives activeIndex from scrollLeft — no need to also set it here.
+    scrollRef.current?.scrollTo({ left: 0 });
+  }, [filter]);
 
   return (
     <section id="projects" className="py-20 md:py-28 relative overflow-hidden">
@@ -278,6 +307,23 @@ export default function Projects() {
                 })}
               </AnimatePresence>
             </div>
+
+            {/* Scroll progress dots */}
+            {filtered.length > 1 && (
+              <div className="flex items-center justify-center gap-1.5 mt-6">
+                {filtered.map((p, i) => (
+                  <button
+                    key={p._id}
+                    type="button"
+                    onClick={() => scrollToIndex(i)}
+                    aria-label={`Go to project ${i + 1}`}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      i === activeIndex ? "w-6 bg-[var(--color-dhruvam-gold-light)]" : "w-1.5 bg-white/20 hover:bg-white/40"
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

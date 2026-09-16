@@ -20,7 +20,7 @@ const avenues = [
   "Community Service",
   "Professional Development",
   "International Service",
-  "Public Relations",
+  "District Priority Projects",
 ];
 
 export default function Footer() {

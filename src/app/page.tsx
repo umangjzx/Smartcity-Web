@@ -11,6 +11,7 @@ import Contact from "@/components/layout/Contact";
 import Footer from "@/components/layout/Footer";
 import SectionDivider from "@/components/ui/SectionDivider";
 import CinematicBackground from "@/components/layout/CinematicBackground";
+import BackToTop from "@/components/layout/BackToTop";
 
 export default function Home() {
   return (
@@ -58,6 +59,7 @@ export default function Home() {
       <Contact />
 
       <Footer />
+      <BackToTop />
     </main>
   );
 }

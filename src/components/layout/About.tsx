@@ -128,6 +128,38 @@ export default function About() {
                 2021
               </span>
 
+              {/* Rotating charter medallion — a small "wax seal" flourish */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.7 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, type: "spring" }}
+                className="absolute -top-2 right-0 lg:-right-4 w-20 h-20 hidden sm:block pointer-events-none"
+                aria-hidden="true"
+              >
+                <motion.svg
+                  viewBox="0 0 100 100"
+                  className="w-full h-full"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                >
+                  <defs>
+                    <path id="medallion-arc" d="M 50 50 m -38 0 a 38 38 0 1 1 76 0 a 38 38 0 1 1 -76 0" />
+                  </defs>
+                  <circle cx="50" cy="50" r="46" fill="none" stroke="var(--color-dhruvam-gold-light)" strokeOpacity="0.15" />
+                  <text fontSize="8.2" fill="var(--color-dhruvam-gold-light)" fillOpacity="0.55" letterSpacing="2.5">
+                    <textPath href="#medallion-arc" startOffset="0%">
+                      • ESTABLISHED 2021 • COIMBATORE SMARTCITY
+                    </textPath>
+                  </text>
+                </motion.svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-9 h-9 rounded-full bg-[var(--color-dhruvam-gold)]/10 border border-[var(--color-dhruvam-gold-light)]/30 flex items-center justify-center">
+                    <span className="font-montserrat font-black text-[10px] text-[var(--color-dhruvam-gold-light)]">05</span>
+                  </div>
+                </div>
+              </motion.div>
+
               <p className="relative font-inter text-white/60 text-base md:text-lg leading-relaxed mb-10">
                 We are a vibrant community of young professionals and students dedicated to making a positive impact in Coimbatore and beyond. Through leadership, service, and innovation, we strive to transform our community while building lifelong skills.
               </p>

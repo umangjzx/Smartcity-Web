@@ -17,7 +17,7 @@ type Tab = "overview" | "projects" | "events" | "members" | "messages";
 // Must match the live site's taxonomy in Projects.tsx / Avenues.tsx — these
 // used to be an unrelated ad-hoc list, so projects saved with the old values
 // never matched any filter pill on the public site except "All".
-const PROJECT_CATEGORIES = ["Club Service", "Community Service", "Professional Development", "International Service", "Public Relations"];
+const PROJECT_CATEGORIES = ["Club Service", "Community Service", "Professional Development", "International Service", "District Priority Projects"];
 
 const emptyProject = { title: "", category: PROJECT_CATEGORIES[0], image: "", impact: "", description: "" };
 const emptyEvent   = { title: "", description: "", date: "", location: "", time: "", isFeatured: false };

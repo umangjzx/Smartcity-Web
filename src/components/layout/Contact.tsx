@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, Send, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 
 const contacts = [
@@ -202,9 +202,25 @@ export default function Contact() {
             transition={{ duration: 0.7 }}
           >
             <div
-              className="relative bg-white/[0.04] backdrop-blur-xl rounded-3xl p-8 md:p-10 border border-white/10"
+              className="relative bg-white/[0.04] backdrop-blur-xl rounded-3xl p-8 md:p-10 border border-white/10 overflow-hidden"
               style={{ boxShadow: "inset 0 0 60px rgba(246,181,27,0.02), 0 0 40px rgba(0,0,0,0.2)" }}
             >
+              {/* Shooting star flourish on a successful send */}
+              <AnimatePresence>
+                {status === "success" && (
+                  <motion.img
+                    key="send-success-star"
+                    src="/assets/dhruvam/decorations/shooting-star.svg"
+                    alt=""
+                    aria-hidden="true"
+                    initial={{ x: "-15%", y: "120%", opacity: 0, rotate: -15 }}
+                    animate={{ x: "115%", y: "-30%", opacity: [0, 1, 1, 0] }}
+                    transition={{ duration: 1.3, ease: "easeOut" }}
+                    className="absolute w-28 h-14 pointer-events-none z-30"
+                  />
+                )}
+              </AnimatePresence>
+
               <h3 className="font-montserrat font-bold text-2xl text-white mb-1">Send a Message</h3>
               <p className="font-inter text-sm text-white/40 mb-8">We&apos;ll get back to you within 24 hours.</p>
 

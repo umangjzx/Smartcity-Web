@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import BackToTop from "@/components/layout/BackToTop";
 import LegalPage from "@/components/legal/LegalPage";
 
 export const metadata: Metadata = {
@@ -81,6 +82,7 @@ export default function TermsOfServicePage() {
         </p>
       </LegalPage>
       <Footer />
+      <BackToTop />
     </main>
   );
 }

@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 
 const navLinks = [
   { name: "Our Journey", href: "#dhruvam" },
@@ -19,6 +19,11 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeHash, setActiveHash] = useState("");
   const observerRef = useRef<IntersectionObserver | null>(null);
+
+  // Guiding-path progress bar — a thin gold line that fills as you scroll,
+  // echoing the "star that guides" motif at the top of every page.
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 200, damping: 30, restDelta: 0.001 });
 
   const handleScroll = useCallback(() => {
     setScrolled(window.scrollY > 40);
@@ -112,6 +117,12 @@ export default function Navbar() {
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
+
+      {/* Guiding-path scroll progress */}
+      <motion.div
+        style={{ scaleX: progress }}
+        className="absolute bottom-0 left-0 right-0 h-[2px] origin-left bg-gradient-to-r from-[var(--color-dhruvam-gold)] via-[var(--color-dhruvam-gold-light)] to-[var(--color-aurora-teal)] shadow-[0_0_8px_rgba(246,181,27,0.6)]"
+      />
 
       {/* Mobile drawer */}
       <AnimatePresence>

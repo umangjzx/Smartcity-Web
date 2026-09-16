@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Compass, Users, BookOpen, ShieldCheck, HeartHandshake } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
 
@@ -9,6 +10,7 @@ const principles = [
     icon: Compass,
     title: "Direction",
     description: "A constant source of direction, purpose, and hope.",
+    detail: "Every project this year starts by asking one question: where is this pointing us?",
     accent: "var(--color-dhruvam-gold-light)",
     glow: "rgba(255,214,90,0.2)",
     border: "rgba(255,214,90,0.25)",
@@ -17,6 +19,7 @@ const principles = [
     icon: Users,
     title: "Unity",
     description: "Unity and collective strength through interlinked hands.",
+    detail: "We grow by working alongside each other, not in spite of each other.",
     accent: "var(--color-aurora-teal)",
     glow: "rgba(47,191,166,0.2)",
     border: "rgba(47,191,166,0.25)",
@@ -25,6 +28,7 @@ const principles = [
     icon: BookOpen,
     title: "Wisdom",
     description: "Thinking, acting, and leading with integrity and wisdom.",
+    detail: "Good intentions need good judgment — we try to bring both to every decision.",
     accent: "var(--color-aurora-blue)",
     glow: "rgba(74,127,217,0.2)",
     border: "rgba(74,127,217,0.25)",
@@ -33,6 +37,7 @@ const principles = [
     icon: ShieldCheck,
     title: "Courage",
     description: "Standing firm and guiding with unwavering courage.",
+    detail: "Real service sometimes means the harder, less comfortable choice.",
     accent: "var(--color-aurora-violet)",
     glow: "rgba(140,127,224,0.2)",
     border: "rgba(140,127,224,0.25)",
@@ -41,6 +46,7 @@ const principles = [
     icon: HeartHandshake,
     title: "Gratitude",
     description: "Staying grounded and helping others move toward light.",
+    detail: "We remember whose shoulders we stand on, and pay it forward.",
     accent: "var(--color-aurora-emerald)",
     glow: "rgba(62,203,146,0.2)",
     border: "rgba(62,203,146,0.25)",
@@ -48,6 +54,8 @@ const principles = [
 ];
 
 export default function DhruvamTheme() {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
   return (
     <section id="dhruvam" className="relative py-20 md:py-28 lg:py-32 overflow-hidden">
       {/* Subtle aurora-sky background layer for depth differentiation from Hero */}
@@ -152,20 +160,31 @@ export default function DhruvamTheme() {
                   />
                 </svg>
 
-                {/* Principle card */}
+                {/* Principle card — click to reveal how we live it */}
                 <motion.div
+                  layout
                   whileHover={{ scale: 1.06, y: -4 }}
                   transition={{ type: "spring", stiffness: 300 }}
-                  className="relative group rounded-2xl p-4 border backdrop-blur-md cursor-default overflow-hidden"
+                  onClick={() => setActiveIndex(activeIndex === i ? null : i)}
+                  role="button"
+                  tabIndex={0}
+                  aria-expanded={activeIndex === i}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setActiveIndex(activeIndex === i ? null : i);
+                    }
+                  }}
+                  className="relative group rounded-2xl p-4 border backdrop-blur-md cursor-pointer overflow-hidden"
                   style={{
                     background: `linear-gradient(135deg, rgba(6,21,43,0.9), rgba(2,11,28,0.95))`,
-                    borderColor: p.border,
-                    boxShadow: `0 0 20px ${p.glow}`,
+                    borderColor: activeIndex === i ? p.accent : p.border,
+                    boxShadow: activeIndex === i ? `0 0 28px ${p.glow}` : `0 0 20px ${p.glow}`,
                   }}
                 >
-                  {/* Accent bottom glow on hover */}
+                  {/* Accent bottom glow on hover/active */}
                   <div
-                    className="absolute bottom-0 left-0 right-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    className={`absolute bottom-0 left-0 right-0 h-0.5 transition-opacity duration-300 ${activeIndex === i ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
                     style={{ background: p.accent }}
                   />
                   <div
@@ -180,6 +199,20 @@ export default function DhruvamTheme() {
                   <p className="font-inter text-[10px] text-white/55 leading-snug">
                     {p.description}
                   </p>
+                  <AnimatePresence initial={false}>
+                    {activeIndex === i && (
+                      <motion.p
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25 }}
+                        className="font-inter text-[10px] leading-snug pt-2 mt-2 border-t overflow-hidden"
+                        style={{ color: p.accent, borderColor: p.border }}
+                      >
+                        {p.detail}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
                 </motion.div>
               </motion.div>
             );
@@ -200,17 +233,29 @@ export default function DhruvamTheme() {
 
           {principles.map((p, i) => {
             const Icon = p.icon;
+            const isActive = activeIndex === i;
             return (
               <motion.div
                 key={p.title}
+                layout
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="flex items-center gap-4 rounded-2xl p-4 border backdrop-blur-md"
+                onClick={() => setActiveIndex(isActive ? null : i)}
+                role="button"
+                tabIndex={0}
+                aria-expanded={isActive}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setActiveIndex(isActive ? null : i);
+                  }
+                }}
+                className="flex items-start gap-4 rounded-2xl p-4 border backdrop-blur-md cursor-pointer"
                 style={{
                   background: "linear-gradient(135deg, rgba(6,21,43,0.85), rgba(2,11,28,0.9))",
-                  borderColor: p.border,
+                  borderColor: isActive ? p.accent : p.border,
                 }}
               >
                 <div
@@ -219,11 +264,25 @@ export default function DhruvamTheme() {
                 >
                   <Icon size={22} style={{ color: p.accent }} />
                 </div>
-                <div>
+                <div className="flex-1 min-w-0">
                   <h3 className="font-poppins font-bold text-sm text-white uppercase tracking-wider mb-0.5">
                     {p.title}
                   </h3>
                   <p className="font-inter text-xs text-white/55 leading-snug">{p.description}</p>
+                  <AnimatePresence initial={false}>
+                    {isActive && (
+                      <motion.p
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25 }}
+                        className="font-inter text-xs leading-snug pt-2 mt-2 border-t overflow-hidden"
+                        style={{ color: p.accent, borderColor: p.border }}
+                      >
+                        {p.detail}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
                 </div>
               </motion.div>
             );
