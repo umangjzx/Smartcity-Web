@@ -18,7 +18,7 @@ async function dbConnect() {
 
   if (!cached.promise) {
     const mongoURI = getMongoURI();
-    
+
     if (!mongoURI) {
       throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
     }
@@ -31,7 +31,12 @@ async function dbConnect() {
       return mongoose;
     });
   }
-  cached.conn = await cached.promise;
+  try {
+    cached.conn = await cached.promise;
+  } catch (err) {
+    cached.promise = null;
+    throw err;
+  }
   return cached.conn;
 }
 
