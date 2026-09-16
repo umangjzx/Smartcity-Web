@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FolderOpen } from "lucide-react";
+import { FolderOpen, ChevronLeft, ChevronRight } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
 
 type Project = {
@@ -31,6 +31,7 @@ export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [filter, setFilter] = useState("All");
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch("/api/projects")
@@ -41,6 +42,29 @@ export default function Projects() {
   }, []);
 
   const filtered = projects.filter((p) => filter === "All" || p.category === filter);
+
+  // A plain mouse wheel only sends vertical delta, so this horizontal strip
+  // would otherwise just scroll the page — redirect that delta into scrollLeft.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && el.scrollWidth > el.clientWidth) {
+        el.scrollLeft += e.deltaY;
+        e.preventDefault();
+      }
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [filtered.length]);
+
+  const scrollByCard = (dir: 1 | -1) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>("[data-project-card]");
+    const amount = (card?.offsetWidth ?? 320) + 24;
+    el.scrollBy({ left: dir * amount, behavior: "smooth" });
+  };
 
   return (
     <section id="projects" className="py-20 md:py-28 relative overflow-hidden">
@@ -73,7 +97,7 @@ export default function Projects() {
         />
       </motion.div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <SectionHeader
           title="Projects & Impact"
           eyebrow="Our Milestones"
@@ -118,126 +142,120 @@ export default function Projects() {
           </div>
         )}
 
-        {/* Journey Timeline */}
+        {/* Horizontal scrolling project carousel */}
         {projects.length > 0 && (
           <div className="relative mt-8">
-            {/* Vertical guiding path */}
-            <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-white/8 transform md:-translate-x-1/2" />
+            {/* Prev/Next controls — desktop only, mobile relies on touch swipe */}
+            <button
+              type="button"
+              onClick={() => scrollByCard(-1)}
+              aria-label="Scroll to previous project"
+              className="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full items-center justify-center bg-[#020B1C]/80 border border-white/15 text-white/70 hover:text-[#020B1C] hover:bg-[var(--color-dhruvam-gold-light)] hover:border-[var(--color-dhruvam-gold-light)] backdrop-blur-md transition-all duration-300 shadow-lg"
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollByCard(1)}
+              aria-label="Scroll to next project"
+              className="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full items-center justify-center bg-[#020B1C]/80 border border-white/15 text-white/70 hover:text-[#020B1C] hover:bg-[var(--color-dhruvam-gold-light)] hover:border-[var(--color-dhruvam-gold-light)] backdrop-blur-md transition-all duration-300 shadow-lg"
+            >
+              <ChevronRight size={18} />
+            </button>
 
-            <AnimatePresence mode="popLayout">
-              {filtered.map((project, index) => {
-                const meta = CATEGORY_META[project.category];
-                const accent = meta?.color ?? "var(--color-dhruvam-gold-light)";
-                const accentBg = meta?.bg ?? "rgba(246,181,27,0.1)";
-                const isEven = index % 2 === 0;
-                const projectNumber = String(index + 1).padStart(2, "0");
+            {/* Edge fade hints */}
+            <div className="pointer-events-none absolute left-0 top-0 bottom-4 w-8 sm:w-16 z-20 bg-gradient-to-r from-[#020B1C] to-transparent" />
+            <div className="pointer-events-none absolute right-0 top-0 bottom-4 w-8 sm:w-16 z-20 bg-gradient-to-l from-[#020B1C] to-transparent" />
 
-                return (
-                  <motion.div
-                    layout
-                    key={project._id}
-                    initial={{ opacity: 0, y: 32 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.5, delay: index * 0.05 }}
-                    className={`relative flex items-start mb-16 md:mb-24 ${isEven ? "md:flex-row-reverse" : "md:flex-row"}`}
-                  >
-                    {/* Timeline Node — pulsing glow ring + guiding star */}
-                    <div className="absolute left-8 md:left-1/2 transform -translate-x-1/2 z-20">
-                      {/* Outer glow ring */}
-                      <div
-                        className="dhruvam-glow-ring absolute inset-[-8px] rounded-full border opacity-50"
-                        style={{ borderColor: accent }}
-                      />
-                      <div
-                        className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg"
-                        style={{ background: accentBg, border: `1px solid ${accent}` }}
-                      >
+            <div
+              ref={scrollRef}
+              className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide"
+            >
+              <AnimatePresence mode="popLayout">
+                {filtered.map((project, index) => {
+                  const meta = CATEGORY_META[project.category];
+                  const accent = meta?.color ?? "var(--color-dhruvam-gold-light)";
+                  const accentBg = meta?.bg ?? "rgba(246,181,27,0.1)";
+                  const projectNumber = String(index + 1).padStart(2, "0");
+
+                  return (
+                    <motion.div
+                      layout
+                      data-project-card
+                      key={project._id}
+                      initial={{ opacity: 0, x: 32 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.5, delay: index * 0.05 }}
+                      whileHover={{ y: -4 }}
+                      className="group relative flex-shrink-0 w-[85vw] sm:w-96 snap-start rounded-3xl overflow-hidden bg-white/[0.04] backdrop-blur-md border border-white/10 hover:border-white/20 hover:shadow-[0_16px_48px_rgba(0,0,0,0.3)] transition-all duration-500"
+                    >
+                      {/* Image */}
+                      <div className="relative w-full aspect-video overflow-hidden">
                         <img
-                          src="/assets/dhruvam/effects/guiding-star.svg"
-                          alt=""
+                          src={project.image}
+                          alt={project.title}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                        <div
+                          className="absolute inset-0 bg-gradient-to-t from-[#020B1C]/90 via-[#020B1C]/30 to-transparent"
+                        />
+
+                        {/* Ghost project number — large, in top-left of image */}
+                        <span
+                          className="absolute top-3 left-4 font-montserrat font-black text-5xl leading-none text-white/10 select-none pointer-events-none"
                           aria-hidden="true"
-                          className="w-5 h-5"
+                        >
+                          {projectNumber}
+                        </span>
+                      </div>
+
+                      {/* Content — badge OUTSIDE overflow:hidden, on the border */}
+                      <div className="relative p-6">
+                        {/* SVG Badge — now outside the image's overflow:hidden */}
+                        <div className="absolute -top-6 right-4 z-30">
+                          <img
+                            src="/assets/dhruvam/ui/badges/completed.svg"
+                            alt="Completed"
+                            className="w-14 h-14 drop-shadow-[0_4px_12px_rgba(246,181,27,0.3)]"
+                          />
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-2 mb-3">
+                          <span
+                            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold font-inter tracking-wider uppercase"
+                            style={{ background: accentBg, color: accent }}
+                          >
+                            {meta?.icon && (
+                              <img src={meta.icon} alt="" aria-hidden="true" className="w-3 h-3" />
+                            )}
+                            {project.category}
+                          </span>
+                          <span className="font-inter text-[10px] font-medium tracking-wider text-white/40 bg-white/5 border border-white/10 px-3 py-1 rounded-full uppercase">
+                            {project.impact}
+                          </span>
+                        </div>
+
+                        <h3 className="font-montserrat font-bold text-lg md:text-xl text-white group-hover:text-[var(--color-dhruvam-gold-light)] transition-colors leading-tight mb-2">
+                          {project.title}
+                        </h3>
+                        {project.description && (
+                          <p className="font-inter text-sm text-white/50 leading-relaxed line-clamp-3">
+                            {project.description}
+                          </p>
+                        )}
+
+                        {/* Category color accent on bottom */}
+                        <div
+                          className="absolute bottom-0 left-0 right-0 h-0.5 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"
+                          style={{ background: `linear-gradient(to right, ${accent}, transparent)` }}
                         />
                       </div>
-                    </div>
-
-                    {/* Content Box */}
-                    <div className="w-full pl-20 md:pl-0 md:w-1/2 flex">
-                      <div className={`w-full ${isEven ? "md:pl-14" : "md:pr-14"}`}>
-                        <motion.div
-                          whileHover={{ y: -4 }}
-                          transition={{ type: "spring", stiffness: 300 }}
-                          className="group relative rounded-3xl overflow-hidden bg-white/[0.04] backdrop-blur-md border border-white/10 hover:border-white/20 hover:shadow-[0_16px_48px_rgba(0,0,0,0.3)] transition-all duration-500"
-                        >
-                          {/* Image */}
-                          <div className="relative w-full aspect-video overflow-hidden">
-                            <img
-                              src={project.image}
-                              alt={project.title}
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                            />
-                            <div
-                              className="absolute inset-0 bg-gradient-to-t from-[#020B1C]/90 via-[#020B1C]/30 to-transparent"
-                            />
-
-                            {/* Ghost project number — large, in top-left of image */}
-                            <span
-                              className="absolute top-3 left-4 font-montserrat font-black text-5xl leading-none text-white/10 select-none pointer-events-none"
-                              aria-hidden="true"
-                            >
-                              {projectNumber}
-                            </span>
-                          </div>
-
-                          {/* Content — badge OUTSIDE overflow:hidden, on the border */}
-                          <div className="relative p-6">
-                            {/* SVG Badge — now outside the image's overflow:hidden */}
-                            <div className="absolute -top-6 right-4 z-30">
-                              <img
-                                src="/assets/dhruvam/ui/badges/completed.svg"
-                                alt="Completed"
-                                className="w-14 h-14 drop-shadow-[0_4px_12px_rgba(246,181,27,0.3)]"
-                              />
-                            </div>
-
-                            <div className="flex flex-wrap items-center gap-2 mb-3">
-                              <span
-                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold font-inter tracking-wider uppercase"
-                                style={{ background: accentBg, color: accent }}
-                              >
-                                {meta?.icon && (
-                                  <img src={meta.icon} alt="" aria-hidden="true" className="w-3 h-3" />
-                                )}
-                                {project.category}
-                              </span>
-                              <span className="font-inter text-[10px] font-medium tracking-wider text-white/40 bg-white/5 border border-white/10 px-3 py-1 rounded-full uppercase">
-                                {project.impact}
-                              </span>
-                            </div>
-
-                            <h3 className="font-montserrat font-bold text-lg md:text-xl text-white group-hover:text-[var(--color-dhruvam-gold-light)] transition-colors leading-tight mb-2">
-                              {project.title}
-                            </h3>
-                            {project.description && (
-                              <p className="font-inter text-sm text-white/50 leading-relaxed line-clamp-2">
-                                {project.description}
-                              </p>
-                            )}
-
-                            {/* Category color accent on bottom */}
-                            <div
-                              className="absolute bottom-0 left-0 right-0 h-0.5 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"
-                              style={{ background: `linear-gradient(to right, ${accent}, transparent)` }}
-                            />
-                          </div>
-                        </motion.div>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </AnimatePresence>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            </div>
           </div>
         )}
       </div>
