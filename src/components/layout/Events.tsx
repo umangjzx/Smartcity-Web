@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { ArrowRight, CalendarClock } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, CalendarClock, ChevronDown } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
 
 type Event = {
@@ -64,6 +64,7 @@ export default function Events() {
   const [featured, setFeatured] = useState<Event | null>(null);
   const [upcoming, setUpcoming] = useState<Event[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/events")
@@ -232,10 +233,11 @@ export default function Events() {
               className="w-full max-w-sm mx-auto mb-10 opacity-50"
             />
 
-            <div className="grid sm:grid-cols-3 gap-5">
+            <div className="flex overflow-x-auto snap-x snap-mandatory gap-5 pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
               {upcoming.map((ev, i) => {
                 const date = new Date(ev.date);
                 const eventNum = String(i + 2).padStart(2, "0");
+                const isOpen = expandedId === ev._id;
                 return (
                   <motion.div
                     key={ev._id}
@@ -244,10 +246,26 @@ export default function Events() {
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.1 }}
                     whileHover={{ y: -4 }}
-                    className="group relative bg-white/[0.04] border border-white/10 hover:border-[var(--color-dhruvam-gold-light)]/30 rounded-2xl p-5 transition-all duration-300 overflow-hidden"
+                    onClick={() => setExpandedId(isOpen ? null : ev._id)}
+                    role="button"
+                    tabIndex={0}
+                    aria-expanded={isOpen}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setExpandedId(isOpen ? null : ev._id);
+                      }
+                    }}
+                    className={`group relative flex-shrink-0 w-[85vw] sm:w-80 snap-start cursor-pointer bg-white/[0.04] border rounded-2xl p-5 transition-all duration-300 overflow-hidden ${
+                      isOpen ? "border-[var(--color-dhruvam-gold-light)]/50" : "border-white/10 hover:border-[var(--color-dhruvam-gold-light)]/30"
+                    }`}
                   >
-                    {/* Gold left border on hover */}
-                    <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-[var(--color-dhruvam-gold-light)] scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-top rounded-l-2xl" />
+                    {/* Gold left border on hover/open */}
+                    <div
+                      className={`absolute left-0 top-0 bottom-0 w-0.5 bg-[var(--color-dhruvam-gold-light)] transition-transform duration-300 origin-top rounded-l-2xl ${
+                        isOpen ? "scale-y-100" : "scale-y-0 group-hover:scale-y-100"
+                      }`}
+                    />
 
                     {/* Ghost event number */}
                     <span
@@ -266,14 +284,36 @@ export default function Events() {
                           {date.toLocaleString("default", { month: "short" })}
                         </span>
                       </div>
-                      <div className="min-w-0">
-                        <h4 className="font-poppins font-semibold text-sm text-white group-hover:text-[var(--color-dhruvam-gold-light)] transition-colors truncate mb-1">
-                          {ev.title}
-                        </h4>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between gap-2">
+                          <h4 className="font-poppins font-semibold text-sm text-white group-hover:text-[var(--color-dhruvam-gold-light)] transition-colors mb-1">
+                            {ev.title}
+                          </h4>
+                          <ChevronDown
+                            size={14}
+                            className={`shrink-0 mt-0.5 text-white/40 transition-transform duration-300 ${isOpen ? "rotate-180 text-[var(--color-dhruvam-gold-light)]" : ""}`}
+                          />
+                        </div>
                         <p className="font-inter text-xs text-white/40 truncate">{ev.location}</p>
                         <p className="font-inter text-xs text-white/40 mt-0.5">{ev.time}</p>
                       </div>
                     </div>
+
+                    <AnimatePresence initial={false}>
+                      {isOpen && ev.description && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3, ease: "easeInOut" }}
+                          className="overflow-hidden"
+                        >
+                          <p className="font-inter text-xs text-white/60 leading-relaxed pt-4 mt-4 border-t border-white/10">
+                            {ev.description}
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </motion.div>
                 );
               })}

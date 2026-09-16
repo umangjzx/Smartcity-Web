@@ -96,6 +96,15 @@ img {
   background: var(--color-dhruvam-gold-light);
 }
 
+/* Horizontal scroll strips (filter pills, card carousels) with no visible scrollbar */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Smooth section reveal keyframe for non-framer elements */
 @keyframes fadeInUp {
   from {
