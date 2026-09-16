@@ -1,10 +1,10 @@
 import Link from "next/link";
 
+// Only social links the Club has actually provided are wired up — a "#"
+// placeholder would look real to a visitor but go nowhere, so unset ones are
+// left out entirely rather than shown as dead links.
 const socialLinks = [
-  { name: "Instagram", href: "#", icon: "/assets/dhruvam/social/instagram.svg" },
-  { name: "LinkedIn",  href: "#", icon: "/assets/dhruvam/social/linkedin.svg"  },
-  { name: "Facebook",  href: "#", icon: "/assets/dhruvam/social/facebook.svg"  },
-  { name: "X",         href: "#", icon: "/assets/dhruvam/social/x.svg"          },
+  { name: "Instagram", href: "https://www.instagram.com/rac_cbe.smartcity", icon: "/assets/dhruvam/social/instagram.svg" },
 ];
 
 const quickLinks = [
@@ -93,6 +93,8 @@ export default function Footer() {
                 <a
                   key={s.name}
                   href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={s.name}
                   className="w-10 h-10 flex items-center justify-center rounded-full border border-white/10 hover:border-white/25 hover:bg-white/10 hover:-translate-y-1 transition-all duration-200 group"
                 >
@@ -158,10 +160,10 @@ export default function Footer() {
             © {new Date().getFullYear()} Rotaract Club of Coimbatore Smartcity. All rights reserved.
           </p>
           <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-1">
-            <Link href="#" className="font-inter text-xs text-white/25 hover:text-white/50 transition-colors">
+            <Link href="/privacy" className="font-inter text-xs text-white/25 hover:text-white/50 transition-colors">
               Privacy Policy
             </Link>
-            <Link href="#" className="font-inter text-xs text-white/25 hover:text-white/50 transition-colors">
+            <Link href="/terms" className="font-inter text-xs text-white/25 hover:text-white/50 transition-colors">
               Terms of Service
             </Link>
             {/* Designer credit — inline, not a separate card */}
