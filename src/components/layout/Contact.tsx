@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { MessageSquare, Send, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { MessageSquare, Send, Loader2, CheckCircle2, AlertCircle, Phone } from "lucide-react";
 import { backgrounds } from "@/lib/dhruvamAssets";
 
 const contacts = [
@@ -11,6 +11,7 @@ const contacts = [
     name: "Rtr. Nirmal Kumar K",
     role: "President",
     phone: "+91 9500575064",
+    image: "/photos/nirmal-kumar-k.jpg",
     accent: "var(--color-dhruvam-gold-light)",
     borderColor: "rgba(255,214,90,0.4)",
     bgColor: "rgba(255,214,90,0.07)",
@@ -19,6 +20,7 @@ const contacts = [
     name: "Rtr. Akshara K",
     role: "Secretary Administration",
     phone: "+91 6383194464",
+    image: "/photos/akshara-k.jpg",
     accent: "var(--color-aurora-teal)",
     borderColor: "rgba(47,191,166,0.4)",
     bgColor: "rgba(47,191,166,0.07)",
@@ -27,6 +29,7 @@ const contacts = [
     name: "Rtr. Umang Jaiswal N",
     role: "Secretary Communication",
     phone: "+91 8098468572",
+    image: "/photos/umang-jaiswal-n.jpg",
     accent: "var(--color-aurora-blue)",
     borderColor: "rgba(74,127,217,0.4)",
     bgColor: "rgba(74,127,217,0.07)",
@@ -129,42 +132,46 @@ export default function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            {contacts.map((c, i) => (
-              <motion.div
-                key={c.name}
-                initial={{ opacity: 0, x: -16 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                className="group relative flex items-center gap-4 rounded-2xl p-5 border border-white/10 hover:border-white/20 transition-all duration-300 overflow-hidden cursor-default"
-                style={{ background: c.bgColor }}
-              >
-                {/* Sliding left accent border */}
-                <div
-                  className="absolute left-0 top-0 bottom-0 w-0.5 origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-400 rounded-l-2xl"
-                  style={{ background: c.accent }}
-                />
-
-                <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ background: "rgba(255,255,255,0.06)", border: `1px solid ${c.borderColor}` }}
+            <div className="grid grid-cols-3 gap-2.5 sm:gap-4">
+              {contacts.map((c, i) => (
+                <motion.div
+                  key={c.name}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  className="group relative flex flex-col items-center text-center gap-2 rounded-2xl px-2 py-5 sm:p-5 border border-white/10 hover:border-white/20 transition-all duration-300 overflow-hidden cursor-default"
+                  style={{ background: c.bgColor }}
                 >
-                  <img src="/assets/dhruvam/icons/outline/phone.svg" alt="" aria-hidden="true" className="w-5 h-5" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-poppins font-semibold text-sm text-white truncate">{c.name}</p>
-                  <p className="font-inter text-xs mb-0.5 font-medium" style={{ color: c.accent }}>
-                    {c.role}
-                  </p>
-                  <a
-                    href={`tel:${c.phone.replace(/\s/g, "")}`}
-                    className="font-inter text-sm text-white/45 hover:text-white transition-colors"
+                  {/* Sliding top accent border */}
+                  <div
+                    className="absolute left-0 right-0 top-0 h-0.5 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-400 rounded-t-2xl"
+                    style={{ background: c.accent }}
+                  />
+
+                  <div
+                    className="relative w-16 h-16 sm:w-24 sm:h-24 rounded-full overflow-hidden shrink-0"
+                    style={{ border: `2px solid ${c.borderColor}` }}
                   >
-                    {c.phone}
-                  </a>
-                </div>
-              </motion.div>
-            ))}
+                    <Image src={c.image} alt={c.name} fill sizes="(min-width: 640px) 96px, 64px" className="object-cover object-top" />
+                  </div>
+                  <div className="min-w-0 w-full">
+                    <p className="font-poppins font-semibold text-[11px] sm:text-sm text-white leading-tight truncate">{c.name}</p>
+                    <p className="font-inter text-[9px] sm:text-xs mt-0.5 mb-1.5 font-medium truncate" style={{ color: c.accent }}>
+                      {c.role}
+                    </p>
+                    <a
+                      href={`tel:${c.phone.replace(/\s/g, "")}`}
+                      aria-label={`Call ${c.name}`}
+                      title={c.phone}
+                      className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/45 hover:text-white hover:border-white/20 transition-colors"
+                    >
+                      <Phone size={13} />
+                    </a>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
 
             {/* Quick actions */}
             <div className="grid grid-cols-2 gap-3">

@@ -154,34 +154,37 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/8 py-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="font-inter text-xs text-white/25">
-            © {new Date().getFullYear()} Rotaract Club of Coimbatore Smartcity. All rights reserved.
-          </p>
-          <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-1">
-            <Link href="/privacy" className="font-inter text-xs text-white/50 hover:text-white/80 transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="/terms" className="font-inter text-xs text-white/50 hover:text-white/80 transition-colors">
-              Terms of Service
-            </Link>
-            {/* Designer credit — inline, not a separate card */}
-            <span className="font-inter text-xs text-white/25 inline-flex items-center gap-1.5">
-              Designed &amp; Developed by{" "}
-              <span className="inline-flex items-center gap-1.5 text-[var(--color-dhruvam-gold-light)]/60 hover:text-[var(--color-dhruvam-gold-light)] transition-colors cursor-default">
-                <Image
-                  src={logos.umangPhoto}
-                  alt=""
-                  width={20}
-                  height={20}
-                  className="rounded-full object-cover border border-[var(--color-dhruvam-gold-light)]/30"
-                />
-                Rtr. Umang Jaiswal
-              </span>
+        <div className="border-t border-white/8 pt-6 pb-5 flex flex-col items-center gap-5">
+          <div className="w-full flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="font-inter text-xs text-white/25">
+              © {new Date().getFullYear()} Rotaract Club of Coimbatore Smartcity. All rights reserved.
+            </p>
+            <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-1">
+              <Link href="/privacy" className="font-inter text-xs text-white/50 hover:text-white/80 transition-colors">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="font-inter text-xs text-white/50 hover:text-white/80 transition-colors">
+                Terms of Service
+              </Link>
+              <Link href="/admin" className="font-inter text-xs text-white/45 hover:text-[var(--color-dhruvam-gold-light)] transition-colors">
+                Admin
+              </Link>
+            </div>
+          </div>
+
+          {/* Designer credit — the one thing on this page that gets to be loud */}
+          <div className="flex items-center gap-2.5 font-inter text-sm text-white/45">
+            Designed &amp; Developed by
+            <span className="inline-flex items-center gap-2.5 font-poppins font-bold text-base text-[var(--color-dhruvam-gold-light)] hover:text-[var(--color-dhruvam-gold)] transition-colors cursor-default">
+              <Image
+                src={logos.umangPhoto}
+                alt=""
+                width={34}
+                height={34}
+                className="rounded-full object-cover border-2 border-[var(--color-dhruvam-gold-light)]/40"
+              />
+              Rtr. Umang Jaiswal N
             </span>
-            <Link href="/admin" className="font-inter text-xs text-white/45 hover:text-[var(--color-dhruvam-gold-light)] transition-colors">
-              Admin
-            </Link>
           </div>
         </div>
       </div>
