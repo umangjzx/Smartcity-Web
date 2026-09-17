@@ -63,10 +63,21 @@ In priority order, all verified via `tsc`, `eslint`, a full `next build`, and li
 5. **Shared `Button` component** — added, retrofitted onto Navbar's two "Join Us" instances.
 6. **Dead admin `dark:` classes** — removed (40 occurrences, `admin/page.tsx`).
 
-## Deliberately not done this pass (see reasoning inline above)
+## Backlog pass 2 — completed
 
-- Full admin re-skin onto DHRUVAM tokens (High #2/#10) — out of scope per `DESIGN-DIRECTION.md`.
-- Per-component heading rename to `.text-h1`/`.text-h2` beyond `SectionHeader` (High #3) — values already matched, lower leverage than the shared component.
-- Retrofitting Button onto Hero/Membership's magnetic CTAs (Medium #8) — regression risk vs. benefit.
-- Hero information-density reduction (Medium #5) — an editorial call on cutting content, flagged rather than actioned unilaterally.
-- Mobile touch-target enlargement (Medium #6), mobile-specific animation simplification (Medium #7), asset-path consolidation (High #4), 404 page (Low #12), section-transition variety (Low #13), active-state unification (Low #14) — all real but lower-value-per-risk than what shipped; left as a backlog rather than padding this pass with low-impact churn.
+7. **Per-component heading rename (High #3).** Re-checked the assumption from pass 1 by actually diffing the literal Tailwind strings instead of eyeballing them — it was wrong for two of the four candidates. `Avenues.tsx` and `Contact.tsx`'s H2s matched `.text-h1` exactly and were renamed with zero visual change. `About.tsx` (`lg:text-6xl`) and `Membership.tsx` (`text-4xl sm:5xl lg:6xl`) actually use a **larger** bespoke treatment — applying `.text-h1` there would have *shrunk* them at desktop widths. Left those two as intentional bespoke "panel headline" sizing rather than force a downgrade to match a token that didn't actually describe them.
+8. **Asset-path consolidation (High #4).** `Navbar.tsx`/`Footer.tsx`'s separate `../../../public/...` imports for the logo mark and credit photo now go through `dhruvamAssets.ts` (`logos.rotaractGearMark`, `logos.umangPhoto`), same pattern as backgrounds/characters.
+9. **404 page (Low #12).** Added `src/app/not-found.tsx` — on-brand (guiding star, `.text-display` numeral, Navbar/Footer/`Button`), replacing Next's generic default.
+10. **Mobile touch targets (Medium #6).** Leadership's mobile contact icons were 32×32px with zero padding buffer — bumped to 36×36px. More significant: Projects'/Events' carousel progress dots had *no* touch buffer at all — the clickable area was exactly the 6px visual dot. Restructured (visual dot as an inner `<span>`, `p-2` on the actual `<button>`) so the tap target is now ~40×22px without changing how the dots look. Verified the click behavior still works correctly at each step.
+
+## Reviewed, no change made (reasoning below)
+
+- **Hero information density (Medium #5)** — re-examined against the actual DOM: the CTA row and stats row already have a 96px gap (`mb-24`) and the stats carry a deliberately de-emphasized `text-[10px]`/30%-opacity eyebrow. The hierarchy is already reasonably staged; the original audit note overstated the issue. No change made rather than manufacturing one.
+- **Mobile-specific animation simplification (Medium #7)** — confirmed the marquee and orbit animations are `transform`-only and GPU-cheap regardless of device, and `DhruvamTheme`'s orbital layout is already desktop-only (mobile gets a simpler stacked list). Already appropriately lightweight; no separate mobile tier needed.
+- **Section-transition variety (Low #13)** — `SectionDivider` already supports 4 SVG variants × flip × per-usage opacity, and `page.tsx` already varies these per transition. The gap the audit flagged (varying *how* backgrounds blend, not just which divider graphic shows) is a genuine but subjective refinement with no clear low-risk implementation; left as a future creative pass rather than added complexity for its own sake.
+- **Active-state pattern unification (Low #14)** — Navbar's underline-dot and Projects' filled-pill are different controls for different jobs (a persistent "current section" indicator vs. a stateful filter/selector), and arguably *should* look different so users don't confuse "where am I" with "what am I filtering." Kept as intentionally distinct rather than forcing a single pattern.
+
+## Still out of scope (unchanged from pass 1)
+
+- Full admin re-skin onto DHRUVAM tokens (High #2/#10) — the admin's starfield-bleed *bug* is fixed; a genuine visual re-skin remains a separate, larger project per `DESIGN-DIRECTION.md`.
+- Retrofitting `Button` onto Hero/Membership's magnetic CTAs (Medium #8) — those have bespoke cursor-following motion logic; forcing them into the generic component is a real regression-risk for a cosmetic-only gain.

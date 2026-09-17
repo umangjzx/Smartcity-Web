@@ -245,18 +245,18 @@ export default function Leadership() {
                 <p className="font-inter text-[10px] text-[var(--color-dhruvam-gold-light)] uppercase tracking-wide truncate mb-2 font-semibold">{m.role}</p>
                 <div className="flex items-center gap-1.5">
                   {m.phone && (
-                    <a href={`tel:${m.phone}`} aria-label={`Call ${m.name}`} className="w-8 h-8 rounded-full bg-white/10 border border-white/15 flex items-center justify-center active:bg-[var(--color-dhruvam-gold)] active:text-black transition-colors text-white/80">
-                      <Phone size={13} />
+                    <a href={`tel:${m.phone}`} aria-label={`Call ${m.name}`} className="w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center active:bg-[var(--color-dhruvam-gold)] active:text-black transition-colors text-white/80">
+                      <Phone size={14} />
                     </a>
                   )}
                   {m.email && (
-                    <a href={`mailto:${m.email}`} aria-label={`Email ${m.name}`} className="w-8 h-8 rounded-full bg-white/10 border border-white/15 flex items-center justify-center active:bg-[var(--color-dhruvam-gold)] active:text-black transition-colors text-white/80">
-                      <Mail size={13} />
+                    <a href={`mailto:${m.email}`} aria-label={`Email ${m.name}`} className="w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center active:bg-[var(--color-dhruvam-gold)] active:text-black transition-colors text-white/80">
+                      <Mail size={14} />
                     </a>
                   )}
                   {m.linkedin && (
-                    <a href={m.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${m.name} on LinkedIn`} className="w-8 h-8 rounded-full bg-white/10 border border-white/15 flex items-center justify-center active:bg-[#00E5FF] active:text-black transition-colors text-white/80">
-                      <ExternalLink size={13} />
+                    <a href={m.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${m.name} on LinkedIn`} className="w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center active:bg-[#00E5FF] active:text-black transition-colors text-white/80">
+                      <ExternalLink size={14} />
                     </a>
                   )}
                 </div>

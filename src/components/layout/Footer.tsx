@@ -1,8 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import umangPhoto from "../../../public/photos/umang-jaiswal.jpg";
-import rotaractGearMark from "../../../public/assets/dhruvam/logos/rotaract-gear-mark.png";
-import { backgrounds } from "@/lib/dhruvamAssets";
+import { backgrounds, logos } from "@/lib/dhruvamAssets";
 
 // Only social links the Club has actually provided are wired up — a "#"
 // placeholder would look real to a visitor but go nowhere, so unset ones are
@@ -72,7 +70,7 @@ export default function Footer() {
             <div className="flex items-center gap-3 mb-5">
               <div className="relative w-11 h-11 rounded-full bg-white shadow-md shrink-0 flex items-center justify-center overflow-hidden">
                 <div className="relative w-8 h-8">
-                  <Image src={rotaractGearMark} alt="Rotaract Club of Coimbatore Smartcity" fill className="object-contain" />
+                  <Image src={logos.rotaractGearMark} alt="Rotaract Club of Coimbatore Smartcity" fill className="object-contain" />
                 </div>
                 <div className="absolute inset-0 rounded-full border-2 border-[var(--color-dhruvam-gold-light)] scale-110 opacity-50 pointer-events-none" />
               </div>
@@ -172,7 +170,7 @@ export default function Footer() {
               Designed &amp; Developed by{" "}
               <span className="inline-flex items-center gap-1.5 text-[var(--color-dhruvam-gold-light)]/60 hover:text-[var(--color-dhruvam-gold-light)] transition-colors cursor-default">
                 <Image
-                  src={umangPhoto}
+                  src={logos.umangPhoto}
                   alt=""
                   width={20}
                   height={20}

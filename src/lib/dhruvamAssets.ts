@@ -15,6 +15,9 @@ import penguinLantern from "../../public/assets/dhruvam/characters/penguin-lante
 import penguinHiking from "../../public/assets/dhruvam/characters/penguin-hiking.jpg";
 import penguinBack from "../../public/assets/dhruvam/characters/penguin-back.jpg";
 
+import rotaractGearMark from "../../public/assets/dhruvam/logos/rotaract-gear-mark.png";
+import umangPhoto from "../../public/photos/umang-jaiswal.jpg";
+
 export const backgrounds = {
   celestialTexture,
   mountains,
@@ -30,4 +33,9 @@ export const characters = {
   penguinLantern,
   penguinHiking,
   penguinBack,
+};
+
+export const logos = {
+  rotaractGearMark,
+  umangPhoto,
 };

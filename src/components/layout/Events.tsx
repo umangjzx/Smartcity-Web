@@ -372,10 +372,14 @@ export default function Events() {
                     type="button"
                     onClick={() => scrollToIndex(i)}
                     aria-label={`Go to event ${i + 1}`}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
-                      i === activeIndex ? "w-6 bg-[var(--color-dhruvam-gold-light)]" : "w-1.5 bg-white/20 hover:bg-white/40"
-                    }`}
-                  />
+                    className="p-2 flex items-center justify-center"
+                  >
+                    <span
+                      className={`block h-1.5 rounded-full transition-all duration-300 ${
+                        i === activeIndex ? "w-6 bg-[var(--color-dhruvam-gold-light)]" : "w-1.5 bg-white/20 hover:bg-white/40"
+                      }`}
+                    />
+                  </button>
                 ))}
               </div>
             )}

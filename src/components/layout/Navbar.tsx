@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import Button from "@/components/ui/Button";
-import rotaractGearMark from "../../../public/assets/dhruvam/logos/rotaract-gear-mark.png";
+import { logos } from "@/lib/dhruvamAssets";
 
 const navLinks = [
   { name: "Our Journey", href: "#dhruvam" },
@@ -71,7 +71,7 @@ export default function Navbar() {
         <Link href="/" className="flex items-center gap-3 group">
           <div className="relative w-10 h-10 rounded-full bg-white shadow-md shrink-0 flex items-center justify-center overflow-hidden">
             <div className="relative w-7 h-7">
-              <Image src={rotaractGearMark} alt="Rotaract Club of Coimbatore Smartcity" fill className="object-contain" />
+              <Image src={logos.rotaractGearMark} alt="Rotaract Club of Coimbatore Smartcity" fill className="object-contain" />
             </div>
             <div className="absolute inset-0 rounded-full border-2 border-[var(--color-dhruvam-gold-light)] scale-110 opacity-60 pointer-events-none" />
           </div>

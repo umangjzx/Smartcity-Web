@@ -114,7 +114,7 @@ export default function Avenues() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="font-montserrat font-black text-3xl sm:text-4xl md:text-5xl text-white leading-tight"
+              className="text-h1 text-white"
             >
               Five Avenues
               <br />
