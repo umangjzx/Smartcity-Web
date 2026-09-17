@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import Button from "@/components/ui/Button";
 import { backgrounds } from "@/lib/dhruvamAssets";
 
 const benefits = [
@@ -40,23 +41,6 @@ const marqueeText = "LEAD · SERVE · GROW · CONNECT · DHRUVAM · THE STAR THA
 
 export default function Membership() {
   const [activeBenefit, setActiveBenefit] = useState<number | null>(null);
-
-  const applyRef = useRef<HTMLAnchorElement>(null);
-  const applyX = useMotionValue(0);
-  const applyY = useMotionValue(0);
-  const applySpringX = useSpring(applyX, { stiffness: 200, damping: 15, mass: 0.3 });
-  const applySpringY = useSpring(applyY, { stiffness: 200, damping: 15, mass: 0.3 });
-
-  function handleApplyMove(e: React.MouseEvent<HTMLAnchorElement>) {
-    const rect = applyRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    applyX.set((e.clientX - (rect.left + rect.width / 2)) * 0.25);
-    applyY.set((e.clientY - (rect.top + rect.height / 2)) * 0.25);
-  }
-  function handleApplyLeave() {
-    applyX.set(0);
-    applyY.set(0);
-  }
 
   return (
     <section id="join" className="pt-24 md:pt-32 relative overflow-hidden">
@@ -104,19 +88,10 @@ export default function Membership() {
                 aria-hidden="true"
                 className="absolute -top-8 left-1/2 -translate-x-1/2 w-40 h-20 opacity-60 pointer-events-none"
               />
-              <motion.a
-                ref={applyRef}
-                href="#contact"
-                onMouseMove={handleApplyMove}
-                onMouseLeave={handleApplyLeave}
-                style={{ x: applySpringX, y: applySpringY }}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="relative group inline-flex items-center gap-3 px-10 py-5 bg-[var(--color-dhruvam-gold)] hover:bg-[var(--color-dhruvam-gold-light)] text-[var(--color-dhruvam-950)] rounded-full font-poppins font-bold text-sm transition-colors shadow-[0_8px_40px_rgba(246,181,27,0.35)] hover:shadow-[0_12px_50px_rgba(246,181,27,0.55)]"
-              >
+              <Button href="#contact" size="xl" magnetic>
                 Apply Now
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </motion.a>
+              </Button>
             </div>
 
             {/* Small text below CTA */}

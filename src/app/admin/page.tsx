@@ -23,26 +23,31 @@ const emptyProject = { title: "", category: PROJECT_CATEGORIES[0], image: "", im
 const emptyEvent   = { title: "", description: "", date: "", location: "", time: "", isFeatured: false };
 const emptyMember  = { name: "", role: "", phone: "", email: "", image: "", linkedin: "", isBoard: false, order: 0 };
 
+// Matches the club's real avatar fallback with the DHRUVAM palette instead of
+// the unrelated pink/magenta the placeholder service defaulted to.
+const avatarFallback = (name: string) =>
+  `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0A3155&color=FFD65A&size=128`;
+
 // ─── Reusable field ────────────────────────────────────────────────────────────
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="space-y-1.5">
-      <label className="text-sm font-inter font-medium text-foreground">{label}</label>
+      <label className="text-sm font-inter font-medium text-white/80">{label}</label>
       {children}
     </div>
   );
 }
 
-const inputCls = "w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-rotaract-red)]";
+const inputCls = "w-full bg-white/5 border border-white/15 text-white placeholder:text-white/30 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-dhruvam-gold-light)]";
 
 // ─── Stat card ─────────────────────────────────────────────────────────────────
 function StatCard({ label, value, icon, color }: { label: string; value: number; icon: React.ReactNode; color: string }) {
   return (
-    <div className={`bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex items-center gap-4`}>
+    <div className="bg-white/[0.04] rounded-2xl p-6 border border-white/10 flex items-center gap-4">
       <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${color}`}>{icon}</div>
       <div>
-        <p className="text-3xl font-montserrat font-black text-foreground">{value}</p>
-        <p className="text-sm font-inter text-muted-foreground">{label}</p>
+        <p className="text-3xl font-montserrat font-black text-white">{value}</p>
+        <p className="text-sm font-inter text-white/50">{label}</p>
       </div>
     </div>
   );
@@ -183,20 +188,22 @@ export default function AdminDashboard() {
   };
 
   // ── Nav items ────────────────────────────────────────────────────────────────
+  // Each tab gets its own DHRUVAM accent (gold + the three aurora colors)
+  // instead of the previous unrelated red/gold/blue/emerald mix.
   const navItems: { id: Tab; label: string; icon: React.ReactNode; accent: string }[] = [
-    { id: "overview", label: "Overview",  icon: <LayoutDashboard size={16} />, accent: "bg-[var(--color-rotaract-red)] text-white" },
-    { id: "projects", label: "Projects",  icon: <FileText size={16} />,         accent: "bg-[var(--color-rotaract-red)] text-white" },
-    { id: "events",   label: "Events",    icon: <CalendarIcon size={16} />,     accent: "bg-[var(--color-rotary-gold)] text-black" },
-    { id: "members",  label: "Members",   icon: <Users size={16} />,            accent: "bg-blue-600 text-white" },
-    { id: "messages", label: "Messages",  icon: <Mail size={16} />,             accent: "bg-emerald-600 text-white" },
+    { id: "overview", label: "Overview",  icon: <LayoutDashboard size={16} />, accent: "bg-[var(--color-dhruvam-gold)] text-[var(--color-dhruvam-950)]" },
+    { id: "projects", label: "Projects",  icon: <FileText size={16} />,         accent: "bg-[var(--color-dhruvam-gold)] text-[var(--color-dhruvam-950)]" },
+    { id: "events",   label: "Events",    icon: <CalendarIcon size={16} />,     accent: "bg-[var(--color-aurora-teal)] text-[var(--color-dhruvam-950)]" },
+    { id: "members",  label: "Members",   icon: <Users size={16} />,            accent: "bg-[var(--color-aurora-blue)] text-white" },
+    { id: "messages", label: "Messages",  icon: <Mail size={16} />,             accent: "bg-[var(--color-aurora-emerald)] text-[var(--color-dhruvam-950)]" },
   ];
 
   return (
     <div className="space-y-6">
       {/* Page header */}
       <div>
-        <h1 className="text-3xl font-montserrat font-bold text-foreground">Admin Dashboard</h1>
-        <p className="text-muted-foreground font-inter text-sm mt-1">Manage website content for Rotaract Club of Coimbatore Smartcity</p>
+        <h1 className="text-3xl font-montserrat font-bold text-white">Admin Dashboard</h1>
+        <p className="text-white/50 font-inter text-sm mt-1">Manage website content for Rotaract Club of Coimbatore Smartcity</p>
       </div>
 
       {/* Tab nav */}
@@ -206,7 +213,7 @@ export default function AdminDashboard() {
             key={n.id}
             onClick={() => setTab(n.id)}
             className={`px-5 py-2.5 rounded-xl font-poppins font-medium transition-all flex items-center gap-2 text-sm
-              ${tab === n.id ? n.accent + " shadow-md" : "bg-white text-foreground border border-gray-200 hover:border-gray-400"}`}
+              ${tab === n.id ? n.accent + " shadow-md" : "bg-white/[0.04] text-white/70 border border-white/10 hover:border-white/25"}`}
           >
             {n.icon} {n.label}
           </button>
@@ -217,8 +224,8 @@ export default function AdminDashboard() {
       {toast && (
         <div className={`flex items-center gap-3 px-5 py-3 rounded-xl font-inter text-sm border
           ${toast.type === "success"
-            ? "bg-green-50 border-green-200 text-green-700"
-            : "bg-red-50 border-red-200 text-red-700"}`}>
+            ? "bg-[var(--color-aurora-emerald)]/10 border-[var(--color-aurora-emerald)]/30 text-[var(--color-aurora-emerald)]"
+            : "bg-red-500/10 border-red-500/30 text-red-400"}`}>
           <CheckCircle size={18} /> {toast.msg}
         </div>
       )}
@@ -227,65 +234,65 @@ export default function AdminDashboard() {
       {tab === "overview" && (
         <div className="space-y-8">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <StatCard label="Total Projects" value={projects.length} icon={<FileText size={22} className="text-[var(--color-rotaract-red)]" />} color="bg-[var(--color-rotaract-red)]/10" />
-            <StatCard label="Total Events"   value={events.length}   icon={<CalendarIcon size={22} className="text-[var(--color-rotary-gold)]" />} color="bg-[var(--color-rotary-gold)]/10" />
-            <StatCard label="Total Members"  value={members.length}  icon={<Users size={22} className="text-blue-600" />} color="bg-blue-600/10" />
-            <StatCard label="New Messages"   value={messages.length} icon={<Mail size={22} className="text-emerald-600" />} color="bg-emerald-600/10" />
+            <StatCard label="Total Projects" value={projects.length} icon={<FileText size={22} className="text-[var(--color-dhruvam-gold-light)]" />} color="bg-[var(--color-dhruvam-gold)]/10" />
+            <StatCard label="Total Events"   value={events.length}   icon={<CalendarIcon size={22} className="text-[var(--color-aurora-teal)]" />} color="bg-[var(--color-aurora-teal)]/10" />
+            <StatCard label="Total Members"  value={members.length}  icon={<Users size={22} className="text-[var(--color-aurora-blue)]" />} color="bg-[var(--color-aurora-blue)]/10" />
+            <StatCard label="New Messages"   value={messages.length} icon={<Mail size={22} className="text-[var(--color-aurora-emerald)]" />} color="bg-[var(--color-aurora-emerald)]/10" />
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* Recent projects */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-100">
-              <h3 className="font-poppins font-bold text-base mb-4">Recent Projects</h3>
-              {loading ? <Loader2 className="animate-spin" size={20} /> : projects.slice(0, 5).map((p) => (
-                <div key={p._id} className="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
+            <div className="bg-white/[0.04] rounded-2xl p-6 border border-white/10">
+              <h3 className="font-poppins font-bold text-base text-white mb-4">Recent Projects</h3>
+              {loading ? <Loader2 className="animate-spin text-white/50" size={20} /> : projects.slice(0, 5).map((p) => (
+                <div key={p._id} className="flex items-center gap-3 py-2 border-b border-white/[0.06] last:border-0">
                   {p.image && <img src={p.image} alt="" className="w-10 h-10 rounded-lg object-cover" />}
                   <div className="flex-1 min-w-0">
-                    <p className="font-inter text-sm font-medium truncate">{p.title}</p>
-                    <p className="text-xs text-muted-foreground">{p.category}</p>
+                    <p className="font-inter text-sm font-medium text-white truncate">{p.title}</p>
+                    <p className="text-xs text-white/45">{p.category}</p>
                   </div>
                 </div>
               ))}
             </div>
 
             {/* Upcoming events */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-100">
-              <h3 className="font-poppins font-bold text-base mb-4">Upcoming Events</h3>
-              {loading ? <Loader2 className="animate-spin" size={20} /> : events.slice(0, 5).map((e) => (
-                <div key={e._id} className="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
-                  <div className="w-10 h-10 bg-[var(--color-rotary-gold)]/10 rounded-xl flex flex-col items-center justify-center shrink-0">
-                    <span className="font-black text-sm text-[var(--color-rotary-gold)]">{new Date(e.date).getDate()}</span>
-                    <span className="text-[9px] text-muted-foreground uppercase">{new Date(e.date).toLocaleString("default", { month: "short" })}</span>
+            <div className="bg-white/[0.04] rounded-2xl p-6 border border-white/10">
+              <h3 className="font-poppins font-bold text-base text-white mb-4">Upcoming Events</h3>
+              {loading ? <Loader2 className="animate-spin text-white/50" size={20} /> : events.slice(0, 5).map((e) => (
+                <div key={e._id} className="flex items-center gap-3 py-2 border-b border-white/[0.06] last:border-0">
+                  <div className="w-10 h-10 bg-[var(--color-aurora-teal)]/10 rounded-xl flex flex-col items-center justify-center shrink-0">
+                    <span className="font-black text-sm text-[var(--color-aurora-teal)]">{new Date(e.date).getDate()}</span>
+                    <span className="text-[9px] text-white/45 uppercase">{new Date(e.date).toLocaleString("default", { month: "short" })}</span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-inter text-sm font-medium truncate">{e.title}</p>
-                    <p className="text-xs text-muted-foreground truncate">{e.location}</p>
+                    <p className="font-inter text-sm font-medium text-white truncate">{e.title}</p>
+                    <p className="text-xs text-white/45 truncate">{e.location}</p>
                   </div>
-                  {e.isFeatured && <Star size={14} className="text-[var(--color-rotary-gold)] shrink-0" />}
+                  {e.isFeatured && <Star size={14} className="text-[var(--color-dhruvam-gold-light)] shrink-0" />}
                 </div>
               ))}
             </div>
           </div>
 
           {/* Board members quick view */}
-          <div className="bg-white rounded-2xl p-6 border border-gray-100">
-            <h3 className="font-poppins font-bold text-base mb-4">Board Members ({members.filter((m) => m.isBoard).length})</h3>
+          <div className="bg-white/[0.04] rounded-2xl p-6 border border-white/10">
+            <h3 className="font-poppins font-bold text-base text-white mb-4">Board Members ({members.filter((m) => m.isBoard).length})</h3>
             <div className="flex flex-wrap gap-4">
               {members.filter((m) => m.isBoard).map((m) => (
-                <div key={m._id} className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
+                <div key={m._id} className="flex items-center gap-3 bg-white/[0.03] rounded-xl px-4 py-3">
                   <img
-                    src={m.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name)}&background=D81B60&color=fff&size=64`}
+                    src={m.image || avatarFallback(m.name)}
                     alt={m.name}
                     className="w-9 h-9 rounded-full object-cover"
                   />
                   <div>
-                    <p className="font-poppins font-semibold text-sm">{m.name}</p>
-                    <p className="text-xs text-muted-foreground">{m.role}</p>
+                    <p className="font-poppins font-semibold text-sm text-white">{m.name}</p>
+                    <p className="text-xs text-white/45">{m.role}</p>
                   </div>
                 </div>
               ))}
               {members.filter((m) => m.isBoard).length === 0 && (
-                <p className="text-sm text-muted-foreground font-inter">No board members yet. Add them in the Members tab.</p>
+                <p className="text-sm text-white/45 font-inter">No board members yet. Add them in the Members tab.</p>
               )}
             </div>
           </div>
@@ -296,14 +303,14 @@ export default function AdminDashboard() {
       {tab === "projects" && (
         <div className="grid md:grid-cols-5 gap-8">
           <div className="md:col-span-2">
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 sticky top-24">
+            <div className="bg-white/[0.04] p-6 rounded-2xl border border-white/10 sticky top-24">
               <div className="flex items-center justify-between mb-5">
-                <h2 className="text-lg font-bold flex items-center gap-2 font-poppins">
-                  <PlusCircle className="text-[var(--color-rotaract-red)]" size={20} />
+                <h2 className="text-lg font-bold text-white flex items-center gap-2 font-poppins">
+                  <PlusCircle className="text-[var(--color-dhruvam-gold-light)]" size={20} />
                   {editingProject ? "Edit Project" : "Add Project"}
                 </h2>
                 {editingProject && (
-                  <button onClick={() => { setEditingProject(null); setProjectForm({ ...emptyProject }); }} className="text-gray-400 hover:text-foreground">
+                  <button onClick={() => { setEditingProject(null); setProjectForm({ ...emptyProject }); }} className="text-white/40 hover:text-white">
                     <X size={18} />
                   </button>
                 )}
@@ -314,13 +321,13 @@ export default function AdminDashboard() {
                 <Field label="Impact"><input required className={inputCls} placeholder="500+ Students" value={projectForm.impact} onChange={(e) => setProjectForm((f) => ({ ...f, impact: e.target.value }))} /></Field>
                 <Field label="Category">
                   <select className={inputCls} value={projectForm.category} onChange={(e) => setProjectForm((f) => ({ ...f, category: e.target.value }))}>
-                    {PROJECT_CATEGORIES.map((c) => <option key={c}>{c}</option>)}
+                    {PROJECT_CATEGORIES.map((c) => <option key={c} className="bg-[var(--color-dhruvam-900)]">{c}</option>)}
                   </select>
                 </Field>
                 <Field label="Description">
                   <textarea rows={3} className={inputCls + " resize-none"} placeholder="Brief description..." value={projectForm.description} onChange={(e) => setProjectForm((f) => ({ ...f, description: e.target.value }))} />
                 </Field>
-                <button disabled={saving} type="submit" className="w-full bg-[var(--color-rotaract-red)] hover:bg-[#b0134d] disabled:opacity-60 text-white py-3 rounded-xl font-poppins font-bold flex items-center justify-center gap-2 transition-colors">
+                <button disabled={saving} type="submit" className="w-full bg-[var(--color-dhruvam-gold)] hover:bg-[var(--color-dhruvam-gold-light)] disabled:opacity-60 text-[var(--color-dhruvam-950)] py-3 rounded-xl font-poppins font-bold flex items-center justify-center gap-2 transition-colors">
                   {saving ? <Loader2 size={18} className="animate-spin" /> : <PlusCircle size={18} />}
                   {saving ? "Saving..." : editingProject ? "Update Project" : "Save Project"}
                 </button>
@@ -329,27 +336,27 @@ export default function AdminDashboard() {
           </div>
 
           <div className="md:col-span-3">
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 min-h-[400px]">
-              <h2 className="text-lg font-bold mb-5 font-poppins">Projects ({projects.length})</h2>
+            <div className="bg-white/[0.04] p-6 rounded-2xl border border-white/10 min-h-[400px]">
+              <h2 className="text-lg font-bold text-white mb-5 font-poppins">Projects ({projects.length})</h2>
               {loading ? (
-                <div className="flex items-center justify-center h-40"><Loader2 className="animate-spin text-[var(--color-rotaract-red)]" size={32} /></div>
+                <div className="flex items-center justify-center h-40"><Loader2 className="animate-spin text-[var(--color-dhruvam-gold-light)]" size={32} /></div>
               ) : projects.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-40 text-muted-foreground font-inter text-sm"><FileText size={32} className="mb-3 opacity-30" />No projects yet.</div>
+                <div className="flex flex-col items-center justify-center h-40 text-white/45 font-inter text-sm"><FileText size={32} className="mb-3 opacity-30" />No projects yet.</div>
               ) : (
                 <div className="space-y-3">
                   {projects.map((p) => (
-                    <div key={p._id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                    <div key={p._id} className="flex items-center gap-4 p-4 bg-white/[0.03] rounded-xl border border-white/10">
                       {p.image && <img src={p.image} alt={p.title} className="w-14 h-14 rounded-lg object-cover shrink-0" />}
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-poppins font-semibold text-foreground truncate">{p.title}</h4>
+                        <h4 className="font-poppins font-semibold text-white truncate">{p.title}</h4>
                         <div className="flex gap-2 mt-1">
-                          <span className="inline-block px-2 py-0.5 bg-[var(--color-rotaract-red)]/10 text-[var(--color-rotaract-red)] text-xs rounded-full font-inter">{p.category}</span>
-                          <span className="text-xs text-muted-foreground font-inter">{p.impact}</span>
+                          <span className="inline-block px-2 py-0.5 bg-[var(--color-dhruvam-gold)]/10 text-[var(--color-dhruvam-gold-light)] text-xs rounded-full font-inter">{p.category}</span>
+                          <span className="text-xs text-white/45 font-inter">{p.impact}</span>
                         </div>
                       </div>
                       <div className="flex gap-2 shrink-0">
-                        <button onClick={() => startEditProject(p)} className="text-gray-400 hover:text-blue-500 transition-colors"><Pencil size={15} /></button>
-                        <button onClick={() => deleteProject(p._id)} className="text-gray-400 hover:text-red-500 transition-colors"><Trash2 size={15} /></button>
+                        <button onClick={() => startEditProject(p)} className="text-white/40 hover:text-[var(--color-aurora-blue)] transition-colors"><Pencil size={15} /></button>
+                        <button onClick={() => deleteProject(p._id)} className="text-white/40 hover:text-red-400 transition-colors"><Trash2 size={15} /></button>
                       </div>
                     </div>
                   ))}
@@ -364,14 +371,14 @@ export default function AdminDashboard() {
       {tab === "events" && (
         <div className="grid md:grid-cols-5 gap-8">
           <div className="md:col-span-2">
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 sticky top-24">
+            <div className="bg-white/[0.04] p-6 rounded-2xl border border-white/10 sticky top-24">
               <div className="flex items-center justify-between mb-5">
-                <h2 className="text-lg font-bold flex items-center gap-2 font-poppins">
-                  <PlusCircle className="text-[var(--color-rotary-gold)]" size={20} />
+                <h2 className="text-lg font-bold text-white flex items-center gap-2 font-poppins">
+                  <PlusCircle className="text-[var(--color-aurora-teal)]" size={20} />
                   {editingEvent ? "Edit Event" : "Add Event"}
                 </h2>
                 {editingEvent && (
-                  <button onClick={() => { setEditingEvent(null); setEventForm({ ...emptyEvent }); }} className="text-gray-400 hover:text-foreground">
+                  <button onClick={() => { setEditingEvent(null); setEventForm({ ...emptyEvent }); }} className="text-white/40 hover:text-white">
                     <X size={18} />
                   </button>
                 )}
@@ -384,11 +391,11 @@ export default function AdminDashboard() {
                 <Field label="Description">
                   <textarea required rows={3} className={inputCls + " resize-none"} placeholder="Brief description..." value={eventForm.description} onChange={(e) => setEventForm((f) => ({ ...f, description: e.target.value }))} />
                 </Field>
-                <label className="flex items-center gap-2 text-sm font-inter cursor-pointer">
-                  <input type="checkbox" checked={eventForm.isFeatured} onChange={(e) => setEventForm((f) => ({ ...f, isFeatured: e.target.checked }))} className="rounded" />
+                <label className="flex items-center gap-2 text-sm font-inter text-white/80 cursor-pointer">
+                  <input type="checkbox" checked={eventForm.isFeatured} onChange={(e) => setEventForm((f) => ({ ...f, isFeatured: e.target.checked }))} className="rounded accent-[var(--color-dhruvam-gold)]" />
                   Mark as Featured Event
                 </label>
-                <button disabled={saving} type="submit" className="w-full bg-[var(--color-rotary-gold)] hover:opacity-90 disabled:opacity-60 text-black py-3 rounded-xl font-poppins font-bold flex items-center justify-center gap-2 transition-all">
+                <button disabled={saving} type="submit" className="w-full bg-[var(--color-aurora-teal)] hover:opacity-90 disabled:opacity-60 text-[var(--color-dhruvam-950)] py-3 rounded-xl font-poppins font-bold flex items-center justify-center gap-2 transition-all">
                   {saving ? <Loader2 size={18} className="animate-spin" /> : <PlusCircle size={18} />}
                   {saving ? "Saving..." : editingEvent ? "Update Event" : "Save Event"}
                 </button>
@@ -397,30 +404,30 @@ export default function AdminDashboard() {
           </div>
 
           <div className="md:col-span-3">
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 min-h-[400px]">
-              <h2 className="text-lg font-bold mb-5 font-poppins">Events ({events.length})</h2>
+            <div className="bg-white/[0.04] p-6 rounded-2xl border border-white/10 min-h-[400px]">
+              <h2 className="text-lg font-bold text-white mb-5 font-poppins">Events ({events.length})</h2>
               {loading ? (
-                <div className="flex items-center justify-center h-40"><Loader2 className="animate-spin text-[var(--color-rotary-gold)]" size={32} /></div>
+                <div className="flex items-center justify-center h-40"><Loader2 className="animate-spin text-[var(--color-aurora-teal)]" size={32} /></div>
               ) : events.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-40 text-muted-foreground font-inter text-sm"><CalendarIcon size={32} className="mb-3 opacity-30" />No events yet.</div>
+                <div className="flex flex-col items-center justify-center h-40 text-white/45 font-inter text-sm"><CalendarIcon size={32} className="mb-3 opacity-30" />No events yet.</div>
               ) : (
                 <div className="space-y-3">
                   {events.map((ev) => (
-                    <div key={ev._id} className="flex items-start gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
-                      <div className="shrink-0 w-14 h-14 bg-[var(--color-rotary-gold)]/10 rounded-xl flex flex-col items-center justify-center">
-                        <span className="font-montserrat font-black text-xl text-[var(--color-rotary-gold)]">{new Date(ev.date).getDate()}</span>
-                        <span className="text-[10px] text-muted-foreground uppercase">{new Date(ev.date).toLocaleString("default", { month: "short" })}</span>
+                    <div key={ev._id} className="flex items-start gap-4 p-4 bg-white/[0.03] rounded-xl border border-white/10">
+                      <div className="shrink-0 w-14 h-14 bg-[var(--color-aurora-teal)]/10 rounded-xl flex flex-col items-center justify-center">
+                        <span className="font-montserrat font-black text-xl text-[var(--color-aurora-teal)]">{new Date(ev.date).getDate()}</span>
+                        <span className="text-[10px] text-white/45 uppercase">{new Date(ev.date).toLocaleString("default", { month: "short" })}</span>
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <h4 className="font-poppins font-semibold text-foreground truncate">{ev.title}</h4>
-                          {ev.isFeatured && <Star size={13} className="text-[var(--color-rotary-gold)] shrink-0" />}
+                          <h4 className="font-poppins font-semibold text-white truncate">{ev.title}</h4>
+                          {ev.isFeatured && <Star size={13} className="text-[var(--color-dhruvam-gold-light)] shrink-0" />}
                         </div>
-                        <p className="text-xs text-muted-foreground font-inter mt-0.5 truncate">{ev.location} · {ev.time}</p>
+                        <p className="text-xs text-white/45 font-inter mt-0.5 truncate">{ev.location} · {ev.time}</p>
                       </div>
                       <div className="flex gap-2 shrink-0">
-                        <button onClick={() => startEditEvent(ev)} className="text-gray-400 hover:text-blue-500 transition-colors"><Pencil size={15} /></button>
-                        <button onClick={() => deleteEvent(ev._id)} className="text-gray-400 hover:text-red-500 transition-colors"><Trash2 size={15} /></button>
+                        <button onClick={() => startEditEvent(ev)} className="text-white/40 hover:text-[var(--color-aurora-blue)] transition-colors"><Pencil size={15} /></button>
+                        <button onClick={() => deleteEvent(ev._id)} className="text-white/40 hover:text-red-400 transition-colors"><Trash2 size={15} /></button>
                       </div>
                     </div>
                   ))}
@@ -435,14 +442,14 @@ export default function AdminDashboard() {
       {tab === "members" && (
         <div className="grid md:grid-cols-5 gap-8">
           <div className="md:col-span-2">
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 sticky top-24">
+            <div className="bg-white/[0.04] p-6 rounded-2xl border border-white/10 sticky top-24">
               <div className="flex items-center justify-between mb-5">
-                <h2 className="text-lg font-bold flex items-center gap-2 font-poppins">
-                  <PlusCircle className="text-blue-600" size={20} />
+                <h2 className="text-lg font-bold text-white flex items-center gap-2 font-poppins">
+                  <PlusCircle className="text-[var(--color-aurora-blue)]" size={20} />
                   {editingMember ? "Edit Member" : "Add Member"}
                 </h2>
                 {editingMember && (
-                  <button onClick={() => { setEditingMember(null); setMemberForm({ ...emptyMember }); }} className="text-gray-400 hover:text-foreground">
+                  <button onClick={() => { setEditingMember(null); setMemberForm({ ...emptyMember }); }} className="text-white/40 hover:text-white">
                     <X size={18} />
                   </button>
                 )}
@@ -455,11 +462,11 @@ export default function AdminDashboard() {
                 <Field label="Photo URL"><input className={inputCls} placeholder="https://... (leave blank for auto avatar)" value={memberForm.image} onChange={(e) => setMemberForm((f) => ({ ...f, image: e.target.value }))} /></Field>
                 <Field label="LinkedIn URL"><input className={inputCls} placeholder="https://linkedin.com/in/..." value={memberForm.linkedin} onChange={(e) => setMemberForm((f) => ({ ...f, linkedin: e.target.value }))} /></Field>
                 <Field label="Display Order"><input type="number" min={0} className={inputCls} value={memberForm.order} onChange={(e) => setMemberForm((f) => ({ ...f, order: Number(e.target.value) }))} /></Field>
-                <label className="flex items-center gap-2 text-sm font-inter cursor-pointer">
-                  <input type="checkbox" checked={memberForm.isBoard} onChange={(e) => setMemberForm((f) => ({ ...f, isBoard: e.target.checked }))} className="rounded" />
+                <label className="flex items-center gap-2 text-sm font-inter text-white/80 cursor-pointer">
+                  <input type="checkbox" checked={memberForm.isBoard} onChange={(e) => setMemberForm((f) => ({ ...f, isBoard: e.target.checked }))} className="rounded accent-[var(--color-dhruvam-gold)]" />
                   Board of Directors member
                 </label>
-                <button disabled={saving} type="submit" className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white py-3 rounded-xl font-poppins font-bold flex items-center justify-center gap-2 transition-colors">
+                <button disabled={saving} type="submit" className="w-full bg-[var(--color-aurora-blue)] hover:opacity-90 disabled:opacity-60 text-white py-3 rounded-xl font-poppins font-bold flex items-center justify-center gap-2 transition-colors">
                   {saving ? <Loader2 size={18} className="animate-spin" /> : <PlusCircle size={18} />}
                   {saving ? "Saving..." : editingMember ? "Update Member" : "Save Member"}
                 </button>
@@ -468,36 +475,36 @@ export default function AdminDashboard() {
           </div>
 
           <div className="md:col-span-3">
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 min-h-[400px]">
-              <h2 className="text-lg font-bold mb-5 font-poppins">Members ({members.length})</h2>
+            <div className="bg-white/[0.04] p-6 rounded-2xl border border-white/10 min-h-[400px]">
+              <h2 className="text-lg font-bold text-white mb-5 font-poppins">Members ({members.length})</h2>
               {loading ? (
-                <div className="flex items-center justify-center h-40"><Loader2 className="animate-spin text-blue-600" size={32} /></div>
+                <div className="flex items-center justify-center h-40"><Loader2 className="animate-spin text-[var(--color-aurora-blue)]" size={32} /></div>
               ) : members.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-40 text-muted-foreground font-inter text-sm"><Users size={32} className="mb-3 opacity-30" />No members yet. Add your first!</div>
+                <div className="flex flex-col items-center justify-center h-40 text-white/45 font-inter text-sm"><Users size={32} className="mb-3 opacity-30" />No members yet. Add your first!</div>
               ) : (
                 <div className="space-y-3">
                   {members.map((m) => (
-                    <div key={m._id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                    <div key={m._id} className="flex items-center gap-4 p-4 bg-white/[0.03] rounded-xl border border-white/10">
                       <img
-                        src={m.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name)}&background=D81B60&color=fff&size=64`}
+                        src={m.image || avatarFallback(m.name)}
                         alt={m.name}
-                        className="w-12 h-12 rounded-full object-cover shrink-0 border-2 border-white"
+                        className="w-12 h-12 rounded-full object-cover shrink-0 border-2 border-white/15"
                       />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <h4 className="font-poppins font-semibold text-foreground truncate">{m.name}</h4>
+                          <h4 className="font-poppins font-semibold text-white truncate">{m.name}</h4>
                           {m.isBoard && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-[var(--color-rotaract-red)]/10 text-[var(--color-rotaract-red)] text-xs rounded-full font-inter">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-[var(--color-dhruvam-gold)]/10 text-[var(--color-dhruvam-gold-light)] text-xs rounded-full font-inter">
                               <Star size={10} /> Board
                             </span>
                           )}
                         </div>
-                        <p className="text-xs text-muted-foreground font-inter mt-0.5">{m.role}</p>
-                        {m.phone && <p className="text-xs text-muted-foreground font-inter">{m.phone}</p>}
+                        <p className="text-xs text-white/45 font-inter mt-0.5">{m.role}</p>
+                        {m.phone && <p className="text-xs text-white/45 font-inter">{m.phone}</p>}
                       </div>
                       <div className="flex gap-2 shrink-0">
-                        <button onClick={() => startEditMember(m)} className="text-gray-400 hover:text-blue-500 transition-colors"><Pencil size={15} /></button>
-                        <button onClick={() => deleteMember(m._id)} className="text-gray-400 hover:text-red-500 transition-colors"><Trash2 size={15} /></button>
+                        <button onClick={() => startEditMember(m)} className="text-white/40 hover:text-[var(--color-aurora-blue)] transition-colors"><Pencil size={15} /></button>
+                        <button onClick={() => deleteMember(m._id)} className="text-white/40 hover:text-red-400 transition-colors"><Trash2 size={15} /></button>
                       </div>
                     </div>
                   ))}
@@ -510,30 +517,30 @@ export default function AdminDashboard() {
 
       {/* ── Messages ──────────────────────────────────────────────────────── */}
       {tab === "messages" && (
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 min-h-[400px]">
-          <h2 className="text-lg font-bold mb-5 font-poppins">Contact Messages ({messages.length})</h2>
+        <div className="bg-white/[0.04] p-6 rounded-2xl border border-white/10 min-h-[400px]">
+          <h2 className="text-lg font-bold text-white mb-5 font-poppins">Contact Messages ({messages.length})</h2>
           {loading ? (
-            <div className="flex items-center justify-center h-40"><Loader2 className="animate-spin text-emerald-600" size={32} /></div>
+            <div className="flex items-center justify-center h-40"><Loader2 className="animate-spin text-[var(--color-aurora-emerald)]" size={32} /></div>
           ) : messages.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-40 text-muted-foreground font-inter text-sm"><Mail size={32} className="mb-3 opacity-30" />No messages yet.</div>
+            <div className="flex flex-col items-center justify-center h-40 text-white/45 font-inter text-sm"><Mail size={32} className="mb-3 opacity-30" />No messages yet.</div>
           ) : (
             <div className="space-y-3">
               {messages.map((msg) => (
-                <div key={msg._id} className="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                <div key={msg._id} className="p-4 bg-white/[0.03] rounded-xl border border-white/10">
                   <div className="flex items-start justify-between gap-4 mb-2">
                     <div className="min-w-0">
-                      <h4 className="font-poppins font-semibold text-foreground truncate">{msg.firstName} {msg.lastName}</h4>
-                      <a href={`mailto:${msg.email}`} className="text-xs text-blue-500 hover:underline font-inter">{msg.email}</a>
+                      <h4 className="font-poppins font-semibold text-white truncate">{msg.firstName} {msg.lastName}</h4>
+                      <a href={`mailto:${msg.email}`} className="text-xs text-[var(--color-aurora-blue)] hover:underline font-inter">{msg.email}</a>
                     </div>
                     <div className="flex items-center gap-3 shrink-0">
-                      <span className="text-xs text-muted-foreground font-inter whitespace-nowrap">
+                      <span className="text-xs text-white/45 font-inter whitespace-nowrap">
                         {new Date(msg.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
                       </span>
-                      <button onClick={() => deleteMessage(msg._id)} className="text-gray-400 hover:text-red-500 transition-colors"><Trash2 size={15} /></button>
+                      <button onClick={() => deleteMessage(msg._id)} className="text-white/40 hover:text-red-400 transition-colors"><Trash2 size={15} /></button>
                     </div>
                   </div>
-                  <p className="font-inter text-sm font-semibold text-foreground mb-1">{msg.subject}</p>
-                  <p className="font-inter text-sm text-muted-foreground whitespace-pre-wrap">{msg.message}</p>
+                  <p className="font-inter text-sm font-semibold text-white mb-1">{msg.subject}</p>
+                  <p className="font-inter text-sm text-white/50 whitespace-pre-wrap">{msg.message}</p>
                 </div>
               ))}
             </div>

@@ -2,7 +2,9 @@
 
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Loader2, Lock } from "lucide-react";
+import Image from "next/image";
+import { Loader2 } from "lucide-react";
+import { logos } from "@/lib/dhruvamAssets";
 
 function LoginForm() {
   const router = useRouter();
@@ -35,22 +37,27 @@ function LoginForm() {
     setLoading(false);
   };
 
+  const inputCls =
+    "w-full bg-white/5 border border-white/15 text-white rounded-lg px-3 py-2.5 text-sm placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[var(--color-dhruvam-gold-light)]";
+
   return (
-    <div className="relative z-10 min-h-screen flex items-center justify-center bg-[var(--color-cream)] px-4">
-      <div className="w-full max-w-sm bg-white rounded-2xl shadow-md border border-[var(--border)] p-8">
+    <div className="relative z-10 min-h-screen flex items-center justify-center bg-[var(--color-dhruvam-950)] px-4">
+      <div className="w-full max-w-sm bg-white/[0.04] backdrop-blur-md rounded-2xl shadow-xl border border-white/10 p-8">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-full bg-[var(--color-rotaract-red)] flex items-center justify-center shrink-0">
-            <Lock size={18} className="text-white" />
+          <div className="relative w-10 h-10 rounded-full bg-white flex items-center justify-center shrink-0">
+            <div className="relative w-7 h-7">
+              <Image src={logos.rotaractGearMark} alt="" fill className="object-contain" />
+            </div>
           </div>
           <div>
-            <h1 className="font-montserrat font-bold text-lg text-[var(--color-charcoal)]">Admin Login</h1>
-            <p className="text-xs text-[var(--color-warm-gray)] font-inter">Rotaract Coimbatore Smartcity</p>
+            <h1 className="font-montserrat font-bold text-lg text-white">Admin Login</h1>
+            <p className="text-xs text-white/45 font-inter">Rotaract Coimbatore Smartcity</p>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
-            <label htmlFor="username" className="text-sm font-inter font-medium text-[var(--color-charcoal)]">
+            <label htmlFor="username" className="text-sm font-inter font-medium text-white/80">
               Username
             </label>
             <input
@@ -59,11 +66,11 @@ function LoginForm() {
               required
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-rotaract-red)]"
+              className={inputCls}
             />
           </div>
           <div className="space-y-1.5">
-            <label htmlFor="password" className="text-sm font-inter font-medium text-[var(--color-charcoal)]">
+            <label htmlFor="password" className="text-sm font-inter font-medium text-white/80">
               Password
             </label>
             <input
@@ -73,16 +80,16 @@ function LoginForm() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-rotaract-red)]"
+              className={inputCls}
             />
           </div>
 
-          {error && <p className="text-sm text-red-600 font-inter">{error}</p>}
+          {error && <p className="text-sm text-red-400 font-inter">{error}</p>}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[var(--color-rotaract-red)] hover:bg-[#a50d26] disabled:opacity-60 text-white py-3 rounded-xl font-poppins font-bold flex items-center justify-center gap-2 transition-colors"
+            className="w-full bg-[var(--color-dhruvam-gold)] hover:bg-[var(--color-dhruvam-gold-light)] disabled:opacity-60 text-[var(--color-dhruvam-950)] py-3 rounded-xl font-poppins font-bold flex items-center justify-center gap-2 transition-colors"
           >
             {loading ? <Loader2 size={18} className="animate-spin" /> : "Sign In"}
           </button>

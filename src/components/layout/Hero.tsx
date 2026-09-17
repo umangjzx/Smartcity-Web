@@ -1,41 +1,12 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { motion, useScroll, useTransform, useReducedMotion, useMotionValue, useSpring, Variants } from "framer-motion";
-import Link from "next/link";
+import { motion, useScroll, useTransform, useReducedMotion, Variants } from "framer-motion";
 import Image from "next/image";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import GuidingStar from "@/components/dhruvam/GuidingStar";
+import Button from "@/components/ui/Button";
 import { backgrounds, characters } from "@/lib/dhruvamAssets";
-
-// A CTA that drifts toward the cursor within a small radius, snapping back
-// on leave — a small tactile flourish rather than a static button.
-function MagneticLink({ children, ...props }: React.ComponentProps<typeof Link>) {
-  const ref = useRef<HTMLAnchorElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const springX = useSpring(x, { stiffness: 200, damping: 15, mass: 0.3 });
-  const springY = useSpring(y, { stiffness: 200, damping: 15, mass: 0.3 });
-
-  function handleMove(e: React.MouseEvent<HTMLAnchorElement>) {
-    const rect = ref.current?.getBoundingClientRect();
-    if (!rect) return;
-    x.set((e.clientX - (rect.left + rect.width / 2)) * 0.3);
-    y.set((e.clientY - (rect.top + rect.height / 2)) * 0.3);
-  }
-  function handleLeave() {
-    x.set(0);
-    y.set(0);
-  }
-
-  return (
-    <motion.span style={{ x: springX, y: springY, display: "inline-block" }} onMouseMove={handleMove} onMouseLeave={handleLeave}>
-      <Link ref={ref} {...props}>
-        {children}
-      </Link>
-    </motion.span>
-  );
-}
 
 // ── Animated counter hook ──────────────────────────────────────────────────
 function useCounter(target: number, duration = 1800, startCounting: boolean = false) {
@@ -223,19 +194,13 @@ export default function Hero() {
 
           {/* CTAs */}
           <motion.div variants={item} className="flex flex-wrap gap-4 mb-24">
-            <MagneticLink
-              href="#dhruvam"
-              className="group inline-flex items-center gap-2 px-8 py-4 bg-[var(--color-dhruvam-gold)] hover:bg-[var(--color-dhruvam-gold-light)] text-[var(--color-dhruvam-950)] rounded-full font-poppins font-bold text-sm shadow-[0_8px_32px_rgba(246,181,27,0.30)] hover:shadow-[0_12px_48px_rgba(246,181,27,0.50)] transition-colors duration-300"
-            >
+            <Button href="#dhruvam" size="lg" magnetic>
               Explore Our Journey
               <ArrowRight size={16} className="inline group-hover:translate-x-1 transition-transform duration-200" />
-            </MagneticLink>
-            <Link
-              href="#leadership"
-              className="inline-flex items-center gap-2 px-8 py-4 border border-white/20 hover:border-[var(--color-dhruvam-gold-light)]/50 text-white/80 hover:text-white rounded-full font-poppins font-semibold text-sm hover:bg-white/5 transition-all duration-300 backdrop-blur-sm"
-            >
+            </Button>
+            <Button href="#leadership" size="lg" variant="outline">
               Meet Our Team
-            </Link>
+            </Button>
           </motion.div>
 
           {/* Impact Stats — animated counters on a constellation baseline */}
