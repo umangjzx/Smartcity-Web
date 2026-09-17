@@ -68,10 +68,8 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-5">
-              <div className="relative w-11 h-11 rounded-full bg-white shadow-md shrink-0 flex items-center justify-center overflow-hidden">
-                <div className="relative w-8 h-8">
-                  <Image src={logos.rotaractGearMark} alt="Rotaract Club of Coimbatore Smartcity" fill className="object-contain" />
-                </div>
+              <div className="relative w-11 h-11 rounded-full shadow-md shrink-0 overflow-hidden">
+                <Image src={logos.dhruvamBadge} alt="Rotaract Club of Coimbatore Smartcity" fill className="object-cover" />
                 <div className="absolute inset-0 rounded-full border-2 border-[var(--color-dhruvam-gold-light)] scale-110 opacity-50 pointer-events-none" />
               </div>
               <div className="flex flex-col leading-none">

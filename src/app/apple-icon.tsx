@@ -7,7 +7,7 @@ export const contentType = "image/png";
 
 export default function AppleIcon() {
   const emblem = fs
-    .readFileSync(path.join(process.cwd(), "public/assets/dhruvam/logos/dhruvam-star-emblem.png"))
+    .readFileSync(path.join(process.cwd(), "public/assets/dhruvam/logos/dhruvam-badge.png"))
     .toString("base64");
 
   return new ImageResponse(

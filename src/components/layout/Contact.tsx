@@ -29,6 +29,7 @@ const contacts = [
     role: "Secretary Communication",
     phone: "+91 8098468572",
     image: "/photos/umang-jaiswal-n.jpg",
+    imageZoom: 1.3,
     accent: "var(--color-aurora-blue)",
     borderColor: "rgba(74,127,217,0.4)",
     bgColor: "rgba(74,127,217,0.07)",
@@ -111,10 +112,17 @@ export default function Contact() {
                 />
 
                 <div
-                  className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden shrink-0"
-                  style={{ boxShadow: `0 0 0 2px ${c.borderColor}, 0 8px 20px rgba(0,0,0,0.35)` }}
+                  className="relative w-36 h-36 sm:w-44 sm:h-44 rounded-2xl overflow-hidden shrink-0"
+                  style={{ boxShadow: `0 0 0 3px ${c.borderColor}, 0 10px 24px rgba(0,0,0,0.4)` }}
                 >
-                  <Image src={c.image} alt={c.name} fill sizes="(min-width: 640px) 80px, 64px" className="object-cover object-top" />
+                  <Image
+                    src={c.image}
+                    alt={c.name}
+                    fill
+                    sizes="(min-width: 640px) 176px, 144px"
+                    className="object-cover object-top"
+                    style={c.imageZoom ? { transform: `scale(${c.imageZoom})` } : undefined}
+                  />
                 </div>
 
                 <div>

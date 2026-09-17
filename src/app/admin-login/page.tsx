@@ -44,10 +44,8 @@ function LoginForm() {
     <div className="relative z-10 min-h-screen flex items-center justify-center bg-[var(--color-dhruvam-950)] px-4">
       <div className="w-full max-w-sm bg-white/[0.04] backdrop-blur-md rounded-2xl shadow-xl border border-white/10 p-8">
         <div className="flex items-center gap-3 mb-6">
-          <div className="relative w-10 h-10 rounded-full bg-white flex items-center justify-center shrink-0">
-            <div className="relative w-7 h-7">
-              <Image src={logos.rotaractGearMark} alt="" fill className="object-contain" />
-            </div>
+          <div className="relative w-10 h-10 rounded-full shrink-0 overflow-hidden">
+            <Image src={logos.dhruvamBadge} alt="" fill className="object-cover" />
           </div>
           <div>
             <h1 className="font-montserrat font-bold text-lg text-white">Admin Login</h1>

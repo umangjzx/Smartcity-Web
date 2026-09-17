@@ -15,7 +15,7 @@ import penguinLantern from "../../public/assets/dhruvam/characters/penguin-lante
 import penguinHiking from "../../public/assets/dhruvam/characters/penguin-hiking.jpg";
 import penguinBack from "../../public/assets/dhruvam/characters/penguin-back.jpg";
 
-import rotaractGearMark from "../../public/assets/dhruvam/logos/rotaract-gear-mark.png";
+import dhruvamBadge from "../../public/assets/dhruvam/logos/dhruvam-badge.png";
 import umangPhoto from "../../public/photos/umang-jaiswal.jpg";
 
 export const backgrounds = {
@@ -36,6 +36,6 @@ export const characters = {
 };
 
 export const logos = {
-  rotaractGearMark,
+  dhruvamBadge,
   umangPhoto,
 };

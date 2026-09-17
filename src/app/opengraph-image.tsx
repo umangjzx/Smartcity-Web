@@ -10,6 +10,9 @@ export default function OpengraphImage() {
   const emblem = fs
     .readFileSync(path.join(process.cwd(), "public/assets/dhruvam/logos/dhruvam-emblem.png"))
     .toString("base64");
+  const badge = fs
+    .readFileSync(path.join(process.cwd(), "public/assets/dhruvam/logos/dhruvam-badge-256.png"))
+    .toString("base64");
 
   return new ImageResponse(
     (
@@ -65,14 +68,14 @@ export default function OpengraphImage() {
                 width: 34,
                 height: 34,
                 borderRadius: "50%",
-                background: "#C8102E",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                border: "2px solid #FFD65A",
+                overflow: "hidden",
               }}
             >
-              <span style={{ color: "#fff", fontSize: 16, fontWeight: 900 }}>R</span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={`data:image/png;base64,${badge}`} alt="" width={34} height={34} style={{ objectFit: "cover" }} />
             </div>
             <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 18, letterSpacing: 3, textTransform: "uppercase", display: "flex" }}>
               Rotaract Club of Coimbatore Smartcity

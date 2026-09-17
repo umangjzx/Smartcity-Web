@@ -69,10 +69,8 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative w-10 h-10 rounded-full bg-white shadow-md shrink-0 flex items-center justify-center overflow-hidden">
-            <div className="relative w-7 h-7">
-              <Image src={logos.rotaractGearMark} alt="Rotaract Club of Coimbatore Smartcity" fill className="object-contain" />
-            </div>
+          <div className="relative w-10 h-10 rounded-full shadow-md shrink-0 overflow-hidden">
+            <Image src={logos.dhruvamBadge} alt="Rotaract Club of Coimbatore Smartcity" fill className="object-cover" />
             <div className="absolute inset-0 rounded-full border-2 border-[var(--color-dhruvam-gold-light)] scale-110 opacity-60 pointer-events-none" />
           </div>
           <div className="flex flex-col leading-none">

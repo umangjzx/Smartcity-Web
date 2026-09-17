@@ -27,10 +27,8 @@ export default function AdminNav() {
           </Link>
           <span className="text-white/15">|</span>
           <Link href="/admin" className="flex items-center gap-2.5">
-            <div className="relative w-8 h-8 rounded-full bg-white shrink-0 flex items-center justify-center overflow-hidden">
-              <div className="relative w-6 h-6">
-                <Image src={logos.rotaractGearMark} alt="" fill className="object-contain" />
-              </div>
+            <div className="relative w-8 h-8 rounded-full shrink-0 overflow-hidden">
+              <Image src={logos.dhruvamBadge} alt="" fill className="object-cover" />
             </div>
             <span className="font-montserrat font-bold text-[var(--color-dhruvam-gold-light)]">
               DHRUVAM Admin
