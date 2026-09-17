@@ -53,7 +53,7 @@ export default function SectionHeader({
       </div>
 
       {/* Title */}
-      <h2 className="text-3xl md:text-4xl lg:text-5xl font-montserrat font-black tracking-tight text-white leading-tight">
+      <h2 className="text-h1 tracking-tight text-white">
         {title}
       </h2>
 

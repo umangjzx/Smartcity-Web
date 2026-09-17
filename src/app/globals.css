@@ -144,6 +144,69 @@ a, button {
 }
 
 /* ══════════════════════════════════════════════════════════════════════
+   Typography scale — see DESIGN-DIRECTION.md. These name the sizes that
+   were already in use across the site rather than introducing new ones,
+   so applying them is a rename in most places, not a resize.
+   ══════════════════════════════════════════════════════════════════════ */
+.text-display {
+  font-family: var(--font-montserrat);
+  font-weight: 900;
+  font-size: 14vw;
+  line-height: 1;
+}
+@media (min-width: 640px) { .text-display { font-size: 10vw; } }
+@media (min-width: 768px) { .text-display { font-size: 6rem; } }
+@media (min-width: 1024px) { .text-display { font-size: 7rem; } }
+@media (min-width: 1280px) { .text-display { font-size: 8rem; } }
+
+.text-h1 {
+  font-family: var(--font-montserrat);
+  font-weight: 900;
+  font-size: 1.875rem; /* text-3xl */
+  line-height: 1.2;
+}
+@media (min-width: 640px) { .text-h1 { font-size: 2.25rem; } } /* sm:text-4xl */
+@media (min-width: 768px) { .text-h1 { font-size: 3rem; } } /* md:text-5xl */
+
+.text-h2 {
+  font-family: var(--font-montserrat);
+  font-weight: 700;
+  font-size: 1.5rem; /* text-2xl */
+  line-height: 1.25;
+}
+@media (min-width: 768px) { .text-h2 { font-size: 1.875rem; } } /* md:text-3xl */
+
+.text-h3 {
+  font-family: var(--font-poppins);
+  font-weight: 700;
+  font-size: 1.125rem; /* text-lg */
+  line-height: 1.3;
+}
+@media (min-width: 768px) { .text-h3 { font-size: 1.25rem; } } /* md:text-xl */
+
+.text-body {
+  font-family: var(--font-inter);
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.6;
+}
+@media (min-width: 768px) { .text-body { font-size: 1rem; } } /* md:text-base */
+
+.text-body-sm {
+  font-family: var(--font-inter);
+  font-size: 0.75rem; /* text-xs */
+  line-height: 1.5;
+}
+@media (min-width: 640px) { .text-body-sm { font-size: 0.875rem; } } /* sm:text-sm */
+
+.text-label {
+  font-family: var(--font-inter);
+  font-weight: 600;
+  font-size: 0.625rem; /* text-[10px] */
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
    DHRUVAM — night sky / aurora / star system
    ══════════════════════════════════════════════════════════════════════ */
 
@@ -215,7 +278,8 @@ a, button {
   .dhruvam-lighthouse-beam,
   .section-float,
   .dhruvam-glow-ring,
-  .animate-marquee {
+  .animate-marquee,
+  .animate-pulse {
     animation: none !important;
   }
 }

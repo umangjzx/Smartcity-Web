@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
+import Button from "@/components/ui/Button";
 import rotaractGearMark from "../../../public/assets/dhruvam/logos/rotaract-gear-mark.png";
 
 const navLinks = [
@@ -103,12 +104,9 @@ export default function Navbar() {
               </Link>
             );
           })}
-          <Link
-            href="#join"
-            className="ml-3 px-6 py-2.5 bg-[var(--color-dhruvam-gold)] hover:bg-[var(--color-dhruvam-gold-light)] text-[var(--color-dhruvam-950)] rounded-full font-poppins font-semibold text-[13px] shadow-md hover:shadow-[0_0_20px_rgba(246,181,27,0.4)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300"
-          >
+          <Button href="#join" className="ml-3">
             Join Us
-          </Link>
+          </Button>
         </nav>
 
         {/* Mobile toggle */}
@@ -159,13 +157,9 @@ export default function Navbar() {
                   </Link>
                 </motion.div>
               ))}
-              <Link
-                href="#join"
-                onClick={() => setMobileOpen(false)}
-                className="mt-3 bg-[var(--color-dhruvam-gold)] text-[var(--color-dhruvam-950)] text-center py-3.5 rounded-full font-poppins font-semibold hover:bg-[var(--color-dhruvam-gold-light)] transition-colors"
-              >
+              <Button href="#join" size="lg" onClick={() => setMobileOpen(false)} className="mt-3 w-full">
                 Join Us
-              </Link>
+              </Button>
             </div>
           </motion.div>
         )}

@@ -36,7 +36,7 @@ function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--color-cream)] px-4">
+    <div className="relative z-10 min-h-screen flex items-center justify-center bg-[var(--color-cream)] px-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-md border border-[var(--border)] p-8">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 rounded-full bg-[var(--color-rotaract-red)] flex items-center justify-center shrink-0">

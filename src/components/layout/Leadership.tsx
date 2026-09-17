@@ -3,8 +3,10 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { Mail, Phone, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
+import { Mail, Phone, ExternalLink, ChevronLeft, ChevronRight, Users } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
+import SkeletonRow from "@/components/ui/SkeletonRow";
+import EmptyState from "@/components/ui/EmptyState";
 
 type Member = {
   _id: string;
@@ -19,14 +21,18 @@ type Member = {
 
 export default function Leadership() {
   const [members, setMembers] = useState<Member[]>([]);
+  const [status, setStatus] = useState<"loading" | "loaded" | "error">("loading");
   const [hoveredMember, setHoveredMember] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch("/api/members")
       .then((r) => r.json())
-      .then((d) => { if (d.success) setMembers(d.data); })
-      .catch(() => {});
+      .then((d) => {
+        if (d.success) { setMembers(d.data); setStatus("loaded"); }
+        else setStatus("error");
+      })
+      .catch(() => setStatus("error"));
   }, []);
 
   const boardMembers = members.filter((m) => m.isBoard);
@@ -54,8 +60,6 @@ export default function Leadership() {
     el.scrollBy({ left: dir * 400, behavior: "smooth" });
   };
 
-  if (members.length === 0) return null;
-
   return (
     <section id="leadership" className="py-20 md:py-32 relative overflow-hidden bg-[var(--color-dhruvam-950)] flex flex-col justify-center">
       {/* Massive Background Typography */}
@@ -72,6 +76,30 @@ export default function Leadership() {
         />
       </div>
 
+      {status === "loading" && (
+        <div className="max-w-[1400px] mx-auto px-4 md:px-12 w-full">
+          <SkeletonRow count={6} className="w-40 h-56 md:w-56 md:h-72 rounded-2xl" />
+        </div>
+      )}
+
+      {status === "error" && (
+        <EmptyState
+          icon={Users}
+          title="Couldn't load the board right now"
+          subtitle="Please refresh the page — if this keeps happening, let us know."
+        />
+      )}
+
+      {status === "loaded" && boardMembers.length === 0 && (
+        <EmptyState
+          icon={Users}
+          title="Board of Directors coming soon"
+          subtitle="We're finalizing this year's board — check back shortly."
+        />
+      )}
+
+      {status === "loaded" && boardMembers.length > 0 && (
+        <>
       {/* Cinematic Roster — desktop/tablet only; relies on hover, which touch
           devices don't have, so mobile gets its own always-visible layout below */}
       <div className="relative hidden md:block w-full max-w-[1400px] mx-auto">
@@ -237,6 +265,8 @@ export default function Leadership() {
           );
         })}
       </div>
+        </>
+      )}
 
       {/* Decorative divider at the bottom */}
       <img

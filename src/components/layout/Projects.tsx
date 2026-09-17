@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { FolderOpen, ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
+import SkeletonRow from "@/components/ui/SkeletonRow";
+import EmptyState from "@/components/ui/EmptyState";
 import { backgrounds, characters } from "@/lib/dhruvamAssets";
 
 type Project = {
@@ -159,15 +161,20 @@ export default function Projects() {
           </div>
         )}
 
+        {/* Loading skeleton — avoids a blank gap + layout shift while fetching */}
+        {!loaded && (
+          <div className="mt-8">
+            <SkeletonRow count={3} className="w-[85vw] sm:w-96 aspect-[4/5] rounded-3xl" />
+          </div>
+        )}
+
         {/* Empty state */}
         {loaded && projects.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <FolderOpen size={40} className="text-white/20 mb-4" />
-            <p className="font-poppins font-semibold text-white/60 mb-1">Projects coming soon</p>
-            <p className="font-inter text-sm text-white/35">
-              We&apos;re getting our journey milestones ready.
-            </p>
-          </div>
+          <EmptyState
+            icon={FolderOpen}
+            title="Projects coming soon"
+            subtitle="We're getting our journey milestones ready."
+          />
         )}
 
         {/* Horizontal scrolling project carousel */}

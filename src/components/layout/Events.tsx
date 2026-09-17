@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { ArrowRight, CalendarClock, ChevronDown } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
+import SkeletonRow from "@/components/ui/SkeletonRow";
+import EmptyState from "@/components/ui/EmptyState";
 import { backgrounds, characters } from "@/lib/dhruvamAssets";
 
 type Event = {
@@ -253,14 +255,16 @@ export default function Events() {
             </div>
           </motion.div>
         ) : loaded ? (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <CalendarClock size={40} className="text-white/20 mb-4" />
-            <p className="font-poppins font-semibold text-white/60 mb-1">No upcoming events yet</p>
-            <p className="font-inter text-sm text-white/35">
-              Check back soon — new events will appear here as they&apos;re scheduled.
-            </p>
+          <EmptyState
+            icon={CalendarClock}
+            title="No upcoming events yet"
+            subtitle="Check back soon — new events will appear here as they're scheduled."
+          />
+        ) : (
+          <div className="mb-16">
+            <SkeletonRow count={1} className="w-full h-72 rounded-3xl" />
           </div>
-        ) : null}
+        )}
 
         {/* Other upcoming events */}
         {upcoming.length > 0 && (

@@ -33,12 +33,12 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
-const inputCls = "w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-800 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-rotaract-red)]";
+const inputCls = "w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-rotaract-red)]";
 
 // ─── Stat card ─────────────────────────────────────────────────────────────────
 function StatCard({ label, value, icon, color }: { label: string; value: number; icon: React.ReactNode; color: string }) {
   return (
-    <div className={`bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-gray-100 dark:border-zinc-800 shadow-sm flex items-center gap-4`}>
+    <div className={`bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex items-center gap-4`}>
       <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${color}`}>{icon}</div>
       <div>
         <p className="text-3xl font-montserrat font-black text-foreground">{value}</p>
@@ -206,7 +206,7 @@ export default function AdminDashboard() {
             key={n.id}
             onClick={() => setTab(n.id)}
             className={`px-5 py-2.5 rounded-xl font-poppins font-medium transition-all flex items-center gap-2 text-sm
-              ${tab === n.id ? n.accent + " shadow-md" : "bg-white dark:bg-zinc-800 text-foreground border border-gray-200 dark:border-zinc-700 hover:border-gray-400"}`}
+              ${tab === n.id ? n.accent + " shadow-md" : "bg-white text-foreground border border-gray-200 hover:border-gray-400"}`}
           >
             {n.icon} {n.label}
           </button>
@@ -217,8 +217,8 @@ export default function AdminDashboard() {
       {toast && (
         <div className={`flex items-center gap-3 px-5 py-3 rounded-xl font-inter text-sm border
           ${toast.type === "success"
-            ? "bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800 text-green-700 dark:text-green-300"
-            : "bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800 text-red-700 dark:text-red-300"}`}>
+            ? "bg-green-50 border-green-200 text-green-700"
+            : "bg-red-50 border-red-200 text-red-700"}`}>
           <CheckCircle size={18} /> {toast.msg}
         </div>
       )}
@@ -235,10 +235,10 @@ export default function AdminDashboard() {
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* Recent projects */}
-            <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-gray-100 dark:border-zinc-800">
+            <div className="bg-white rounded-2xl p-6 border border-gray-100">
               <h3 className="font-poppins font-bold text-base mb-4">Recent Projects</h3>
               {loading ? <Loader2 className="animate-spin" size={20} /> : projects.slice(0, 5).map((p) => (
-                <div key={p._id} className="flex items-center gap-3 py-2 border-b border-gray-50 dark:border-zinc-800 last:border-0">
+                <div key={p._id} className="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
                   {p.image && <img src={p.image} alt="" className="w-10 h-10 rounded-lg object-cover" />}
                   <div className="flex-1 min-w-0">
                     <p className="font-inter text-sm font-medium truncate">{p.title}</p>
@@ -249,10 +249,10 @@ export default function AdminDashboard() {
             </div>
 
             {/* Upcoming events */}
-            <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-gray-100 dark:border-zinc-800">
+            <div className="bg-white rounded-2xl p-6 border border-gray-100">
               <h3 className="font-poppins font-bold text-base mb-4">Upcoming Events</h3>
               {loading ? <Loader2 className="animate-spin" size={20} /> : events.slice(0, 5).map((e) => (
-                <div key={e._id} className="flex items-center gap-3 py-2 border-b border-gray-50 dark:border-zinc-800 last:border-0">
+                <div key={e._id} className="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
                   <div className="w-10 h-10 bg-[var(--color-rotary-gold)]/10 rounded-xl flex flex-col items-center justify-center shrink-0">
                     <span className="font-black text-sm text-[var(--color-rotary-gold)]">{new Date(e.date).getDate()}</span>
                     <span className="text-[9px] text-muted-foreground uppercase">{new Date(e.date).toLocaleString("default", { month: "short" })}</span>
@@ -268,11 +268,11 @@ export default function AdminDashboard() {
           </div>
 
           {/* Board members quick view */}
-          <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-gray-100 dark:border-zinc-800">
+          <div className="bg-white rounded-2xl p-6 border border-gray-100">
             <h3 className="font-poppins font-bold text-base mb-4">Board Members ({members.filter((m) => m.isBoard).length})</h3>
             <div className="flex flex-wrap gap-4">
               {members.filter((m) => m.isBoard).map((m) => (
-                <div key={m._id} className="flex items-center gap-3 bg-gray-50 dark:bg-zinc-800 rounded-xl px-4 py-3">
+                <div key={m._id} className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
                   <img
                     src={m.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name)}&background=D81B60&color=fff&size=64`}
                     alt={m.name}
@@ -296,7 +296,7 @@ export default function AdminDashboard() {
       {tab === "projects" && (
         <div className="grid md:grid-cols-5 gap-8">
           <div className="md:col-span-2">
-            <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-zinc-800 sticky top-24">
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 sticky top-24">
               <div className="flex items-center justify-between mb-5">
                 <h2 className="text-lg font-bold flex items-center gap-2 font-poppins">
                   <PlusCircle className="text-[var(--color-rotaract-red)]" size={20} />
@@ -329,7 +329,7 @@ export default function AdminDashboard() {
           </div>
 
           <div className="md:col-span-3">
-            <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-zinc-800 min-h-[400px]">
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 min-h-[400px]">
               <h2 className="text-lg font-bold mb-5 font-poppins">Projects ({projects.length})</h2>
               {loading ? (
                 <div className="flex items-center justify-center h-40"><Loader2 className="animate-spin text-[var(--color-rotaract-red)]" size={32} /></div>
@@ -338,7 +338,7 @@ export default function AdminDashboard() {
               ) : (
                 <div className="space-y-3">
                   {projects.map((p) => (
-                    <div key={p._id} className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-black rounded-xl border border-gray-100 dark:border-zinc-800">
+                    <div key={p._id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
                       {p.image && <img src={p.image} alt={p.title} className="w-14 h-14 rounded-lg object-cover shrink-0" />}
                       <div className="flex-1 min-w-0">
                         <h4 className="font-poppins font-semibold text-foreground truncate">{p.title}</h4>
@@ -364,7 +364,7 @@ export default function AdminDashboard() {
       {tab === "events" && (
         <div className="grid md:grid-cols-5 gap-8">
           <div className="md:col-span-2">
-            <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-zinc-800 sticky top-24">
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 sticky top-24">
               <div className="flex items-center justify-between mb-5">
                 <h2 className="text-lg font-bold flex items-center gap-2 font-poppins">
                   <PlusCircle className="text-[var(--color-rotary-gold)]" size={20} />
@@ -397,7 +397,7 @@ export default function AdminDashboard() {
           </div>
 
           <div className="md:col-span-3">
-            <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-zinc-800 min-h-[400px]">
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 min-h-[400px]">
               <h2 className="text-lg font-bold mb-5 font-poppins">Events ({events.length})</h2>
               {loading ? (
                 <div className="flex items-center justify-center h-40"><Loader2 className="animate-spin text-[var(--color-rotary-gold)]" size={32} /></div>
@@ -406,7 +406,7 @@ export default function AdminDashboard() {
               ) : (
                 <div className="space-y-3">
                   {events.map((ev) => (
-                    <div key={ev._id} className="flex items-start gap-4 p-4 bg-gray-50 dark:bg-black rounded-xl border border-gray-100 dark:border-zinc-800">
+                    <div key={ev._id} className="flex items-start gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
                       <div className="shrink-0 w-14 h-14 bg-[var(--color-rotary-gold)]/10 rounded-xl flex flex-col items-center justify-center">
                         <span className="font-montserrat font-black text-xl text-[var(--color-rotary-gold)]">{new Date(ev.date).getDate()}</span>
                         <span className="text-[10px] text-muted-foreground uppercase">{new Date(ev.date).toLocaleString("default", { month: "short" })}</span>
@@ -435,7 +435,7 @@ export default function AdminDashboard() {
       {tab === "members" && (
         <div className="grid md:grid-cols-5 gap-8">
           <div className="md:col-span-2">
-            <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-zinc-800 sticky top-24">
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 sticky top-24">
               <div className="flex items-center justify-between mb-5">
                 <h2 className="text-lg font-bold flex items-center gap-2 font-poppins">
                   <PlusCircle className="text-blue-600" size={20} />
@@ -468,7 +468,7 @@ export default function AdminDashboard() {
           </div>
 
           <div className="md:col-span-3">
-            <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-zinc-800 min-h-[400px]">
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 min-h-[400px]">
               <h2 className="text-lg font-bold mb-5 font-poppins">Members ({members.length})</h2>
               {loading ? (
                 <div className="flex items-center justify-center h-40"><Loader2 className="animate-spin text-blue-600" size={32} /></div>
@@ -477,11 +477,11 @@ export default function AdminDashboard() {
               ) : (
                 <div className="space-y-3">
                   {members.map((m) => (
-                    <div key={m._id} className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-black rounded-xl border border-gray-100 dark:border-zinc-800">
+                    <div key={m._id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
                       <img
                         src={m.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name)}&background=D81B60&color=fff&size=64`}
                         alt={m.name}
-                        className="w-12 h-12 rounded-full object-cover shrink-0 border-2 border-white dark:border-zinc-700"
+                        className="w-12 h-12 rounded-full object-cover shrink-0 border-2 border-white"
                       />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
@@ -510,7 +510,7 @@ export default function AdminDashboard() {
 
       {/* ── Messages ──────────────────────────────────────────────────────── */}
       {tab === "messages" && (
-        <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-zinc-800 min-h-[400px]">
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 min-h-[400px]">
           <h2 className="text-lg font-bold mb-5 font-poppins">Contact Messages ({messages.length})</h2>
           {loading ? (
             <div className="flex items-center justify-center h-40"><Loader2 className="animate-spin text-emerald-600" size={32} /></div>
@@ -519,7 +519,7 @@ export default function AdminDashboard() {
           ) : (
             <div className="space-y-3">
               {messages.map((msg) => (
-                <div key={msg._id} className="p-4 bg-gray-50 dark:bg-black rounded-xl border border-gray-100 dark:border-zinc-800">
+                <div key={msg._id} className="p-4 bg-gray-50 rounded-xl border border-gray-100">
                   <div className="flex items-start justify-between gap-4 mb-2">
                     <div className="min-w-0">
                       <h4 className="font-poppins font-semibold text-foreground truncate">{msg.firstName} {msg.lastName}</h4>
