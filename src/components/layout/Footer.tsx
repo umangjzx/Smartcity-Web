@@ -161,10 +161,10 @@ export default function Footer() {
             © {new Date().getFullYear()} Rotaract Club of Coimbatore Smartcity. All rights reserved.
           </p>
           <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-1">
-            <Link href="/privacy" className="font-inter text-xs text-white/25 hover:text-white/50 transition-colors">
+            <Link href="/privacy" className="font-inter text-xs text-white/50 hover:text-white/80 transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="font-inter text-xs text-white/25 hover:text-white/50 transition-colors">
+            <Link href="/terms" className="font-inter text-xs text-white/50 hover:text-white/80 transition-colors">
               Terms of Service
             </Link>
             {/* Designer credit — inline, not a separate card */}
@@ -181,7 +181,7 @@ export default function Footer() {
                 Rtr. Umang Jaiswal
               </span>
             </span>
-            <Link href="/admin" className="font-inter text-xs text-white/20 hover:text-[var(--color-dhruvam-gold-light)] transition-colors">
+            <Link href="/admin" className="font-inter text-xs text-white/45 hover:text-[var(--color-dhruvam-gold-light)] transition-colors">
               Admin
             </Link>
           </div>

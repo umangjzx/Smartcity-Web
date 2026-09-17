@@ -1,12 +1,32 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongoose";
 import ContactMessage from "@/models/ContactMessage";
+import { getClientIp, isRateLimited } from "@/lib/rateLimit";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+
+    // Honeypot: a field real visitors never see or fill (styled off-screen in
+    // the form), so anything that fills it is almost certainly a bot. Report
+    // fake success rather than an error, so scripted submitters don't learn
+    // to adapt and just move on.
+    if (String(body.website ?? "").trim() !== "") {
+      return NextResponse.json({ success: true, data: { id: "ok" } }, { status: 201 });
+    }
+
+    const ip = getClientIp(request);
+    if (await isRateLimited(`contact:${ip}`, RATE_LIMIT_MAX, RATE_LIMIT_WINDOW_MS)) {
+      return NextResponse.json(
+        { success: false, error: "Too many messages sent — please try again in a few minutes." },
+        { status: 429 }
+      );
+    }
+
     const firstName = String(body.firstName ?? "").trim();
     const lastName = String(body.lastName ?? "").trim();
     const email = String(body.email ?? "").trim();

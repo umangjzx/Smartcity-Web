@@ -34,7 +34,7 @@ const contacts = [
 ];
 
 const inputCls =
-  "w-full bg-transparent border-0 border-b border-white/20 px-1 py-3 text-sm font-inter text-white placeholder:text-white/20 focus:outline-none focus:border-[var(--color-aurora-cyan)] transition-colors";
+  "w-full bg-transparent border-0 border-b border-white/20 px-1 py-3 text-sm font-inter text-white placeholder:text-white/40 focus:outline-none focus:border-[var(--color-aurora-cyan)] transition-colors";
 
 type Status = "idle" | "sending" | "success" | "error";
 
@@ -52,6 +52,7 @@ export default function Contact() {
       email: data.get("email"),
       subject: data.get("subject"),
       message: data.get("message"),
+      website: data.get("website"),
     };
 
     setStatus("sending");
@@ -226,6 +227,15 @@ export default function Contact() {
               <p className="font-inter text-sm text-white/40 mb-8">We&apos;ll get back to you within 24 hours.</p>
 
               <form onSubmit={handleSubmit} className="space-y-7">
+                {/* Honeypot — invisible to real visitors, tempting to bots.
+                    Left un-hidden from the accessibility tree via aria-hidden
+                    and skipped in tab order, so screen reader/keyboard users
+                    never even know it's there. */}
+                <div className="absolute -left-[9999px] w-px h-px overflow-hidden" aria-hidden="true">
+                  <label htmlFor="contact-website">Website</label>
+                  <input id="contact-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+                </div>
+
                 <div className="grid sm:grid-cols-2 gap-7">
                   <div className="space-y-1">
                     <label htmlFor="contact-first-name" className="font-inter text-[10px] font-semibold text-white/40 uppercase tracking-widest">
