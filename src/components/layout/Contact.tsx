@@ -10,7 +10,7 @@ const contacts = [
   {
     name: "Rtr. Nirmal Kumar K",
     role: "President",
-    phone: "+91 9080161324",
+    phone: "+91 9500575064",
     accent: "var(--color-dhruvam-gold-light)",
     borderColor: "rgba(255,214,90,0.4)",
     bgColor: "rgba(255,214,90,0.07)",
@@ -176,7 +176,7 @@ export default function Contact() {
                 <span className="font-inter font-medium text-sm text-white/80">Email Us</span>
               </a>
               <a
-                href="https://wa.me/919080161324"
+                href="https://wa.me/919500575064"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex flex-col items-center gap-3 bg-white/5 border border-white/10 hover:border-[var(--color-aurora-emerald)]/40 rounded-2xl p-5 transition-all hover:-translate-y-1"
